@@ -11,7 +11,7 @@
         <button class="btn btn-outline-success" onclick="tambah_data()"><i class="bi bi-plus-circle"></i> Tambah</button>
         <button class="btn btn-outline-secondary" onclick="reload_table()"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
         <button class="btn btn-outline-danger" onclick="bulk_delete()"><i class="bi bi-trash"></i> Hapus Semua</button>
-        <button class="btn btn-outline-info" onclick="import()"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
+        <button class="btn btn-outline-info" onclick="import_excel()"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
 
         <hr />
 
@@ -220,9 +220,12 @@
             alert('No data selected');
         }
     }
+
+    function import_excel() {}
 </script>
 
 <!-- Bootstrap modal -->
+<!-- pop up data -->
 <div class="modal fade" id="modal_form" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -268,4 +271,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+<!-- pop up import -->
+
 <!-- End Bootstrap modal -->

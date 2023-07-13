@@ -69,8 +69,8 @@ class ProgramKerja extends CI_Controller
 
             //add html for action
             $row[] = '<div class="btn-group" role="group" aria-label="Group action">'
-                . '<a href="#" title="Edit" onclick="ubah_produk(' . $item->id . ')" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i></i></a>'
-                . '<a href="#" title="Hapus" onclick="hapus_produk(' . $item->id . ')" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>'
+                . '<a href="#" title="Edit" onclick="ubah_data(' . $item->id . ')" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i></i></a>'
+                . '<a href="#" title="Hapus" onclick="hapus_data(' . $item->id . ')" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>'
                 . '</div>';
 
             $data[] = $row;
