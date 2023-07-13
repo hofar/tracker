@@ -1,6 +1,6 @@
 <?php
 $theme = $this->input->get("theme");
-$theme = !is_null($theme) ? $theme : "dark";
+$theme = !is_null($theme) ? $theme : "white";
 
 $queryParams = $this->input->get();
 $queryString = http_build_query($queryParams);
