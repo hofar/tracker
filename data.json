@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Pemenuhan Kebutuhan PC, NB & Printer",
+        "value": 71
+    },
+    {
+        "name": "Penyediaan Penguat Sinyal GSM",
+        "value": 100
+    },
+    {
+        "name": "Upgrade Radio Analog ke Digital",
+        "value": 57
+    },
+    {
+        "name": "Backup Power Supply",
+        "value": 100
+    },
+    {
+        "name": "Relokasi Tower dari HO ke PIT E",
+        "value": 57
+    },
+    {
+        "name": "Upgrade Bandwidth Internet",
+        "value": 100
+    },
+    {
+        "name": "Migrasi email @satriabahana.co.id to Cloud",
+        "value": 71
+    }
+]

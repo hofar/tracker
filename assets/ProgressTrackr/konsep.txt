@@ -1,0 +1,12 @@
+Konsep \ProgressTrackr
+
+- Halaman Dashboard (berisi grafik)
+- Halaman Login
+- Halaman input To-Do
+
+Database
+
+- user
+- to-do
+
+Memakai CodeIgniter v3, Bootstrap
