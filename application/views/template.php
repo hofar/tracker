@@ -21,6 +21,11 @@ $menuItems = array(
         "url" => "dashboard/aplikasi",
         "icon" => '<i class="bi bi-window-desktop"></i>',
     ),
+    array(
+        "title" => "Data",
+        "url" => "programkerja/data",
+        "icon" => '<i class="bi bi-card-list"></i>',
+    ),
     // Add more menu items with their respective URLs
 );
 
@@ -44,7 +49,9 @@ foreach ($menuItems as $menuItem) {
     }
 
     $active = ($this->uri->segment(2) == $lastValue) ? "active" : "";
-    $menuHtml .= '<li class="nav-item"><a class="nav-link ' . $active . '" aria-current="page" href="' . $url . '?' . $queryString . '">' . $icon . ' ' . $title . '</a></li>';
+    $menuHtml .= '<li class="nav-item">'
+        . '<a class="nav-link ' . $active . '" aria-current="page" href="' . $url . '?' . $queryString . '" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="' . $title . '">' . $icon . ' ' . $title . '</a>'
+        . '</li>';
 }
 $menuHtml .= '</ul>';
 ?>
@@ -131,7 +138,11 @@ $menuHtml .= '</ul>';
     <script>
         (() => {
             "use strict"
+            // tooltip
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
+            // theme
             const getStoredTheme = () => localStorage.getItem("theme")
             const setStoredTheme = theme => localStorage.setItem("theme", theme)
 

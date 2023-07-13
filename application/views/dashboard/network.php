@@ -1,17 +1,6 @@
-<!-- <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script> -->
-<!-- <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script> -->
-<!-- <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script> -->
-<!-- <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet"> -->
-<!-- <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet"> -->
-
-<!-- 3D Pie -->
-<!-- <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-base.min.js"></script> -->
-<!-- <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-core.min.js"></script> -->
-<!-- <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-bundle.min.js"></script> -->
-<script src="<?= base_url('assets/js/anychart/anychart_base.min.js') ?>"></script>
+<script src="<?= base_url('assets/anychart/anychart_base.min.js') ?>"></script>
 <!-- Include the data adapter -->
-<script src="<?= base_url('assets/js/anychart/anychart_data_adapter.min.js') ?>"></script>
-<!-- <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-data-adapter.min.js"></script> -->
+<script src="<?= base_url('assets/anychart/anychart_data_adapter.min.js') ?>"></script>
 
 <style type="text/css">
     #pieChartNetwork,
@@ -80,7 +69,8 @@
 
         anychart.data.loadJsonFile('<?= site_url('/programkerja?type=Network') ?>', function(data) {
             // create pie chart with passed data
-            let pieChart = anychart.pie3d(data).container(idElement).background(background).title({
+            let pieChart = anychart.pie3d(data);
+            pieChart.container(idElement).background(background).title({
                 enabled: true,
                 text: title,
                 hAlign: "center",
