@@ -8,9 +8,10 @@
 
 <div class="card mb-3">
     <div class="card-body">
-        <button class="btn btn-outline-success" onclick="tambah_produk()"><i class="fas fa-fw fa-plus-circle"></i> Tambah</button>
-        <button class="btn btn-outline-secondary" onclick="reload_table()"><i class="fas fa-fw fa-sync"></i> Segarkan</button>
-        <button class="btn btn-outline-danger" onclick="bulk_delete()"><i class="fas fa-fw fa-trash"></i> Hapus Semua</button>
+        <button class="btn btn-outline-success" onclick="tambah_data()"><i class="bi bi-plus-circle"></i> Tambah</button>
+        <button class="btn btn-outline-secondary" onclick="reload_table()"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
+        <button class="btn btn-outline-danger" onclick="bulk_delete()"><i class="bi bi-trash"></i> Hapus Semua</button>
+        <button class="btn btn-outline-info" onclick="import()"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
 
         <hr />
 
@@ -91,7 +92,7 @@
 
     });
 
-    function tambah_produk() {
+    function tambah_data() {
         save_method = 'add';
         $('#form')[0].reset(); // reset form on modals
         $('.form-group').removeClass('has-error'); // clear error class
@@ -100,7 +101,7 @@
         $('.modal-title').text('Tambah Produk'); // Set Title to Bootstrap modal title
     }
 
-    function ubah_produk(id) {
+    function ubah_data(id) {
         save_method = 'update';
         $('#form')[0].reset(); // reset form on modals
         $('.form-group').removeClass('has-error'); // clear error class
@@ -170,7 +171,7 @@
         });
     }
 
-    function hapus_produk(id) {
+    function hapus_data(id) {
         if (confirm('Are you sure delete this data?')) {
             // ajax delete data to database
             $.ajax({
