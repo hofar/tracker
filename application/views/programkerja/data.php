@@ -8,12 +8,22 @@
 
 <div class="card mb-3">
     <div class="card-body">
-        <button class="btn btn-outline-success" onclick="tambah_data()"><i class="bi bi-plus-circle"></i> Tambah</button>
-        <button class="btn btn-outline-secondary" onclick="reload_table()"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
-        <button class="btn btn-outline-danger" onclick="bulk_delete()"><i class="bi bi-trash"></i> Hapus Semua</button>
-        <button class="btn btn-outline-info" onclick="import_excel()"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
+        <button type="button" class="btn btn-outline-success" onclick="tambah_data()"><i class="bi bi-plus-circle"></i> Tambah</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="reload_table()"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
+        <button type="button" class="btn btn-outline-danger" onclick="bulk_delete()"><i class="bi bi-trash"></i> Hapus Semua</button>
+        <button type="button" class="btn btn-outline-info" onclick="import_excel()"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
 
         <hr />
+
+        <?php
+        if ($this->session->flashdata('status')) {
+        ?>
+            <div class="alert alert-info mb-4">
+                <?= $this->session->flashdata('status'); ?>
+            </div>
+        <?php
+        }
+        ?>
 
         <h5>Tabel</h5>
         <div class="table-responsive">
@@ -97,7 +107,7 @@
         $('#form')[0].reset(); // reset form on modals
         $('.form-group').removeClass('has-error'); // clear error class
         $('.help-block').empty(); // clear error string
-        $('#modal_form').modal('show'); // show bootstrap modal
+        $('#modalCrudData').modal('show'); // show bootstrap modal
         $('.modal-title').text('Tambah Produk'); // Set Title to Bootstrap modal title
     }
 
@@ -116,7 +126,7 @@
                 $('[name="id"]').val(data.id);
                 $('[name="nama"]').val(data.nama);
                 $('[name="harga"]').val(data.harga);
-                $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
+                $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
                 $('.modal-title').text('Ubah Produk'); // Set title to Bootstrap modal title
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -152,7 +162,7 @@
             success: function(data) {
                 if (data.status) //if success close modal and reload ajax table
                 {
-                    $('#modal_form').modal('hide');
+                    $('#modalCrudData').modal('hide');
                     reload_table();
                 } else {
                     for (var i = 0; i < data.inputerror.length; i++) {
@@ -180,7 +190,7 @@
                 dataType: "JSON",
                 success: function(data) {
                     //if success reload ajax table
-                    $('#modal_form').modal('hide');
+                    $('#modalCrudData').modal('hide');
                     reload_table();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -221,12 +231,17 @@
         }
     }
 
-    function import_excel() {}
+    function import_excel() {
+        $('#form')[0].reset(); // reset form on modals
+        $('.form-group').removeClass('has-error'); // clear error class
+        $('.help-block').empty(); // clear error string
+        $('#importExcelModal').modal('show');
+    }
 </script>
 
 <!-- Bootstrap modal -->
 <!-- pop up data -->
-<div class="modal fade" id="modal_form" tabindex="-1" role="dialog">
+<div class="modal fade" id="modalCrudData" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -273,5 +288,32 @@
 </div>
 
 <!-- pop up import -->
+<div class="modal fade" id="importExcelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="importExcelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <!-- import_form.php -->
+        <form method="post" action="<?= base_url('import/do_import'); ?>" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="importExcelModalLabel">Import Excel</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info mb-4">
+                        <p>Berikut adalah template file Excel yang bisa anda download sebelum anda melakukan import.</p>
+                        <a href="<?= site_url('programkerja/download_template') ?>" class="btn btn-outline-primary">
+                            Download Template
+                        </a>
+                    </div>
 
+                    <label class="form-label" for="excel_file">Upload</label>
+                    <input type="file" class="form-control" id="excel_file" name="excel_file">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- End Bootstrap modal -->

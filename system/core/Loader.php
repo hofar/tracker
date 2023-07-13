@@ -130,6 +130,8 @@ class CI_Loader
 	public $lang;
 	public $dbforge;
 	public $dbutil;
+	public $upload;
+	public $security;
 	public $ProgramKerja_model;
 
 	/**

@@ -102,4 +102,9 @@ class ProgramKerja_model extends CI_Model
         $query = $this->db->get($this->table);
         return $query->result();
     }
+
+    public function insert_batch($data)
+    {
+        $this->db->insert_batch($this->table, $data);
+    }
 }

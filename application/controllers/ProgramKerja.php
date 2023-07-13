@@ -48,7 +48,7 @@ class ProgramKerja extends CI_Controller
         $data = array(
             "title" => "Tracker Graph",
             "metadesc" => "Sistem Informasi Grafik Jaringan dan Aplikasi",
-            "content" => $this->load->view("programkerja/input", "", TRUE)
+            "content" => $this->load->view("programkerja/data", "", TRUE)
         );
 
         $this->parser->parse("template", $data);
@@ -162,6 +162,30 @@ class ProgramKerja extends CI_Controller
         if ($data['status'] === false) {
             echo json_encode($data);
             exit();
+        }
+    }
+
+    public function download_template()
+    {
+        $templatePath = './database/template_import_excel.xlsx'; // Path menuju file format Excel
+
+        // Cek apakah file format Excel tersedia
+        if (file_exists($templatePath)) {
+            // Tentukan header response
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="format_template.xlsx"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($templatePath));
+
+            // Baca file format Excel dan kirimkan sebagai respons ke klien
+            readfile($templatePath);
+            exit;
+        } else {
+            // Tangani jika file format Excel tidak ditemukan
+            echo "File format Excel tidak tersedia.";
         }
     }
 }

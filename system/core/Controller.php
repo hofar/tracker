@@ -76,17 +76,18 @@ class CI_Controller
 	public $uri;
 	public $input;
 	public $html;
-	public $ProgramKerja_model;
 	public $database;
 	public $dbutil;
 	public $dbforge;
 	public $lang;
+	public $upload;
+	public $security;
+	public $ProgramKerja_model;
 	private $benchmark;
 	private $hooks;
 	private $log;
 	private $utf8;
 	private $router;
-	private $security;
 
 	/**
 	 * Class constructor
