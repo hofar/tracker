@@ -19,7 +19,7 @@
         if ($this->session->flashdata('status')) {
         ?>
             <div class="alert alert-info mb-4">
-                <?= $this->session->flashdata('status'); ?>
+                <?= str_replace('<p>', '<p class="mb-0"><i class="bi bi-info-square"></i> ', $this->session->flashdata('status')); ?>
             </div>
         <?php
         }
