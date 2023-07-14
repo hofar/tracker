@@ -31,15 +31,23 @@
                 <thead>
                     <tr>
                         <th scope="col"><input type="checkbox" id="check-all"></th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Value</th>
+                        <th scope="col">Sasaran Program Kerja</th>
+                        <th scope="col">Persentase (%)</th>
                         <th scope="col">Type</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Keterangan</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -127,6 +135,10 @@
                 $('[name="name"]').val(data.name);
                 $('[name="value"]').val(data.value);
                 $('[name="type"]').val(data.type);
+                $('[name="status"]').val(data.status);
+                $('[name="start_date"]').val(data.start_date);
+                $('[name="end_date"]').val(data.end_date);
+                $('[name="keterangan"]').val(data.keterangan);
                 $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
                 $('.modal-title').text('Ubah Produk'); // Set title to Bootstrap modal title
             },
@@ -253,28 +265,61 @@
                 <form id="form">
                     <input type="hidden" value="" name="id" />
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="name">Name</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 col-form-label" for="name">Name</label>
+                        <div class="col-sm">
                             <input id="name" name="name" placeholder="Name" class="form-control" type="text" maxlength="100" min="3">
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="value">Value</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-3 col-form-label" for="value">Value</label>
+                        <div class="col-sm">
                             <input id="value" name="value" placeholder="Value" class="form-control" type="number" max="100" min="0">
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="type">Type</label>
-                        <div class="col-sm-10">
-                            <!-- <input id="type" name="type" placeholder="Type" class="form-control" type="number"> -->
+                        <label class="col-sm-3 col-form-label" for="type">Type</label>
+                        <div class="col-sm">
                             <select name="type" id="type" class="form-select">
                                 <option value="">-- Pilih --</option>
                                 <option value="Network">Network</option>
                                 <option value="Aplikasi">Aplikasi</option>
                             </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="status">Status</label>
+                        <div class="col-sm">
+                            <select name="status" id="status" class="form-select">
+                                <option value="">-- Pilih --</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Complate">Complate</option>
+                                <option value="Not Started">Not Started</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="start_date">Start Date</label>
+                        <div class="col-sm">
+                            <input id="start_date" name="start_date" placeholder="Start Date" class="form-control" type="datetime-local">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="end_date">End Date</label>
+                        <div class="col-sm">
+                            <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
+                        <div class="col-sm">
+                            <!-- <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local"> -->
+                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control"></textarea>
                             <span class="help-block"></span>
                         </div>
                     </div>

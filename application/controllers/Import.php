@@ -60,13 +60,17 @@ class Import extends CI_Controller
                 $data_dump["status"] = "Tidak ada data";
             } else {
                 // Loop melalui baris dan lakukan pemrosesan
-                foreach ($rows as $row) {
+                foreach ($rows as $col) {
                     // Ambil nilai dari setiap kolom dan lakukan pemrosesan sesuai kebutuhan
                     $items = [];
 
-                    $items["name"] = $row[0];
-                    $items["value"] = $row[1];
-                    $items["type"] = $row[2];
+                    $items["name"] = $col[0];
+                    $items["value"] = $col[1];
+                    $items["type"] = $col[2];
+                    $items["status"] = $col[3];
+                    $items["start_date"] = $col[4];
+                    $items["end_date"] = $col[5];
+                    $items["keterangan"] = $col[6];
                     // ...
 
                     $data_dump["data"][] = $items;

@@ -42,7 +42,7 @@
 <script>
     anychart.onDocumentReady(function() {
         let theme = "<?= $this->input->get("theme") ?>";
-        let title = "Aplikasi";
+        let title = "Meningkatkan Keamanan, Monitoring, Komunikasi dan Koordinasi Operasional";
         let idElement = "pieChartAplikasi";
         let background = {
             fill: {

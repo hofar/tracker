@@ -62,16 +62,15 @@ class ProgramKerja extends CI_Controller
         foreach ($list as $item) {
             $no++;
             $row = array();
-            $row[] = '<input type="checkbox" class="data-check" value="' . $item->id . '">';
+            $row[] = checkbox($item->id);
             $row[] = $item->name;
             $row[] = number_format($item->value, 0, '', '');
             $row[] = $item->type;
-
-            //add html for action
-            $row[] = '<div class="btn-group" role="group" aria-label="Group action">'
-                . '<a href="#" title="Edit" onclick="ubah_data(' . $item->id . ')" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i></i></a>'
-                . '<a href="#" title="Hapus" onclick="hapus_data(' . $item->id . ')" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>'
-                . '</div>';
+            $row[] = badge_type($item->status);
+            $row[] = custom_date($item->start_date);
+            $row[] = custom_date($item->end_date);
+            $row[] = textarea($item->keterangan);
+            $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;
         }
@@ -100,7 +99,11 @@ class ProgramKerja extends CI_Controller
         $data = array(
             'name' => $this->input->post('name'),
             'value' => $this->input->post('value'),
-            'type' => $this->input->post('type')
+            'type' => $this->input->post('type'),
+            'status' => $this->input->post('status'),
+            'start_date' => $this->input->post('start_date'),
+            'end_date' => $this->input->post('end_date'),
+            'keterangan' => $this->input->post('keterangan'),
         );
 
         $insert = $this->ProgramKerja_model->save($data);
@@ -156,6 +159,30 @@ class ProgramKerja extends CI_Controller
         if ($this->input->post('type') == '') {
             $data['inputerror'][] = 'type';
             $data['error_string'][] = 'Type tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('status') == '') {
+            $data['inputerror'][] = 'status';
+            $data['error_string'][] = 'Status tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('start_date') == '') {
+            $data['inputerror'][] = 'start_date';
+            $data['error_string'][] = 'Start Date tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('end_date') == '') {
+            $data['inputerror'][] = 'end_date';
+            $data['error_string'][] = 'End Date tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('keterangan') == '') {
+            $data['inputerror'][] = 'keterangan';
+            $data['error_string'][] = 'Keterangan tidak boleh kosong';
             $data['status'] = false;
         }
 

@@ -42,7 +42,7 @@
 <script>
     anychart.onDocumentReady(function() {
         let theme = "<?= $this->input->get("theme") ?>";
-        let title = "Network";
+        let title = "Tersedianya Infrastruktur Jaringan dan Komunikasi Serta Kelengkapan Office Automation";
         let idElement = "pieChartNetwork";
         let background = {
             fill: {
