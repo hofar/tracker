@@ -1288,7 +1288,7 @@ class CI_Loader
 	 * Get a reference to a specific library or model.
 	 *
 	 * @param 	string	$component	Component name
-	 * @return	bool
+	 * @return	object|bool
 	 */
 	protected function &_ci_get_component($component)
 	{
