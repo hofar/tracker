@@ -124,8 +124,9 @@
             dataType: "JSON",
             success: function(data) {
                 $('[name="id"]').val(data.id);
-                $('[name="nama"]').val(data.nama);
-                $('[name="harga"]').val(data.harga);
+                $('[name="name"]').val(data.name);
+                $('[name="value"]').val(data.value);
+                $('[name="type"]').val(data.type);
                 $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
                 $('.modal-title').text('Ubah Produk'); // Set title to Bootstrap modal title
             },
