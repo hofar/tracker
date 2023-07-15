@@ -116,7 +116,7 @@
         $('.form-group').removeClass('has-error'); // clear error class
         $('.help-block').empty(); // clear error string
         $('#modalCrudData').modal('show'); // show bootstrap modal
-        $('.modal-title').text('Tambah Produk'); // Set Title to Bootstrap modal title
+        $('.modal-title').text('Tambah Data'); // Set Title to Bootstrap modal title
     }
 
     function ubah_data(id) {
@@ -140,7 +140,7 @@
                 $('[name="end_date"]').val(data.end_date);
                 $('[name="keterangan"]').val(data.keterangan);
                 $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
-                $('.modal-title').text('Ubah Produk'); // Set title to Bootstrap modal title
+                $('.modal-title').text('Ubah Data'); // Set title to Bootstrap modal title
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert('Error get data from ajax');

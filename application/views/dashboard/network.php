@@ -107,7 +107,7 @@
             lineChart.tooltip().titleFormat("{%value}");
 
             let series = lineChart.line(data).stroke({
-                color: "#aaa",
+                color: "#ff0000",
                 dash: "4 3",
                 thickness: 3
             }).hovered({

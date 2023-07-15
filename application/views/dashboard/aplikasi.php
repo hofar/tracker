@@ -69,7 +69,8 @@
 
         anychart.data.loadJsonFile('<?= site_url('/programkerja?type=Aplikasi') ?>', function(data) {
             // create pie chart with passed data
-            let pieChart = anychart.pie3d(data).container(idElement).background(background).title({
+            let pieChart = anychart.pie3d(data);
+            pieChart.container(idElement).background(background).title({
                 enabled: true,
                 text: title,
                 hAlign: "center",
@@ -106,7 +107,7 @@
             lineChart.tooltip().titleFormat("{%value}");
 
             let series = lineChart.line(data).stroke({
-                color: "#aaa",
+                color: "#ff0000",
                 dash: "4 3",
                 thickness: 3
             }).hovered({
