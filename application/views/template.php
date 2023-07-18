@@ -22,7 +22,7 @@ $menuItems = array(
         "icon" => '<i class="bi bi-window-desktop"></i>',
     ),
     array(
-        "title" => "Data",
+        "title" => "Master Data",
         "url" => "programkerja/data",
         "icon" => '<i class="bi bi-card-list"></i>',
     ),
