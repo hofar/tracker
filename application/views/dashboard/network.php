@@ -68,7 +68,7 @@
         });
         // ----------
 
-        anychart.data.loadJsonFile('<?= site_url('/programkerja?type=Network') ?>', function(data) {
+        anychart.data.loadJsonFile('<?= site_url('/ProgramKerja?type=Network') ?>', function(data) {
             // create pie chart with passed data
             let pieChart = anychart.pie3d(data);
             pieChart.container(pieChartNetwork).background(background).title({

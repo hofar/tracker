@@ -68,7 +68,7 @@
         });
         // ----------
 
-        anychart.data.loadJsonFile('<?= site_url('/programkerja?type=Aplikasi') ?>', function(data) {
+        anychart.data.loadJsonFile('<?= site_url('/ProgramKerja?type=Aplikasi') ?>', function(data) {
             // create pie chart with passed data
             let pieChart = anychart.pie3d(data);
             pieChart.container(pieChartAplikasi).background(background).title({
