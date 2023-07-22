@@ -101,8 +101,8 @@
         $("#bulk_delete").click(function() {
             bulk_delete();
         });
-        $("#import_excel").click(function() {
-            import_excel();
+        $("#btnSave").click(function() {
+            save();
         });
     });
 
@@ -278,7 +278,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave" onclick="save()">Simpan</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Simpan</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div><!-- /.modal-content -->
