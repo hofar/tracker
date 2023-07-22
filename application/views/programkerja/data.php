@@ -8,10 +8,10 @@
 
 <div class="card mb-3">
     <div class="card-body">
-        <button type="button" class="btn btn-outline-success" onclick="tambah_data()"><i class="bi bi-plus-circle"></i> Tambah</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="reload_table()"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
-        <button type="button" class="btn btn-outline-danger" onclick="bulk_delete()"><i class="bi bi-trash"></i> Hapus Semua</button>
-        <button type="button" class="btn btn-outline-info" onclick="import_excel()"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
+        <button type="button" class="btn btn-outline-success" id="tambah_data"><i class="bi bi-plus-circle"></i> Tambah</button>
+        <button type="button" class="btn btn-outline-secondary" id="reload_table"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
+        <button type="button" class="btn btn-outline-danger" id="bulk_delete"><i class="bi bi-trash"></i> Hapus Semua</button>
+        <button type="button" class="btn btn-outline-info" id="import_excel"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
 
         <hr />
 
@@ -74,7 +74,7 @@
 
             // Load data for the table's content from an Ajax source
             "ajax": {
-                "url": "<?= site_url('programkerja/ajax_list') ?>",
+                "url": "<?= site_url('ProgramKerja/ajax_list') ?>",
                 "type": "POST"
             },
             //Set column definition initialisation properties.
@@ -87,6 +87,19 @@
                     "orderable": false, //set not orderable
                 },
             ],
+        });
+
+        // Mendengarkan event draw.dt untuk mendeteksi ketika DataTables selesai di-render
+        table.on('draw.dt', function() {
+            console.log('DataTables selesai di-render.');
+            $('.btn-edit').on('click', (event) => {
+                let data = $(event.currentTarget).data();
+                ubah_data(data.id);
+            });
+            $('.btn-hapus').on('click', (event) => {
+                let data = $(event.currentTarget).data();
+                hapus_data(data.id);
+            });
         });
 
         //set input/textarea/select event when change value, remove class error and remove text help block
@@ -108,6 +121,18 @@
             $(".data-check").prop('checked', $(this).prop('checked'));
         });
 
+        $("#tambah_data").click(function() {
+            tambah_data();
+        });
+        $("#reload_table").click(function() {
+            reload_table();
+        });
+        $("#bulk_delete").click(function() {
+            bulk_delete();
+        });
+        $("#import_excel").click(function() {
+            import_excel();
+        });
     });
 
     function tambah_data() {
@@ -127,7 +152,7 @@
 
         //Ajax Load data from ajax
         $.ajax({
-            url: "<?php echo site_url('programkerja/ajax_edit') ?>/" + id,
+            url: "<?php echo site_url('ProgramKerja/ajax_edit') ?>/" + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
@@ -158,9 +183,9 @@
         var url;
 
         if (save_method === 'add') {
-            url = "<?php echo site_url('programkerja/ajax_add') ?>";
+            url = "<?php echo site_url('ProgramKerja/ajax_add') ?>";
         } else {
-            url = "<?php echo site_url('programkerja/ajax_update') ?>";
+            url = "<?php echo site_url('ProgramKerja/ajax_update') ?>";
         }
 
         // ajax adding data to database
@@ -198,7 +223,7 @@
         if (confirm('Are you sure delete this data?')) {
             // ajax delete data to database
             $.ajax({
-                url: "<?php echo site_url('programkerja/ajax_delete') ?>/" + id,
+                url: "<?php echo site_url('ProgramKerja/ajax_delete') ?>/" + id,
                 type: "POST",
                 dataType: "JSON",
                 success: function(data) {
@@ -225,7 +250,7 @@
                     data: {
                         id: list_id
                     },
-                    url: "<?php echo site_url('programkerja/ajax_bulk_delete') ?>",
+                    url: "<?php echo site_url('ProgramKerja/ajax_bulk_delete') ?>",
                     dataType: "JSON",
                     success: function(data) {
                         if (data.status) {
@@ -346,7 +371,7 @@
                 <div class="modal-body">
                     <div class="alert alert-info mb-4">
                         <p>Berikut adalah template file Excel yang bisa anda download sebelum anda melakukan import.</p>
-                        <a href="<?= site_url('programkerja/download_template') ?>" class="btn btn-outline-primary">
+                        <a href="<?= site_url('ProgramKerja/download_template') ?>" class="btn btn-outline-primary">
                             Download Template
                         </a>
                     </div>

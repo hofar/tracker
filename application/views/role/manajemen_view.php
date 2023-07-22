@@ -8,9 +8,9 @@
 
 <div class="card border-primary mb-3">
     <div class="card-body">
-        <button type="button" class="btn btn-outline-success" onclick="tambah_data()"><i class="bi bi-plus-circle"></i> Tambah</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="reload_table()"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
-        <button type="button" class="btn btn-outline-danger" onclick="bulk_delete()"><i class="bi bi-trash"></i> Hapus Semua</button>
+        <button type="button" class="btn btn-outline-success" id="tambah_data"><i class="bi bi-plus-circle"></i> Tambah</button>
+        <button type="button" class="btn btn-outline-secondary" id="reload_table"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
+        <button type="button" class="btn btn-outline-danger" id="bulk_delete"><i class="bi bi-trash"></i> Hapus Semua</button>
 
         <hr />
 
@@ -60,6 +60,19 @@
             ],
         });
 
+        // Mendengarkan event draw.dt untuk mendeteksi ketika DataTables selesai di-render
+        table.on('draw.dt', function() {
+            console.log('DataTables selesai di-render.');
+            $('.btn-edit').on('click', (event) => {
+                let data = $(event.currentTarget).data();
+                ubah_data(data.id);
+            });
+            $('.btn-hapus').on('click', (event) => {
+                let data = $(event.currentTarget).data();
+                hapus_data(data.id);
+            });
+        });
+
         //set input/textarea/select event when change value, remove class error and remove text help block
         $('input[type="text"]').change(function() {
             trigger_change($(this));
@@ -77,6 +90,19 @@
         //check all
         $("#check-all").click(function() {
             $(".data-check").prop('checked', $(this).prop('checked'));
+        });
+
+        $("#tambah_data").click(function() {
+            tambah_data();
+        });
+        $("#reload_table").click(function() {
+            reload_table();
+        });
+        $("#bulk_delete").click(function() {
+            bulk_delete();
+        });
+        $("#import_excel").click(function() {
+            import_excel();
         });
     });
 

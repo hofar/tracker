@@ -38,7 +38,7 @@ $menuItems = array(
     ),
     array(
         "title" => "Master Data",
-        "url" => "programkerja/data",
+        "url" => "ProgramKerja/data",
         "icon" => '<i class="bi bi-card-list"></i>',
         "access" => is_super()
     ),

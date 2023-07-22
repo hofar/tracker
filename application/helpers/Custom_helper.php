@@ -43,8 +43,8 @@ if (!function_exists('action_button')) {
     function action_button($id, $update_name, $delete_name)
     {
         return '<div class="btn-group" role="group" aria-label="Group action">'
-            . '<a href="#" title="Edit" onclick="' . $update_name . '(' . $id . ')" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i></i></a>'
-            . '<a href="#" title="Hapus" onclick="' . $delete_name . '(' . $id . ')" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>'
+            . '<a title="Edit" data-id="' . $id . '" class="btn btn-sm btn-outline-secondary btn-edit"><i class="bi bi-pencil-square"></i></i></a>'
+            . '<a title="Hapus" data-id="' . $id . '" class="btn btn-sm btn-outline-danger btn-hapus"><i class="bi bi-trash"></i></a>'
             . '</div>';
     }
 }
