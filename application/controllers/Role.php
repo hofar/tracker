@@ -21,7 +21,7 @@ class Role extends CI_Controller
         $array = array();
 
         $data = array(
-            "title" => 'App Kasir',
+            "title" => 'Tracker Graph',
             "metadesc" => 'Manajemen Role',
             "content" => $this->parser->parse('role/manajemen_view', $array, true)
         );

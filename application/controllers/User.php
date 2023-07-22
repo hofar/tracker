@@ -21,7 +21,7 @@ class User extends CI_Controller
         $array = array();
 
         $data = array(
-            "title" => 'App Kasir',
+            "title" => 'Tracker Graph',
             "metadesc" => 'Manajemen User',
             "content" => $this->parser->parse('user/manajemen_view', $array, true)
         );
