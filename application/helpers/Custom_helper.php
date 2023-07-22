@@ -76,7 +76,7 @@ if (!function_exists('custom_date')) {
 if (!function_exists('custom_function')) {
     function custom_function()
     {
-        $CI = &get_instance();
+        $CI = get_instance();
         // Sekarang Anda dapat menggunakan instance CI untuk akses ke fitur dan library CodeIgniter
         $CI->load->library('session');
         $CI->session->set_userdata('key', 'value');

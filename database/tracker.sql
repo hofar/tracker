@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2023 at 06:41 PM
+-- Generation Time: Jul 22, 2023 at 09:02 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.2.4
 
@@ -93,18 +93,16 @@ INSERT INTO `user` (`id`, `nama`, `user_id`, `gambar`, `password`, `is_active`, 
 CREATE TABLE `user_role` (
   `id` int(5) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `insert` int(1) NOT NULL DEFAULT 0,
-  `update` int(1) NOT NULL DEFAULT 0,
-  `delete` int(1) NOT NULL DEFAULT 0
+  `is_super` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user_role`
 --
 
-INSERT INTO `user_role` (`id`, `name`, `insert`, `update`, `delete`) VALUES
-(1, 'Administrator', 1, 1, 1),
-(2, 'User', 1, 0, 0);
+INSERT INTO `user_role` (`id`, `name`, `is_super`) VALUES
+(1, 'Administrator', 1),
+(2, 'User', 0);
 
 --
 -- Indexes for dumped tables

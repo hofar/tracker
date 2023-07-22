@@ -9,25 +9,53 @@ $menuItems = array(
     array(
         "title" => "Home",
         "url" => "",
-        "icon" => '<i class="bi bi-house"></i>', // Bootstrap Icon
+        "icon" => '<i class="bi bi-house"></i>', // Bootstrap Icon,
+        "access" => is_user_id()
     ),
     array(
         "title" => "Network",
         "url" => "dashboard/network",
         "icon" => '<i class="bi bi-hdd-network"></i>',
+        "access" => is_user_id()
     ),
     array(
         "title" => "Aplikasi",
         "url" => "dashboard/aplikasi",
         "icon" => '<i class="bi bi-window-desktop"></i>',
+        "access" => is_user_id()
+    ),
+    array(
+        "title" => "Master User",
+        "url" => "user/manajemen",
+        "icon" => '<i class="bi bi-people"></i>',
+        "access" => is_super()
+    ),
+    array(
+        "title" => "Role",
+        "url" => "role/manajemen",
+        "icon" => '<i class="bi bi-view-list"></i>',
+        "access" => is_super()
     ),
     array(
         "title" => "Master Data",
         "url" => "programkerja/data",
         "icon" => '<i class="bi bi-card-list"></i>',
+        "access" => is_super()
+    ),
+    array(
+        "title" => "Logout",
+        "url" => "auth/logout",
+        "icon" => '<i class="bi bi-box-arrow-right"></i>',
+        "access" => is_user_id()
     ),
     // Add more menu items with their respective URLs
 );
+
+// Mendapatkan URL saat ini
+$currentUrl = $_SERVER['REQUEST_URI'];
+
+// Memisahkan path dari URL saat ini dan menghilangkan tanda "?"
+$currentUrl = explode('?', parse_url($currentUrl, PHP_URL_PATH))[0];
 
 $menuHtml = '<ul class="navbar-nav">';
 foreach ($menuItems as $menuItem) {
@@ -44,14 +72,20 @@ foreach ($menuItems as $menuItem) {
         $url = base_url();
     }
 
+    // Memisahkan path dari URL saat ini
+    $url = parse_url($url, PHP_URL_PATH);
+
     if (count($arrUrl) > 0) {
         $lastValue = end($arrUrl);
     }
 
-    $active = ($this->uri->segment(2) == $lastValue) ? "active" : "";
-    $menuHtml .= '<li class="nav-item">'
-        . '<a class="nav-link ' . $active . '" aria-current="page" href="' . $url . '?' . $queryString . '" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="' . $title . '">' . $icon . ' ' . $title . '</a>'
-        . '</li>';
+    // Jika URL saat ini cocok dengan path di $menuItems
+    $active = (trim($url, '/') === trim($currentUrl, '/')) ? "active" : "";
+    if ($menuItem['access']) {
+        $menuHtml .= '<li class="nav-item">'
+            . '<a class="nav-link ' . $active . '" aria-current="page" href="' . $url . '?' . $queryString . '" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="' . $title . '">' . $icon . ' ' . $title . '</a>'
+            . '</li>';
+    }
 }
 $menuHtml .= '</ul>';
 ?>

@@ -17,7 +17,7 @@
             <div class="card-body">
                 <h2 class="card-title">Pie Chart - Aplikasi</h2>
 
-                <div id="pieChartAplikasi"></div>
+                <div id="pieChartAplikasi"><span class="loading">Loading...</span></div>
             </div>
             <div class="card-footer">
                 <small class="text-body-secondary">Grafik berikut berdasarkan aktivitas Aplikasi.</small>
@@ -30,7 +30,7 @@
             <div class="card-body">
                 <h2 class="card-title">Line Chart - Aplikasi</h2>
 
-                <div id="lineChartAplikasi"></div>
+                <div id="lineChartAplikasi"><span class="loading">Loading...</span></div>
             </div>
             <div class="card-footer">
                 <small class="text-body-secondary">Grafik berikut berdasarkan aktivitas Aplikasi.</small>
@@ -43,7 +43,8 @@
     anychart.onDocumentReady(function() {
         let theme = "<?= $this->input->get("theme") ?>";
         let title = "Meningkatkan Keamanan, Monitoring, Komunikasi dan Koordinasi Operasional";
-        let idElement = "pieChartAplikasi";
+        const pieChartAplikasi = document.getElementById("pieChartAplikasi");
+        const lineChartAplikasi = document.getElementById("lineChartAplikasi");
         let background = {
             fill: {
                 keys: ["#fff", "#fff"],
@@ -70,17 +71,19 @@
         anychart.data.loadJsonFile('<?= site_url('/programkerja?type=Aplikasi') ?>', function(data) {
             // create pie chart with passed data
             let pieChart = anychart.pie3d(data);
-            pieChart.container(idElement).background(background).title({
+            pieChart.container(pieChartAplikasi).background(background).title({
                 enabled: true,
                 text: title,
                 hAlign: "center",
                 fontColor: colorCustom,
             }).radius("50%").draw(true);
+            pieChart.listen("chartDraw", () => {
+                pieChartAplikasi.querySelector(".loading").style.display = "none";
+            });
             // ----------
 
             // line chart
-            let idElementB = "lineChartAplikasi";
-            let lineChart = anychart.line().container(idElementB).background(background).xGrid({
+            let lineChart = anychart.line().container(lineChartAplikasi).background(background).xGrid({
                 enabled: true,
                 stroke: {
                     color: colorCustom,
@@ -105,6 +108,9 @@
                 }
             }).draw(true);
             lineChart.tooltip().titleFormat("{%value}");
+            lineChart.listen("chartDraw", () => {
+                lineChartAplikasi.querySelector(".loading").style.display = "none";
+            });
 
             let series = lineChart.line(data).stroke({
                 color: "#ff0000",

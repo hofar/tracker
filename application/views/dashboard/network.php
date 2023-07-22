@@ -17,7 +17,7 @@
             <div class="card-body">
                 <h2 class="card-title">Pie Chart - Network</h2>
 
-                <div id="pieChartNetwork"></div>
+                <div id="pieChartNetwork"><span class="loading">Loading...</span></div>
             </div>
             <div class="card-footer">
                 <small class="text-body-secondary">Grafik berikut berdasarkan aktivitas Jaringan.</small>
@@ -30,7 +30,7 @@
             <div class="card-body">
                 <h2 class="card-title">Line Chart - Network</h2>
 
-                <div id="lineChartNetwork"></div>
+                <div id="lineChartNetwork"><span class="loading">Loading...</span></div>
             </div>
             <div class="card-footer">
                 <small class="text-body-secondary">Grafik berikut berdasarkan aktivitas Jaringan.</small>
@@ -43,7 +43,8 @@
     anychart.onDocumentReady(function() {
         let theme = "<?= $this->input->get("theme") ?>";
         let title = "Tersedianya Infrastruktur Jaringan dan Komunikasi Serta Kelengkapan Office Automation";
-        let idElement = "pieChartNetwork";
+        let pieChartNetwork = document.getElementById("pieChartNetwork");
+        let lineChartNetwork = document.getElementById("lineChartNetwork");
         let background = {
             fill: {
                 keys: ["#fff", "#fff"],
@@ -70,17 +71,19 @@
         anychart.data.loadJsonFile('<?= site_url('/programkerja?type=Network') ?>', function(data) {
             // create pie chart with passed data
             let pieChart = anychart.pie3d(data);
-            pieChart.container(idElement).background(background).title({
+            pieChart.container(pieChartNetwork).background(background).title({
                 enabled: true,
                 text: title,
                 hAlign: "center",
                 fontColor: colorCustom,
             }).radius("50%").draw(true);
+            pieChart.listen("chartDraw", () => {
+                pieChartNetwork.querySelector(".loading").style.display = "none";
+            });
             // ----------
 
             // line chart
-            let idElementB = "lineChartNetwork";
-            let lineChart = anychart.line().container(idElementB).background(background).xGrid({
+            let lineChart = anychart.line().container(lineChartNetwork).background(background).xGrid({
                 enabled: true,
                 stroke: {
                     color: colorCustom,
@@ -105,6 +108,9 @@
                 }
             }).draw(true);
             lineChart.tooltip().titleFormat("{%value}");
+            lineChart.listen("chartDraw", () => {
+                lineChartNetwork.querySelector(".loading").style.display = "none";
+            });
 
             let series = lineChart.line(data).stroke({
                 color: "#ff0000",
@@ -152,5 +158,10 @@
             xAxisLabels.wordBreak("break-all");
             // ----------
         });
+
+        function resetGraph() {
+            document.getElementById(pieChartNetwork).innerHTML = "";
+            document.getElementById(lineChartNetwork).innerHTML = "";
+        }
     });
 </script>
