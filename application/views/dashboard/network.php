@@ -43,8 +43,8 @@
     anychart.onDocumentReady(function() {
         let theme = "<?= $this->input->get("theme") ?>";
         let title = "Tersedianya Infrastruktur Jaringan dan Komunikasi Serta Kelengkapan Office Automation";
-        let pieChartNetwork = document.getElementById("pieChartNetwork");
-        let lineChartNetwork = document.getElementById("lineChartNetwork");
+        const pieChartNetwork = document.getElementById("pieChartNetwork");
+        const lineChartNetwork = document.getElementById("lineChartNetwork");
         let background = {
             fill: {
                 keys: ["#fff", "#fff"],
@@ -76,8 +76,16 @@
                 text: title,
                 hAlign: "center",
                 fontColor: colorCustom,
-            }).radius("50%").draw(true);
-            pieChart.listen("chartDraw", () => {
+            }).labels({
+                useHtml: true,
+                position: "outside",
+                fontColor: colorCustom,
+                format: "<span style='text-decoration: underline; font-weight: 900;'>{%value}%</span><br/>{%info}"
+            }).connectorStroke({
+                color: colorCustom,
+                thickness: 2,
+                dash: "2 2"
+            }).draw(true).listen("chartDraw", () => {
                 pieChartNetwork.querySelector(".loading").style.display = "none";
             });
             // ----------
@@ -106,9 +114,10 @@
                     height: 30,
                     vAlign: "middle"
                 }
-            }).draw(true);
-            lineChart.tooltip().titleFormat("{%value}");
-            lineChart.listen("chartDraw", () => {
+            }).tooltip({
+                titleFormat: "{%value}"
+            });
+            lineChart.draw(true).listen("chartDraw", () => {
                 lineChartNetwork.querySelector(".loading").style.display = "none";
             });
 
@@ -145,7 +154,11 @@
             });
 
             let yAxisB = lineChart.yAxis().ticks(null).stroke(colorCustom).minorTicks(null);
-            yAxisB.labels().fontColor(colorCustom).fontWeight(900).format("{%value}%");
+            yAxisB.labels({
+                fontColor: colorCustom,
+                fontWeight: 900,
+                format: "{%value}%"
+            });
 
             let xAxisLabels = lineChart.xAxis().labels();
             xAxisLabels.format(function(param) {
@@ -158,10 +171,5 @@
             xAxisLabels.wordBreak("break-all");
             // ----------
         });
-
-        function resetGraph() {
-            document.getElementById(pieChartNetwork).innerHTML = "";
-            document.getElementById(lineChartNetwork).innerHTML = "";
-        }
     });
 </script>

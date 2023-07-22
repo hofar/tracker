@@ -76,8 +76,16 @@
                 text: title,
                 hAlign: "center",
                 fontColor: colorCustom,
-            }).radius("50%").draw(true);
-            pieChart.listen("chartDraw", () => {
+            }).labels({
+                useHtml: true,
+                position: "outside",
+                fontColor: colorCustom,
+                format: "<span style='text-decoration: underline; font-weight: 900;'>{%value}%</span><br/>{%info}"
+            }).connectorStroke({
+                color: colorCustom,
+                thickness: 2,
+                dash: "2 2"
+            }).draw(true).listen("chartDraw", () => {
                 pieChartAplikasi.querySelector(".loading").style.display = "none";
             });
             // ----------
@@ -106,9 +114,10 @@
                     height: 30,
                     vAlign: "middle"
                 }
-            }).draw(true);
-            lineChart.tooltip().titleFormat("{%value}");
-            lineChart.listen("chartDraw", () => {
+            }).tooltip({
+                titleFormat: "{%value}"
+            });
+            lineChart.draw(true).listen("chartDraw", () => {
                 lineChartAplikasi.querySelector(".loading").style.display = "none";
             });
 
@@ -145,7 +154,11 @@
             });
 
             let yAxisB = lineChart.yAxis().ticks(null).stroke(colorCustom).minorTicks(null);
-            yAxisB.labels().fontColor(colorCustom).fontWeight(900).format("{%value}%");
+            yAxisB.labels({
+                fontColor: colorCustom,
+                fontWeight: 900,
+                format: "{%value}%"
+            });
 
             let xAxisLabels = lineChart.xAxis().labels();
             xAxisLabels.format(function(param) {

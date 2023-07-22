@@ -22,8 +22,30 @@ class ProgramKerja extends CI_Controller
             $results = $this->ProgramKerja_model->getProgramKerjaData();
         }
 
+        $data = array();
+        foreach ($results as $key => $value) {
+            $row = array();
+
+            /**
+             * id: "1",
+             * name: "Pemenuhan Kebutuhan PC, NB & Printer",
+             * value: "71",
+             * type: "Network",
+             * keterangan: null,
+             * status: "In Progress",
+             * start_date: null,
+             * end_date: null
+             */
+            $row['id'] = $value->id;
+            $row['name'] = $value->name;
+            $row['value'] = $value->value;
+            $row['info'] = $value->status;
+
+            $data[] = $row;
+        }
+
         header('Content-Type: application/json');
-        echo json_encode($results);
+        echo json_encode($data);
     }
 
     public function getDataNetwork()
