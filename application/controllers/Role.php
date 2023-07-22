@@ -73,9 +73,17 @@ class Role extends CI_Controller
     {
         $this->_validate();
 
+        $akses_super = $this->input->post('akses_super', true);
+
+        if (is_string($akses_super)) {
+            $akses_super = htmlspecialchars($akses_super);
+        } else {
+            $akses_super = '0';
+        }
+
         $data = array(
             'name' => htmlspecialchars($this->input->post('name', true)),
-            'is_super' => htmlspecialchars($this->input->post('akses_super', true)),
+            'is_super' => $akses_super,
         );
 
         $insert = $this->Role_model->save($data);
@@ -91,6 +99,8 @@ class Role extends CI_Controller
 
         if (is_string($akses_super)) {
             $akses_super = htmlspecialchars($akses_super);
+        } else {
+            $akses_super = '0';
         }
 
         $data = array(

@@ -115,10 +115,17 @@ class ProgramKerja extends CI_Controller
     public function ajax_update()
     {
         $this->_validate();
+
         $data = array(
-            'nama' => $this->input->post('nama'),
-            'harga' => $this->input->post('harga')
+            'name' => $this->input->post('name'),
+            'value' => $this->input->post('value'),
+            'type' => $this->input->post('type'),
+            'status' => $this->input->post('status'),
+            'start_date' => $this->input->post('start_date'),
+            'end_date' => $this->input->post('end_date'),
+            'keterangan' => $this->input->post('keterangan'),
         );
+
         $this->ProgramKerja_model->update(array('id' => $this->input->post('id')), $data);
         echo json_encode(array("status" => true));
     }

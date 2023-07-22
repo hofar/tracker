@@ -101,7 +101,10 @@ class User extends CI_Controller
         $data = array(
             'nama' => htmlspecialchars($this->input->post('name', true)),
             'user_id' => htmlspecialchars($this->input->post('user_id', true)),
+            'gambar' => 'default.jpg',
+            'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
             'role_id' => htmlspecialchars($this->input->post('role_select', true)),
+            'is_active' => 1
         );
 
         $update = $this->User_model->update(array('id' => $this->input->post('id')), $data);
