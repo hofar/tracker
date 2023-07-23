@@ -85,7 +85,7 @@
                 color: colorCustom,
                 thickness: 2,
                 dash: "2 2"
-            }).draw(true).listen("chartDraw", () => {
+            }).overlapMode(true).draw(true).listen("chartDraw", () => {
                 pieChartNetwork.querySelector(".loading").style.display = "none";
             });
             // ----------

@@ -9,7 +9,6 @@ class ProgramKerja extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        is_logged_in();
     }
 
     public function index()
@@ -66,6 +65,8 @@ class ProgramKerja extends CI_Controller
 
     public function data()
     {
+        is_logged_in();
+
         $array = array();
 
         $data = array(
@@ -110,6 +111,8 @@ class ProgramKerja extends CI_Controller
 
     public function ajax_edit($id)
     {
+        is_logged_in();
+
         $data = $this->ProgramKerja_model->get_by_id($id);
 
         echo json_encode($data);
@@ -117,6 +120,8 @@ class ProgramKerja extends CI_Controller
 
     public function ajax_add()
     {
+        is_logged_in();
+
         $this->_validate();
 
         $data = array(
@@ -136,6 +141,8 @@ class ProgramKerja extends CI_Controller
 
     public function ajax_update()
     {
+        is_logged_in();
+
         $this->_validate();
 
         $data = array(
@@ -154,12 +161,16 @@ class ProgramKerja extends CI_Controller
 
     public function ajax_delete($id)
     {
+        is_logged_in();
+
         $this->ProgramKerja_model->delete_by_id($id);
         echo json_encode(array("status" => true));
     }
 
     public function ajax_bulk_delete()
     {
+        is_logged_in();
+
         $list_id = $this->input->post('id');
         foreach ($list_id as $id) {
             $this->ProgramKerja_model->delete_by_id($id);
@@ -169,6 +180,8 @@ class ProgramKerja extends CI_Controller
 
     private function _validate()
     {
+        is_logged_in();
+
         $data = array();
         $data['error_string'] = array();
         $data['inputerror'] = array();
@@ -224,6 +237,8 @@ class ProgramKerja extends CI_Controller
 
     public function download_template()
     {
+        is_logged_in();
+
         $templatePath = './database/template_import_excel.xlsx'; // Path menuju file format Excel
 
         // Cek apakah file format Excel tersedia

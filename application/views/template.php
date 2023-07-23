@@ -10,19 +10,19 @@ $menuItems = array(
         "title" => "Home",
         "url" => "",
         "icon" => '<i class="bi bi-house"></i>', // Bootstrap Icon,
-        "access" => is_user_id()
+        "access" => is_public()
     ),
     array(
         "title" => "Network",
         "url" => "dashboard/network",
         "icon" => '<i class="bi bi-hdd-network"></i>',
-        "access" => is_user_id()
+        "access" => is_public()
     ),
     array(
         "title" => "Aplikasi",
         "url" => "dashboard/aplikasi",
         "icon" => '<i class="bi bi-window-desktop"></i>',
-        "access" => is_user_id()
+        "access" => is_public()
     ),
     array(
         "title" => "Master User",
@@ -41,6 +41,12 @@ $menuItems = array(
         "url" => "ProgramKerja/data",
         "icon" => '<i class="bi bi-card-list"></i>',
         "access" => is_super()
+    ),
+    array(
+        "title" => "Login",
+        "url" => "auth/index",
+        "icon" => '<i class="bi bi-box-arrow-in-right"></i>',
+        "access" => is_not_user()
     ),
     array(
         "title" => "Logout",
