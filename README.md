@@ -2,6 +2,9 @@
 
 tracker is an application built using CodeIgniter v3, PHP v8, and Bootstrap v5. The concept of this application is to display graphs based on user input data, whether through forms or by importing Excel files. Please note that this application is currently under development.
 
+## Preview
+Goto [https://hofarismail.site/tracker?theme=dark](https://hofarismail.site/tracker?theme=dark) to preview app
+
 ## Installation
 
 Use [composer](https://getcomposer.org) to install PhpSpreadsheet into your project:
