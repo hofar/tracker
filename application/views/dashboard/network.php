@@ -121,9 +121,9 @@
                 lineChartNetwork.querySelector(".loading").style.display = "none";
             });
 
-            let series = lineChart.line(data).stroke({
+            let series = lineChart.spline(data).stroke({
                 color: "#ff0000",
-                dash: "4 3",
+                // dash: "4 3",
                 thickness: 3
             }).hovered({
                 stroke: {

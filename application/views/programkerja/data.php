@@ -1,4 +1,4 @@
-<script>
+<script nonce="scriptRAnd0m">
     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.7.0.js"><\/script>');
 </script>
 
@@ -130,182 +130,185 @@
         $("#bulk_delete").click(function() {
             bulk_delete();
         });
+        $("#btnSave").click(function() {
+            save();
+        });
         $("#import_excel").click(function() {
             import_excel();
         });
 
-        // Tambahkan event listener untuk input
-        $('#value').on('keyup change', validateInput);
-    });
-
-    function tambah_data() {
-        save_method = 'add';
-        $('#form')[0].reset(); // reset form on modals
-        $('.form-group').removeClass('has-error'); // clear error class
-        $('.help-block').empty(); // clear error string
-        $('#modalCrudData').modal('show'); // show bootstrap modal
-        $('.modal-title').text('Tambah Data'); // Set Title to Bootstrap modal title
-    }
-
-    function ubah_data(id) {
-        save_method = 'update';
-        $('#form')[0].reset(); // reset form on modals
-        $('.form-group').removeClass('has-error'); // clear error class
-        $('.help-block').empty(); // clear error string
-
-        //Ajax Load data from ajax
-        $.ajax({
-            url: "<?php echo site_url('ProgramKerja/ajax_edit') ?>/" + id,
-            type: "GET",
-            dataType: "JSON",
-            success: function(data) {
-                $('[name="id"]').val(data.id);
-                $('[name="name"]').val(data.name);
-                $('[name="value"]').val(data.value);
-                $('[name="type"]').val(data.type);
-                $('[name="status"]').val(data.status);
-                $('[name="start_date"]').val(data.start_date);
-                $('[name="end_date"]').val(data.end_date);
-                $('[name="keterangan"]').val(data.keterangan);
-                $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
-                $('.modal-title').text('Ubah Data'); // Set title to Bootstrap modal title
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('Error get data from ajax');
-            }
-        });
-    }
-
-    function reload_table() {
-        table.ajax.reload(null, false); //reload datatable ajax
-    }
-
-    function save() {
-        $('#btnSave').text('Menyimpan ...'); //change button text
-        $('#btnSave').attr('disabled', true); //set button disable
-        var url;
-
-        if (save_method === 'add') {
-            url = "<?php echo site_url('ProgramKerja/ajax_add') ?>";
-        } else {
-            url = "<?php echo site_url('ProgramKerja/ajax_update') ?>";
+        function tambah_data() {
+            save_method = 'add';
+            $('#form')[0].reset(); // reset form on modals
+            $('.form-group').removeClass('has-error'); // clear error class
+            $('.help-block').empty(); // clear error string
+            $('#modalCrudData').modal('show'); // show bootstrap modal
+            $('.modal-title').text('Tambah Data'); // Set Title to Bootstrap modal title
         }
 
-        // ajax adding data to database
-        var formData = new FormData($('#form')[0]);
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function(data) {
-                if (data.status) //if success close modal and reload ajax table
-                {
-                    $('#modalCrudData').modal('hide');
-                    reload_table();
-                } else {
-                    for (var i = 0; i < data.inputerror.length; i++) {
-                        $('[name="' + data.inputerror[i] + '"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
-                        $('[name="' + data.inputerror[i] + '"]').next().text(data.error_string[i]); //select span help-block class set text error string
-                    }
-                }
-                $('#btnSave').text('Simpan'); //change button text
-                $('#btnSave').attr('disabled', false); //set button enable
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('Error adding / update data');
-                $('#btnSave').text('save'); //change button text
-                $('#btnSave').attr('disabled', false); //set button enable
-            }
-        });
-    }
+        function ubah_data(id) {
+            save_method = 'update';
+            $('#form')[0].reset(); // reset form on modals
+            $('.form-group').removeClass('has-error'); // clear error class
+            $('.help-block').empty(); // clear error string
 
-    function hapus_data(id) {
-        if (confirm('Are you sure delete this data?')) {
-            // ajax delete data to database
+            //Ajax Load data from ajax
             $.ajax({
-                url: "<?php echo site_url('ProgramKerja/ajax_delete') ?>/" + id,
-                type: "POST",
+                url: "<?php echo site_url('ProgramKerja/ajax_edit') ?>/" + id,
+                type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    //if success reload ajax table
-                    $('#modalCrudData').modal('hide');
-                    reload_table();
+                    $('[name="id"]').val(data.id);
+                    $('[name="name"]').val(data.name);
+                    $('[name="value"]').val(data.value);
+                    $('[name="type"]').val(data.type);
+                    $('[name="status"]').val(data.status);
+                    $('[name="start_date"]').val(data.start_date);
+                    $('[name="end_date"]').val(data.end_date);
+                    $('[name="keterangan"]').val(data.keterangan);
+                    $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
+                    $('.modal-title').text('Ubah Data'); // Set title to Bootstrap modal title
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error deleting data');
+                    alert('Error get data from ajax');
                 }
             });
         }
-    }
 
-    function bulk_delete() {
-        var list_id = [];
-        $(".data-check:checked").each(function() {
-            list_id.push(this.value);
-        });
-        if (list_id.length > 0) {
-            if (confirm('Are you sure delete this ' + list_id.length + ' data?')) {
+        function reload_table() {
+            table.ajax.reload(null, false); //reload datatable ajax
+        }
+
+        function save() {
+            $('#btnSave').text('Menyimpan ...'); //change button text
+            $('#btnSave').attr('disabled', true); //set button disable
+            var url;
+
+            if (save_method === 'add') {
+                url = "<?php echo site_url('ProgramKerja/ajax_add') ?>";
+            } else {
+                url = "<?php echo site_url('ProgramKerja/ajax_update') ?>";
+            }
+
+            // ajax adding data to database
+            var formData = new FormData($('#form')[0]);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function(data) {
+                    if (data.status) //if success close modal and reload ajax table
+                    {
+                        $('#modalCrudData').modal('hide');
+                        reload_table();
+                    } else {
+                        for (var i = 0; i < data.inputerror.length; i++) {
+                            $('[name="' + data.inputerror[i] + '"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                            $('[name="' + data.inputerror[i] + '"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                        }
+                    }
+                    $('#btnSave').text('Simpan'); //change button text
+                    $('#btnSave').attr('disabled', false); //set button enable
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').attr('disabled', false); //set button enable
+                }
+            });
+        }
+
+        function hapus_data(id) {
+            if (confirm('Are you sure delete this data?')) {
+                // ajax delete data to database
                 $.ajax({
+                    url: "<?php echo site_url('ProgramKerja/ajax_delete') ?>/" + id,
                     type: "POST",
-                    data: {
-                        id: list_id
-                    },
-                    url: "<?php echo site_url('ProgramKerja/ajax_bulk_delete') ?>",
                     dataType: "JSON",
                     success: function(data) {
-                        if (data.status) {
-                            reload_table();
-                        } else {
-                            alert('Failed.');
-                        }
+                        //if success reload ajax table
+                        $('#modalCrudData').modal('hide');
+                        reload_table();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Error deleting data');
                     }
                 });
             }
-        } else {
-            alert('No data selected');
         }
-    }
 
-    function import_excel() {
-        $('#form')[0].reset(); // reset form on modals
-        $('.form-group').removeClass('has-error'); // clear error class
-        $('.help-block').empty(); // clear error string
-        $('#importExcelModal').modal('show');
-    }
-
-    function validateInput() {
-        var inputElement = $('#value');
-        var value = parseInt(inputElement.val()); // Mengonversi input ke tipe data integer
-
-        // Memastikan nilai tidak di bawah 0 atau di atas 100
-        value = Math.min(Math.max(value, 0), 100);
-
-        // Update nilai input
-        inputElement.val(value);
-
-        // Cek apakah nilai input adalah 100
-        if (value === 100) {
-            // Jika nilai adalah 100, pilih opsi "Complete" secara otomatis
-            var statusSelect = $('#status');
-            var completeOption = statusSelect.find('option[value="Complate"]');
-            if (completeOption.length) {
-                completeOption.prop('selected', true);
-            }
-        } else {
-            // Jika nilai bukan 100, pastikan opsi "Complete" tidak dipilih
-            var statusSelect = $('#status');
-            var completeOption = statusSelect.find('option[value="Complate"]');
-            if (completeOption.length && completeOption.prop('selected')) {
-                statusSelect.val(''); // Mengosongkan pilihan status
+        function bulk_delete() {
+            var list_id = [];
+            $(".data-check:checked").each(function() {
+                list_id.push(this.value);
+            });
+            if (list_id.length > 0) {
+                if (confirm('Are you sure delete this ' + list_id.length + ' data?')) {
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            id: list_id
+                        },
+                        url: "<?php echo site_url('ProgramKerja/ajax_bulk_delete') ?>",
+                        dataType: "JSON",
+                        success: function(data) {
+                            if (data.status) {
+                                reload_table();
+                            } else {
+                                alert('Failed.');
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Error deleting data');
+                        }
+                    });
+                }
+            } else {
+                alert('No data selected');
             }
         }
-    }
+
+        function import_excel() {
+            $('#form')[0].reset(); // reset form on modals
+            $('.form-group').removeClass('has-error'); // clear error class
+            $('.help-block').empty(); // clear error string
+            $('#importExcelModal').modal('show');
+        }
+
+        function validateInput() {
+            var inputElement = $('#value');
+            var value = parseInt(inputElement.val()); // Mengonversi input ke tipe data integer
+
+            // Memastikan nilai tidak di bawah 0 atau di atas 100
+            value = Math.min(Math.max(value, 0), 100);
+
+            // Update nilai input
+            inputElement.val(value);
+
+            // Cek apakah nilai input adalah 100
+            if (value === 100) {
+                // Jika nilai adalah 100, pilih opsi "Complete" secara otomatis
+                var statusSelect = $('#status');
+                var completeOption = statusSelect.find('option[value="Complate"]');
+                if (completeOption.length) {
+                    completeOption.prop('selected', true);
+                }
+            } else {
+                // Jika nilai bukan 100, pastikan opsi "Complete" tidak dipilih
+                var statusSelect = $('#status');
+                var completeOption = statusSelect.find('option[value="Complate"]');
+                if (completeOption.length && completeOption.prop('selected')) {
+                    statusSelect.val(''); // Mengosongkan pilihan status
+                }
+            }
+        }
+
+        // Tambahkan event listener untuk input
+        $('#value').on('keyup change', validateInput);
+    });
 </script>
 
 <!-- Bootstrap modal -->
@@ -382,7 +385,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave" onclick="save()">Simpan</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Simpan</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div><!-- /.modal-content -->

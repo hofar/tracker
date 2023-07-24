@@ -1,4 +1,4 @@
-<script>
+<script nonce="scriptRAnd0m">
     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.7.0.js"><\/script>');
 </script>
 
