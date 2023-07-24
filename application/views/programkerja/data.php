@@ -292,14 +292,14 @@
             if (value === 100) {
                 // Jika nilai adalah 100, pilih opsi "Complete" secara otomatis
                 var statusSelect = $('#status');
-                var completeOption = statusSelect.find('option[value="Complate"]');
+                var completeOption = statusSelect.find('option[value="Complete"]');
                 if (completeOption.length) {
                     completeOption.prop('selected', true);
                 }
             } else {
                 // Jika nilai bukan 100, pastikan opsi "Complete" tidak dipilih
                 var statusSelect = $('#status');
-                var completeOption = statusSelect.find('option[value="Complate"]');
+                var completeOption = statusSelect.find('option[value="Complete"]');
                 if (completeOption.length && completeOption.prop('selected')) {
                     statusSelect.val(''); // Mengosongkan pilihan status
                 }
@@ -354,7 +354,7 @@
                             <select name="status" id="status" class="form-select">
                                 <option value="">-- Pilih --</option>
                                 <option value="In Progress">In Progress</option>
-                                <option value="Complate">Complate</option>
+                                <option value="Complete">Complete</option>
                                 <option value="Not Started">Not Started</option>
                             </select>
                             <span class="help-block"></span>
