@@ -8,6 +8,11 @@ class Dashboard extends CI_Controller
 
     public function index()
     {
+        $this->network();
+    }
+
+    public function home()
+    {
         $data = array(
             "title" => "Tracker Graph",
             "metadesc" => "Sistem Informasi Grafik Jaringan dan Aplikasi",

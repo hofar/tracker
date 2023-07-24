@@ -93,7 +93,7 @@ class ProgramKerja extends CI_Controller
             $row[] = badge_type($item->status);
             $row[] = custom_date($item->start_date);
             $row[] = custom_date($item->end_date);
-            $row[] = textarea($item->keterangan);
+            $row[] = custom_div($item->keterangan);
             $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;

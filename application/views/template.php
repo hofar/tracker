@@ -1,17 +1,17 @@
 <?php
 $theme = $this->input->get("theme");
-$theme = !is_null($theme) ? $theme : "dark";
+$theme = !is_null($theme) ? $theme : "light";
 
 $queryParams = $this->input->get();
 $queryString = http_build_query($queryParams);
 
 $menuItems = array(
-    array(
-        "title" => "Home",
-        "url" => "",
-        "icon" => '<i class="bi bi-house"></i>', // Bootstrap Icon,
-        "access" => is_public()
-    ),
+    // array(
+    //     "title" => "Home",
+    //     "url" => "",
+    //     "icon" => '<i class="bi bi-house"></i>', // Bootstrap Icon,
+    //     "access" => is_public()
+    // ),
     array(
         "title" => "Network",
         "url" => "dashboard/network",
@@ -42,12 +42,12 @@ $menuItems = array(
         "icon" => '<i class="bi bi-card-list"></i>',
         "access" => is_super()
     ),
-    array(
-        "title" => "Login",
-        "url" => "auth/index",
-        "icon" => '<i class="bi bi-box-arrow-in-right"></i>',
-        "access" => is_not_user()
-    ),
+    // array(
+    //     "title" => "Login",
+    //     "url" => "auth/index",
+    //     "icon" => '<i class="bi bi-box-arrow-in-right"></i>',
+    //     "access" => is_not_user()
+    // ),
     array(
         "title" => "Logout",
         "url" => "auth/logout",
@@ -113,6 +113,7 @@ $menuHtml .= '</ul>';
     <style>
         #content {
             margin-top: 100px;
+            margin-bottom: 100px;
         }
 
         .navbar {
@@ -157,20 +158,22 @@ $menuHtml .= '</ul>';
         </div>
     </nav>
 
-    <section id="content" class="mb-4">
+    <section id="content" class="">
         <div class="container">
             {content}
         </div>
     </section>
 
-    <footer>
-        <div class="container mb-4">
-            <p class="m-0">
-                Page rendered in <strong>{elapsed_time}</strong> seconds.
-                <?php echo (ENVIRONMENT === "development") ?  "CodeIgniter Version <strong>" . CI_VERSION . "</strong>" : "" ?>.
-                PHP Version <strong><?= phpversion() ?></strong>.
-            </p>
-        </div>
+    <footer class="fixed-bottom">
+        <nav class="navbar bg-body-tertiary">
+            <div class="container">
+                <span class="navbar-text">
+                    Page rendered in <strong>{elapsed_time}</strong> seconds.
+                    <?php echo (ENVIRONMENT === "development") ?  "CodeIgniter Version <strong>" . CI_VERSION . "</strong>" : "" ?>.
+                    PHP Version <strong><?= phpversion() ?></strong>.
+                </span>
+            </div>
+        </nav>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

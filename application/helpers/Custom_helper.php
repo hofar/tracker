@@ -39,12 +39,21 @@ if (!function_exists('textarea')) {
     }
 }
 
+if (!function_exists('custom_div')) {
+    function custom_div($keterangan)
+    {
+        return '<div class="custom-div">'
+            . $keterangan
+            . '</div>';
+    }
+}
+
 if (!function_exists('action_button')) {
     function action_button($id, $update_name, $delete_name)
     {
         return '<div class="btn-group" role="group" aria-label="Group action">'
-            . '<a title="Edit" data-id="' . $id . '" class="btn btn-sm btn-outline-secondary btn-edit"><i class="bi bi-pencil-square"></i></i></a>'
-            . '<a title="Hapus" data-id="' . $id . '" class="btn btn-sm btn-outline-danger btn-hapus"><i class="bi bi-trash"></i></a>'
+            . '<a title="Edit" data-id="' . $id . '" class="btn btn-sm btn-outline-secondary btn-edit">Edit <i class="bi bi-pencil-square"></i></i></a>'
+            . '<a title="Hapus" data-id="' . $id . '" class="btn btn-sm btn-outline-danger btn-hapus">Hapus <i class="bi bi-trash"></i></a>'
             . '</div>';
     }
 }

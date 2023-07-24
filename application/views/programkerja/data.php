@@ -133,6 +133,9 @@
         $("#import_excel").click(function() {
             import_excel();
         });
+
+        // Tambahkan event listener untuk input
+        $('#value').on('keyup change', validateInput);
     });
 
     function tambah_data() {
@@ -274,6 +277,34 @@
         $('.form-group').removeClass('has-error'); // clear error class
         $('.help-block').empty(); // clear error string
         $('#importExcelModal').modal('show');
+    }
+
+    function validateInput() {
+        var inputElement = $('#value');
+        var value = parseInt(inputElement.val()); // Mengonversi input ke tipe data integer
+
+        // Memastikan nilai tidak di bawah 0 atau di atas 100
+        value = Math.min(Math.max(value, 0), 100);
+
+        // Update nilai input
+        inputElement.val(value);
+
+        // Cek apakah nilai input adalah 100
+        if (value === 100) {
+            // Jika nilai adalah 100, pilih opsi "Complete" secara otomatis
+            var statusSelect = $('#status');
+            var completeOption = statusSelect.find('option[value="Complate"]');
+            if (completeOption.length) {
+                completeOption.prop('selected', true);
+            }
+        } else {
+            // Jika nilai bukan 100, pastikan opsi "Complete" tidak dipilih
+            var statusSelect = $('#status');
+            var completeOption = statusSelect.find('option[value="Complate"]');
+            if (completeOption.length && completeOption.prop('selected')) {
+                statusSelect.val(''); // Mengosongkan pilihan status
+            }
+        }
     }
 </script>
 
