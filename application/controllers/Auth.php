@@ -23,7 +23,7 @@ class Auth extends CI_Controller
                 "content" => $this->parser->parse("auth/login", $array, true)
             );
 
-            $this->parser->parse("template", $data);
+            $this->parser->parse("template_auth", $data);
         } else {
             // validasinya success
             $this->login();
@@ -94,7 +94,7 @@ class Auth extends CI_Controller
                 "content" => $this->parser->parse("auth/registration", $array, true)
             );
 
-            $this->parser->parse("template", $data);
+            $this->parser->parse("template_auth", $data);
         } else {
             //echo "Data berhasil ditambahkan";
 
