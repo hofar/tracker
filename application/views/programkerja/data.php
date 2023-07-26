@@ -31,13 +31,14 @@
                 <thead>
                     <tr>
                         <th scope="col"><input type="checkbox" id="check-all"></th>
+                        <th scope="col">No.</th>
                         <th scope="col">Sasaran Program Kerja</th>
                         <th scope="col">Persentase (%)</th>
                         <th scope="col">Type</th>
                         <th scope="col">Status</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
-                        <th scope="col">Keterangan</th>
+                        <!-- <th scope="col">Keterangan</th> -->
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -71,18 +72,15 @@
             },
             //Set column definition initialisation properties.
             "columnDefs": [{
-                    "targets": [0], //first column
-                    "orderable": false, //set not orderable
-                },
-                {
-                    "targets": [-2],
-                    "orderable": false,
-                },
-                {
-                    "targets": [-1], //last column
-                    "orderable": false, //set not orderable
-                },
-            ],
+                "targets": [0], //first column
+                "orderable": false, //set not orderable
+            }, {
+                "targets": [1],
+                "orderable": false,
+            }, {
+                "targets": [-1], //last column
+                "orderable": false, //set not orderable
+            }],
         });
 
         // Mendengarkan event draw.dt untuk mendeteksi ketika DataTables selesai di-render
@@ -104,17 +102,8 @@
         });
 
         //set input/textarea/select event when change value, remove class error and remove text help block
-        $("input").change(function() {
-            $(this).parent().parent().removeClass('has-error');
-            $(this).next().empty();
-        });
-        $("textarea").change(function() {
-            $(this).parent().parent().removeClass('has-error');
-            $(this).next().empty();
-        });
-        $("select").change(function() {
-            $(this).parent().parent().removeClass('has-error');
-            $(this).next().empty();
+        $('input, select, textarea').change(function() {
+            trigger_change($(this));
         });
 
         //check all
@@ -138,10 +127,25 @@
             import_excel();
         });
 
+        function trigger_change(elem) {
+            const value = elem.val();
+            let isValid = true;
+
+            if (elem.is('input[type="checkbox"]')) {
+                isValid = elem.is(':checked');
+            } else if (elem.is('select')) {
+                isValid = value !== '';
+            } else if (elem.is('input[type="text"], textarea')) {
+                isValid = value.trim() !== '';
+            }
+
+            elem.toggleClass('is-valid', isValid).toggleClass('is-invalid', !isValid);
+        }
+
         function tambah_data() {
             save_method = 'add';
             $('#form')[0].reset(); // reset form on modals
-            $('.form-group').removeClass('has-error'); // clear error class
+            $('input, select, textarea').removeClass('is-valid'); // clear error class
             $('.help-block').empty(); // clear error string
             $('#modalCrudData').modal('show'); // show bootstrap modal
             $('.modal-title').text('Tambah Data'); // Set Title to Bootstrap modal title
@@ -150,7 +154,7 @@
         function ubah_data(id) {
             save_method = 'update';
             $('#form')[0].reset(); // reset form on modals
-            $('.form-group').removeClass('has-error'); // clear error class
+            $('input, select, textarea').removeClass('is-valid'); // clear error class
             $('.help-block').empty(); // clear error string
 
             //Ajax Load data from ajax
@@ -207,8 +211,11 @@
                         reload_table();
                     } else {
                         for (var i = 0; i < data.inputerror.length; i++) {
-                            $('[name="' + data.inputerror[i] + '"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
-                            $('[name="' + data.inputerror[i] + '"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                            var currentElem = $('[name="' + data.inputerror[i] + '"]');
+                            currentElem.nextAll('.invalid-feedback').remove();
+                            if (currentElem.nextAll('.invalid-feedback').length <= 0) {
+                                currentElem.addClass('is-invalid').after('<div class="invalid-feedback">' + data.error_string[i] + '</div>');
+                            }
                         }
                     }
                     $('#btnSave').text('Simpan'); //change button text
@@ -274,8 +281,6 @@
 
         function import_excel() {
             $('#form')[0].reset(); // reset form on modals
-            $('.form-group').removeClass('has-error'); // clear error class
-            $('.help-block').empty(); // clear error string
             $('#importExcelModal').modal('show');
         }
 
@@ -309,7 +314,7 @@
 
         function add_keterangan(data) {
             $('#formTambahKeterangan')[0].reset(); // reset form on modals
-            $('.form-group').removeClass('has-error'); // clear error class
+            $('.form-control').removeClass('has-error'); // clear error class
             $('.help-block').empty(); // clear error string
 
             $('[name="name"]').val(data.id);
@@ -335,68 +340,70 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body form">
-                <form id="form">
+                <form id="form" class="form-horizontal">
                     <input type="hidden" value="" name="id" />
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="name">Name</label>
-                        <div class="col-sm">
-                            <input id="name" name="name" placeholder="Name" class="form-control" type="text" maxlength="100" min="3" autofocus>
-                            <span class="help-block"></span>
+                    <div class="form-body">
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="name">Name</label>
+                            <div class="col-sm">
+                                <input id="name" name="name" placeholder="Name" class="form-control" type="text" maxlength="100" min="3" autofocus>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="value">Value</label>
-                        <div class="col-sm">
-                            <input id="value" name="value" placeholder="Value" class="form-control" type="number" max="100" min="0" autofocus>
-                            <span class="help-block"></span>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="value">Value</label>
+                            <div class="col-sm">
+                                <input id="value" name="value" placeholder="Value" class="form-control" type="number" max="100" min="0" autofocus>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="type">Type</label>
-                        <div class="col-sm">
-                            <select name="type" id="type" class="form-select" autofocus>
-                                <option value="">-- Pilih --</option>
-                                <option value="Network">Network</option>
-                                <option value="Aplikasi">Aplikasi</option>
-                            </select>
-                            <span class="help-block"></span>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="type">Type</label>
+                            <div class="col-sm">
+                                <select name="type" id="type" class="form-select" autofocus>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Network">Network</option>
+                                    <option value="Aplikasi">Aplikasi</option>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="status">Status</label>
-                        <div class="col-sm">
-                            <select name="status" id="status" class="form-select" autofocus>
-                                <option value="">-- Pilih --</option>
-                                <option value="In Progress">In Progress</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Not Started">Not Started</option>
-                            </select>
-                            <span class="help-block"></span>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="status">Status</label>
+                            <div class="col-sm">
+                                <select name="status" id="status" class="form-select" autofocus>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Not Started">Not Started</option>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="start_date">Start Date</label>
-                        <div class="col-sm">
-                            <input id="start_date" name="start_date" placeholder="Start Date" class="form-control" type="datetime-local" autofocus>
-                            <span class="help-block"></span>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="start_date">Start Date</label>
+                            <div class="col-sm">
+                                <input id="start_date" name="start_date" placeholder="Start Date" class="form-control" type="datetime-local" autofocus>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="end_date">End Date</label>
-                        <div class="col-sm">
-                            <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local" autofocus>
-                            <span class="help-block"></span>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="end_date">End Date</label>
+                            <div class="col-sm">
+                                <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local" autofocus>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
-                    </div>
-                    <!--
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
-                        <div class="col-sm">
-                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control"></textarea>
-                            <span class="help-block"></span>
+                        <!--
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
+                            <div class="col-sm">
+                                <textarea name="keterangan" id="keterangan" rows="4" class="form-control"></textarea>
+                                <span class="help-block"></span>
+                            </div>
                         </div>
+                        -->
                     </div>
-                    -->
                 </form>
             </div>
             <div class="modal-footer">
@@ -407,7 +414,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<!-- pop up data -->
+<!-- pop up keterangan -->
 <div class="modal fade" id="modalKeteranganData" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

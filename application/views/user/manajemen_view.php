@@ -20,14 +20,18 @@
                 <thead>
                     <tr>
                         <th scope="col"><input type="checkbox" id="check-all"></th>
+                        <th scope="col">No.</th>
                         <th scope="col">Nama</th>
                         <th scope="col">User ID</th>
-                        <!--<th scope="col">Aktif</th>-->
                         <th scope="col">Role</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="6" class="text-center">Loading...</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -52,14 +56,15 @@
             },
             //Set column definition initialisation properties.
             "columnDefs": [{
-                    "targets": [0], //first column
-                    "orderable": false, //set not orderable
-                },
-                {
-                    "targets": [-1], //last column
-                    "orderable": false, //set not orderable
-                },
-            ],
+                "targets": [0], //first column
+                "orderable": false, //set not orderable
+            }, {
+                "targets": [1], //first column
+                "orderable": false, //set not orderable
+            }, {
+                "targets": [-1], //last column
+                "orderable": false, //set not orderable
+            }],
         });
 
         // Mendengarkan event draw.dt untuk mendeteksi ketika DataTables selesai di-render
@@ -76,13 +81,7 @@
         });
 
         //set input/textarea/select event when change value, remove class error and remove text help block
-        $("input").change(function() {
-            trigger_change($(this));
-        });
-        $("textarea").change(function() {
-            trigger_change($(this));
-        });
-        $("select").change(function() {
+        $("input, textarea, select").change(function() {
             trigger_change($(this));
         });
 
@@ -106,17 +105,24 @@
     });
 
     function trigger_change(elem) {
-        if (elem.val() == '') {
-            elem.addClass('is-invalid').removeClass('is-valid').after('');
-        } else {
-            elem.addClass('is-valid').removeClass('is-invalid').after('');
+        const value = elem.val();
+        let isValid = true;
+
+        if (elem.is('input[type="checkbox"]')) {
+            isValid = elem.is(':checked');
+        } else if (elem.is('select')) {
+            isValid = value !== '';
+        } else if (elem.is('input[type="text"], textarea')) {
+            isValid = value.trim() !== '';
         }
+
+        elem.toggleClass('is-valid', isValid).toggleClass('is-invalid', !isValid);
     }
 
     function tambah_data() {
         save_method = 'add';
         $('#form')[0].reset(); // reset form on modals
-        $('.form-group').removeClass('has-error'); // clear error class
+        $('input, select, textarea').removeClass('is-valid'); // clear error class
         $('.help-block').empty(); // clear error string
         $('#modal_form').modal('show'); // show bootstrap modal
         $('.modal-title').text('Tambah User'); // Set Title to Bootstrap modal title
@@ -126,7 +132,7 @@
     function ubah_data(id) {
         save_method = 'update';
         $('#form')[0].reset(); // reset form on modals
-        $('.form-group').removeClass('has-error'); // clear error class
+        $('input, select, textarea').removeClass('is-valid'); // clear error class
         $('.help-block').empty(); // clear error string
         get_role();
 
@@ -296,7 +302,7 @@
                         </div>
                         <div class="mb-3 row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user has-error" id="password1" name="password1" placeholder="Password" />
+                                <input type="password" class="form-control form-control-user" id="password1" name="password1" placeholder="Password" />
                             </div>
                             <div class="col-sm-6">
                                 <input type="password" class="form-control form-control-user" id="password2" name="password2" placeholder="Repeat Password" />

@@ -50,6 +50,7 @@ class User extends CI_Controller
             }
 
             $row[] = '<input type="checkbox" class="data-check" value="' . $user->id . '">';
+            $row[] = $no;
             $row[] = $user->nama;
             $row[] = $user->user_id;
             $row[] = $row_role->name;

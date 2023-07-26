@@ -87,6 +87,7 @@ class ProgramKerja extends CI_Controller
             $no++;
             $row = array();
             $row[] = checkbox($item->id);
+            $row[] = $no;
             $row[] = $item->name;
             $row[] = number_format($item->value, 0, '', '');
             $row[] = $item->type;
@@ -104,25 +105,25 @@ class ProgramKerja extends CI_Controller
              * 
              */
 
-            $group_keterangan = '';
-            $keterangan = $this->HistoryKeterangan_model->get_by_program_kerja_id($item->id);
-            if ($keterangan) {
-                $group_keterangan .= '<ul class="list-group list-group-numbered mb-4">';
-                foreach ($keterangan as $key => $value) {
-                    $group_keterangan .= '<li class="list-group-item d-flex justify-content-between align-items-start">';
-                    $group_keterangan .= '<div class="ms-2 me-auto">';
-                    $group_keterangan .= '<div class="fw-bold">' . ($value->keterangan) . '</div>';
-                    $group_keterangan .= '<span class="text-body-secondary">' . custom_date($value->created_at) . '</span>';
-                    $group_keterangan .= '</div>';
-                    $group_keterangan .= '<span class="badge bg-secondary rounded-pill">' . ($value->status) . '</span>';
-                    $group_keterangan .= '</li>';
-                }
-                $group_keterangan .= '</ul>';
-            }
+            // $group_keterangan = '';
+            // $keterangan = $this->HistoryKeterangan_model->get_by_program_kerja_id($item->id);
+            // if ($keterangan) {
+            //     $group_keterangan .= '<ul class="list-group list-group-numbered mb-4">';
+            //     foreach ($keterangan as $key => $value) {
+            //         $group_keterangan .= '<li class="list-group-item d-flex justify-content-between align-items-start">';
+            //         $group_keterangan .= '<div class="ms-2 me-auto">';
+            //         $group_keterangan .= '<div class="fw-bold">' . ($value->keterangan) . '</div>';
+            //         $group_keterangan .= '<span class="text-body-secondary">' . custom_date($value->created_at) . '</span>';
+            //         $group_keterangan .= '</div>';
+            //         $group_keterangan .= '<span class="badge bg-secondary rounded-pill">' . ($value->status) . '</span>';
+            //         $group_keterangan .= '</li>';
+            //     }
+            //     $group_keterangan .= '</ul>';
+            // }
 
-            $group_keterangan .= '<button type="button" class="btn btn-sm btn-outline-secondary btn-add-keterangan" data-id="' . $item->id . '" data-status="' . $item->status . '"><i class="bi bi-plus-circle"></i> Tambah Keterangan</button>';
+            // $group_keterangan .= '<button type="button" class="btn btn-sm btn-outline-secondary btn-add-keterangan" data-id="' . $item->id . '" data-status="' . $item->status . '"><i class="bi bi-plus-circle"></i> Tambah Keterangan</button>';
 
-            $row[] = $group_keterangan;
+            // $row[] = $group_keterangan;
             $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;
@@ -160,7 +161,7 @@ class ProgramKerja extends CI_Controller
             'status' => $this->input->post('status'),
             'start_date' => $this->input->post('start_date'),
             'end_date' => $this->input->post('end_date'),
-            'keterangan' => $this->input->post('keterangan'),
+            // 'keterangan' => $this->input->post('keterangan'),
         );
 
         $insert = $this->ProgramKerja_model->save($data);
@@ -181,7 +182,7 @@ class ProgramKerja extends CI_Controller
             'status' => $this->input->post('status'),
             'start_date' => $this->input->post('start_date'),
             'end_date' => $this->input->post('end_date'),
-            'keterangan' => $this->input->post('keterangan'),
+            // 'keterangan' => $this->input->post('keterangan'),
         );
 
         $this->ProgramKerja_model->update(array('id' => $this->input->post('id')), $data);
@@ -252,11 +253,11 @@ class ProgramKerja extends CI_Controller
             $data['status'] = false;
         }
 
-        if ($this->input->post('keterangan') == '') {
-            $data['inputerror'][] = 'keterangan';
-            $data['error_string'][] = 'Keterangan tidak boleh kosong';
-            $data['status'] = false;
-        }
+        // if ($this->input->post('keterangan') == '') {
+        //     $data['inputerror'][] = 'keterangan';
+        //     $data['error_string'][] = 'Keterangan tidak boleh kosong';
+        //     $data['status'] = false;
+        // }
 
         if ($data['status'] === false) {
             echo json_encode($data);

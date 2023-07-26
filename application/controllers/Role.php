@@ -45,6 +45,7 @@ class Role extends CI_Controller
             }
 
             $row[] = '<input type="checkbox" class="data-check" value="' . $role->id . '">';
+            $row[] = $no;
             $row[] = $role->name;
             $row[] = ($role->is_super == '1' ? 'Yes' : 'No');
             $row[] = $action_button;

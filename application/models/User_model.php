@@ -7,9 +7,9 @@ class User_model extends CI_Model
 
     public $table = 'user';
     public $user_role = 'user_role';
-    public $column_order = array(null, 'nama', 'user_id', 'gambar', 'is_active', 'role_id', null); //set column field database for datatable orderable
+    public $column_order = array(null, null, 'nama', 'user_id', 'gambar', 'is_active', 'role_id', null); //set column field database for datatable orderable
     public $column_search = array('nama', 'user_id'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    public $order = array('create_at' => 'desc'); // default order
+    public $order = array('nama' => 'asc'); // default order
 
     public function __construct()
     {

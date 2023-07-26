@@ -42,6 +42,12 @@ $menuItems = array(
         "icon" => '<i class="bi bi-card-list"></i>',
         "access" => is_super()
     ),
+    array(
+        "title" => "Kelola Keterangan",
+        "url" => "keterangan/manajemen",
+        "icon" => '<i class="bi bi-card-list"></i>',
+        "access" => is_super()
+    ),
     // array(
     //     "title" => "Login",
     //     "url" => "auth/index",

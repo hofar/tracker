@@ -78,7 +78,7 @@ if (!function_exists('custom_date')) {
             return $custom_date;
         }
 
-        return false; // Atau nilai lain yang sesuai dengan kebutuhan Anda jika tanggal tidak valid
+        return '<i class="text-body-secondary">not set</i>'; // Atau nilai lain yang sesuai dengan kebutuhan Anda jika tanggal tidak valid
     }
 }
 

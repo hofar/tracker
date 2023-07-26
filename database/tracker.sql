@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2023 at 06:52 AM
+-- Generation Time: Jul 26, 2023 at 02:43 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.2.4
 
@@ -40,9 +40,10 @@ CREATE TABLE `history_keterangan` (
 --
 
 INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `status`, `created_at`) VALUES
-(1, 2, 'test 1', 'In Progress', '2023-07-25 21:53:37'),
-(2, 2, 'test 2', 'In Progress', '2023-07-25 22:35:57'),
-(3, 37, 'test awal keterangan', 'Not Started', '2023-07-25 23:16:40');
+(1, 2, 'test 1', 'Network', '2023-07-25 21:53:37'),
+(2, 3, 'test 2', 'Network', '2023-07-25 22:35:57'),
+(3, 14, 'test awal keterangan', 'Aplikasi', '2023-07-25 23:16:40'),
+(4, 10, 'test', 'Aplikasi', '2023-07-26 15:04:27');
 
 -- --------------------------------------------------------
 
@@ -80,7 +81,7 @@ INSERT INTO `program_kerja` (`id`, `name`, `value`, `type`, `keterangan`, `statu
 (12, 'CCTV Disposal PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:48:03', NULL),
 (13, 'Command Center', 100, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 22:07:20', '2023-07-14 22:07:24'),
 (14, 'GPS Tracking (Map Operation)', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-13 08:04:11', '2023-07-14 22:04:24'),
-(37, 'test edit', 0, 'Network', 'test 2', 'Not Started', NULL, NULL);
+(37, 'test edit', 0, 'Network', 'test 2', 'Not Started', '2023-07-26 18:24:00', '2023-07-26 18:25:00');
 
 -- --------------------------------------------------------
 
@@ -128,7 +129,8 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` (`id`, `name`, `is_super`) VALUES
 (1, 'Administrator', 1),
 (2, 'User', 0),
-(12, 'test 2', 0);
+(12, 'test 2', 0),
+(13, 'test sdfsdf', 0);
 
 --
 -- Indexes for dumped tables
@@ -167,7 +169,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `program_kerja`
@@ -179,7 +181,7 @@ ALTER TABLE `program_kerja`
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

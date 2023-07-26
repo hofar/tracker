@@ -20,15 +20,17 @@
                 <thead>
                     <tr>
                         <th scope="col"><input type="checkbox" id="check-all"></th>
-                        <th scope="col">No.</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Akses Superadmin</th>
+                        <th scope="col">No</th>
+                        <th scope="col">Sasaran Program</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Keterangan Progress</th>
+                        <th scope="col">Tanggal &amp; Waktu</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="5" class="text-center">Loading...</td>
+                        <td colspan="7" class="text-center">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -50,7 +52,7 @@
 
             // Load data for the table's content from an Ajax source
             "ajax": {
-                "url": "<?= site_url('role/ajax_list') ?>",
+                "url": "<?= site_url('keterangan/ajax_list') ?>",
                 "type": "POST"
             },
             //Set column definition initialisation properties.
@@ -80,14 +82,11 @@
         });
 
         //set input/textarea/select event when change value, remove class error and remove text help block
-        $('input[type="text"]').change(function() {
+        $('input, textarea, select').change(function() {
             trigger_change($(this));
         });
-        $('input[type="checkbox"]').change(function() {
-            //            trigger_change($(this));
-        });
-        $('textarea, select').change(function() {
-            trigger_change($(this));
+        $('[name="status"]').change(function() {
+            get_program_kerja();
         });
 
         //check all
@@ -130,7 +129,7 @@
         $('input, select, textarea').removeClass('is-valid'); // clear error class
         $('.help-block').empty(); // clear error string
         $('#modal_form').modal('show'); // show bootstrap modal
-        $('.modal-title').text('Tambah Role'); // Set Title to Bootstrap modal title
+        $('.modal-title').text('Tambah keterangan'); // Set Title to Bootstrap modal title
     }
 
     function ubah_data(id) {
@@ -141,19 +140,19 @@
 
         //Ajax Load data from ajax
         $.ajax({
-            url: "<?php echo site_url('role/ajax_edit') ?>/" + id,
+            url: "<?php echo site_url('keterangan/ajax_edit') ?>/" + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('[name="id"]').val(data.id);
-                $('[name="name"]').val(data.name);
-                $('[name="akses_super"]').attr('checked', false);
-                if (data.is_super == '1') {
-                    $('[name="akses_super"]').attr('checked', true);
-                }
+                $('[name="status"]').val(data.status);
+                // $('[name="id_program_kerja"]').val(data.id_program_kerja);
+                get_program_kerja(data.id_program_kerja);
+                $('[name="keterangan"]').val(data.keterangan);
+                $('[name="created_at"]').val(data.created_at);
 
                 $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-                $('.modal-title').text('Ubah Role'); // Set title to Bootstrap modal title
+                $('.modal-title').text('Ubah keterangan'); // Set title to Bootstrap modal title
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert('Error get data from ajax');
@@ -171,9 +170,9 @@
         var url;
 
         if (save_method === 'add') {
-            url = "<?php echo site_url('role/ajax_add') ?>";
+            url = "<?php echo site_url('keterangan/ajax_add') ?>";
         } else {
-            url = "<?php echo site_url('role/ajax_update') ?>";
+            url = "<?php echo site_url('keterangan/ajax_update') ?>";
         }
 
         // ajax adding data to database
@@ -214,7 +213,7 @@
         if (confirm('Yakin ingin menghapus data ?')) {
             // ajax delete data to database
             $.ajax({
-                url: "<?php echo site_url('role/ajax_delete') ?>/" + id,
+                url: "<?php echo site_url('keterangan/ajax_delete') ?>/" + id,
                 type: "POST",
                 dataType: "JSON",
                 success: function(data) {
@@ -241,7 +240,7 @@
                     data: {
                         id: list_id
                     },
-                    url: "<?php echo site_url('role/ajax_bulk_delete') ?>",
+                    url: "<?php echo site_url('keterangan/ajax_bulk_delete') ?>",
                     dataType: "JSON",
                     success: function(data) {
                         if (data.status) {
@@ -260,6 +259,46 @@
             alert('Tidak ada data yang dicentang');
         }
     }
+
+    function get_program_kerja(programKerjaID) {
+        const prokerElem = $('[name="id_program_kerja"]');
+        const typeElem = $('[name="status"]');
+
+        prokerElem.html(""); // reset
+
+        if (typeof typeElem.val() !== 'undefined' || typeElem.val() !== null) {
+            let url = "";
+            if (typeElem.val() === "Network") {
+                url = "<?php echo site_url('ProgramKerja/getDataNetwork') ?>";
+            } else {
+                url = "<?php echo site_url('ProgramKerja/getDataAplikasi') ?>";
+            }
+
+            //Ajax Load data from ajax
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    data.forEach((item) => {
+                        const option = $('<option></option>');
+                        option.val(item.id); // Anda bisa menggunakan properti lain sebagai value jika diperlukan
+                        option.text(item.name);
+                        prokerElem.append(option);
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error get data from ajax');
+                }
+            }).done(function(data) {
+                if (typeof programKerjaID !== 'undefined' || programKerjaID !== null) {
+                    prokerElem.val(programKerjaID);
+                }
+            });
+        } else {
+            console.log("Type tidak boleh kosong");
+        }
+    }
 </script>
 
 <!-- Bootstrap modal -->
@@ -267,7 +306,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Form Role</h3>
+                <h3 class="modal-title">Form keterangan</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body form">
@@ -275,14 +314,26 @@
                     <input type="hidden" value="" name="id" />
                     <div class="form-body">
                         <div class="mb-3">
-                            <label class="form-label" for="name">Name</label>
-                            <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="Full Name" />
+                            <label class="form-label" for="status">Type</label>
+                            <select name="status" id="status" class="form-control form-control-user" autofocus>
+                                <option value="">-- Pilih --</option>
+                                <option value="Network">Network</option>
+                                <option value="Aplikasi">Aplikasi</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="akses_super" name="akses_super" value="1" />
-                                <label class="custom-control-label" for="akses_super">Akses Super</label>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="id_program_kerja">Sasaran Program</label>
+                            <select name="id_program_kerja" id="id_program_kerja" class="form-control form-control-user" autofocus>
+                                <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="keterangan">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control form-control-user" placeholder="Isi keterangan baru" autofocus></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="created_at">Tanggal &amp; Waktu</label>
+                            <input type="datetime-local" class="form-control form-control-user" id="created_at" name="created_at" placeholder="Tanggal &amp; Waktu" />
                         </div>
                     </div>
                 </form>
