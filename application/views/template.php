@@ -140,6 +140,11 @@ $menuHtml .= '</ul>';
         .anychart-credits {
             display: none !important;
         }
+
+        [disabled],
+        [readonly] {
+            cursor: not-allowed;
+        }
     </style>
 </head>
 

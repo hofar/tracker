@@ -93,7 +93,36 @@ class ProgramKerja extends CI_Controller
             $row[] = badge_type($item->status);
             $row[] = custom_date($item->start_date);
             $row[] = custom_date($item->end_date);
-            $row[] = custom_div($item->keterangan);
+
+            /**
+             * keterangan:
+             * 1. saat admin input in progress 0, komentar "test 1", tersimpan
+             * 2. kemudian saat admin complete 100, komentar "selesai, juga tersimpan"
+             * 3. admin tetap bisa melihat komentar semua progress, dari 0 sampai 100
+             * 4. ada tanggal dan waktu nya
+             * 5. bisa ditraik ya mas report history nya.
+             * 
+             */
+
+            $group_keterangan = '';
+            $keterangan = $this->HistoryKeterangan_model->get_by_program_kerja_id($item->id);
+            if ($keterangan) {
+                $group_keterangan .= '<ul class="list-group list-group-numbered mb-4">';
+                foreach ($keterangan as $key => $value) {
+                    $group_keterangan .= '<li class="list-group-item d-flex justify-content-between align-items-start">';
+                    $group_keterangan .= '<div class="ms-2 me-auto">';
+                    $group_keterangan .= '<div class="fw-bold">' . ($value->keterangan) . '</div>';
+                    $group_keterangan .= '<span class="text-body-secondary">' . custom_date($value->created_at) . '</span>';
+                    $group_keterangan .= '</div>';
+                    $group_keterangan .= '<span class="badge bg-secondary rounded-pill">' . ($value->status) . '</span>';
+                    $group_keterangan .= '</li>';
+                }
+                $group_keterangan .= '</ul>';
+            }
+
+            $group_keterangan .= '<button type="button" class="btn btn-sm btn-outline-secondary btn-add-keterangan" data-id="' . $item->id . '" data-status="' . $item->status . '"><i class="bi bi-plus-circle"></i> Tambah Keterangan</button>';
+
+            $row[] = $group_keterangan;
             $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;

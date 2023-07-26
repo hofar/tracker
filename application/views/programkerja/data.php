@@ -43,15 +43,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row"></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td colspan="9" class="text-center">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -83,6 +75,10 @@
                     "orderable": false, //set not orderable
                 },
                 {
+                    "targets": [-2],
+                    "orderable": false,
+                },
+                {
                     "targets": [-1], //last column
                     "orderable": false, //set not orderable
                 },
@@ -92,6 +88,11 @@
         // Mendengarkan event draw.dt untuk mendeteksi ketika DataTables selesai di-render
         table.on('draw.dt', function() {
             console.log('DataTables selesai di-render.');
+
+            $('.btn-add-keterangan').on('click', (event) => {
+                let data = $(event.currentTarget).data();
+                add_keterangan(data);
+            });
             $('.btn-edit').on('click', (event) => {
                 let data = $(event.currentTarget).data();
                 ubah_data(data.id);
@@ -166,7 +167,7 @@
                     $('[name="start_date"]').val(data.start_date);
                     $('[name="end_date"]').val(data.end_date);
                     $('[name="keterangan"]').val(data.keterangan);
-                    $('#modalCrudData').modal('show'); // show bootstrap modal when complete loaded
+                    $('#modalCrudData').modal('show'); // show bootstrap modal when Completed loaded
                     $('.modal-title').text('Ubah Data'); // Set title to Bootstrap modal title
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -290,20 +291,33 @@
 
             // Cek apakah nilai input adalah 100
             if (value === 100) {
-                // Jika nilai adalah 100, pilih opsi "Complete" secara otomatis
+                // Jika nilai adalah 100, pilih opsi "Completed" secara otomatis
                 var statusSelect = $('#status');
-                var completeOption = statusSelect.find('option[value="Complete"]');
-                if (completeOption.length) {
-                    completeOption.prop('selected', true);
+                var CompletedOption = statusSelect.find('option[value="Completed"]');
+                if (CompletedOption.length) {
+                    CompletedOption.prop('selected', true);
                 }
             } else {
-                // Jika nilai bukan 100, pastikan opsi "Complete" tidak dipilih
+                // Jika nilai bukan 100, pastikan opsi "Completed" tidak dipilih
                 var statusSelect = $('#status');
-                var completeOption = statusSelect.find('option[value="Complete"]');
-                if (completeOption.length && completeOption.prop('selected')) {
+                var CompletedOption = statusSelect.find('option[value="Completed"]');
+                if (CompletedOption.length && CompletedOption.prop('selected')) {
                     statusSelect.val(''); // Mengosongkan pilihan status
                 }
             }
+        }
+
+        function add_keterangan(data) {
+            $('#formTambahKeterangan')[0].reset(); // reset form on modals
+            $('.form-group').removeClass('has-error'); // clear error class
+            $('.help-block').empty(); // clear error string
+
+            $('[name="name"]').val(data.id);
+            $('[name="status_keterangan"]').val(data.status);
+            $('[name="keterangan"]').val("");
+
+            $('#modalKeteranganData').modal('show'); // show bootstrap modal
+            $('.modal-title').text('Tambah Keterangan Data'); // Set Title to Bootstrap modal title
         }
 
         // Tambahkan event listener untuk input
@@ -326,21 +340,21 @@
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="name">Name</label>
                         <div class="col-sm">
-                            <input id="name" name="name" placeholder="Name" class="form-control" type="text" maxlength="100" min="3">
+                            <input id="name" name="name" placeholder="Name" class="form-control" type="text" maxlength="100" min="3" autofocus>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="value">Value</label>
                         <div class="col-sm">
-                            <input id="value" name="value" placeholder="Value" class="form-control" type="number" max="100" min="0">
+                            <input id="value" name="value" placeholder="Value" class="form-control" type="number" max="100" min="0" autofocus>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="type">Type</label>
                         <div class="col-sm">
-                            <select name="type" id="type" class="form-select">
+                            <select name="type" id="type" class="form-select" autofocus>
                                 <option value="">-- Pilih --</option>
                                 <option value="Network">Network</option>
                                 <option value="Aplikasi">Aplikasi</option>
@@ -351,10 +365,10 @@
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="status">Status</label>
                         <div class="col-sm">
-                            <select name="status" id="status" class="form-select">
+                            <select name="status" id="status" class="form-select" autofocus>
                                 <option value="">-- Pilih --</option>
                                 <option value="In Progress">In Progress</option>
-                                <option value="Complete">Complete</option>
+                                <option value="Completed">Completed</option>
                                 <option value="Not Started">Not Started</option>
                             </select>
                             <span class="help-block"></span>
@@ -363,22 +377,58 @@
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="start_date">Start Date</label>
                         <div class="col-sm">
-                            <input id="start_date" name="start_date" placeholder="Start Date" class="form-control" type="datetime-local">
+                            <input id="start_date" name="start_date" placeholder="Start Date" class="form-control" type="datetime-local" autofocus>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="end_date">End Date</label>
                         <div class="col-sm">
-                            <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local">
+                            <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local" autofocus>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
+                        <div class="col-sm">
+                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control"></textarea>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- pop up data -->
+<div class="modal fade" id="modalKeteranganData" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Form Input</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body form">
+                <form id="formTambahKeterangan">
+                    <input type="hidden" value="" name="id" />
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="status_keterangan">Status Keterangan</label>
+                        <div class="col-sm">
+                            <input id="status_keterangan" name="status_keterangan" placeholder="Status Keterangan" class="form-control" type="text" readonly autofocus>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
                         <div class="col-sm">
-                            <!-- <input id="end_date" name="end_date" placeholder="End Date" class="form-control" type="datetime-local"> -->
-                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control"></textarea>
+                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control" placeholder="Isi keterangan baru" autofocus></textarea>
                             <span class="help-block"></span>
                         </div>
                     </div>

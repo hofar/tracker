@@ -9,7 +9,7 @@ if (!function_exists('badge_type')) {
             case 'In Progress':
                 $bg = "text-bg-warning";
                 break;
-            case 'Complete':
+            case 'Completed':
                 $bg = "text-bg-success";
                 break;
             case 'Not Started':

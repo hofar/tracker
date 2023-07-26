@@ -136,6 +136,7 @@ class CI_Loader
 	public $ProgramKerja_model;
 	public $Role_model;
 	public $User_model;
+	public $HistoryKeterangan_model;
 
 	/**
 	 * List of class name mappings

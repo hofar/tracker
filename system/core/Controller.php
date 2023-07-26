@@ -86,6 +86,7 @@ class CI_Controller
 	public $ProgramKerja_model;
 	public $Role_model;
 	public $User_model;
+	public $HistoryKeterangan_model;
 	private $benchmark;
 	private $hooks;
 	private $log;
