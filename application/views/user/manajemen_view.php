@@ -122,7 +122,7 @@
     function tambah_data() {
         save_method = 'add';
         $('#form')[0].reset(); // reset form on modals
-        $('input, select, textarea').removeClass('is-valid'); // clear error class
+        $('input, select, textarea').removeClass('is-valid is-invalid'); // clear error class
         $('.help-block').empty(); // clear error string
         $('#modal_form').modal('show'); // show bootstrap modal
         $('.modal-title').text('Tambah User'); // Set Title to Bootstrap modal title
@@ -132,7 +132,7 @@
     function ubah_data(id) {
         save_method = 'update';
         $('#form')[0].reset(); // reset form on modals
-        $('input, select, textarea').removeClass('is-valid'); // clear error class
+        $('input, select, textarea').removeClass('is-valid is-invalid'); // clear error class
         $('.help-block').empty(); // clear error string
         get_role();
 
