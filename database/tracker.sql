@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2023 at 02:43 PM
+-- Generation Time: Jul 28, 2023 at 06:33 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.2.4
 
@@ -31,7 +31,8 @@ CREATE TABLE `history_keterangan` (
   `id` int(11) NOT NULL,
   `id_program_kerja` int(11) NOT NULL,
   `keterangan` text NOT NULL,
-  `status` varchar(15) NOT NULL,
+  `type` enum('Network','Aplikasi') NOT NULL,
+  `status` enum('Completed','In Progress','Not Started') NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -39,11 +40,12 @@ CREATE TABLE `history_keterangan` (
 -- Dumping data for table `history_keterangan`
 --
 
-INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `status`, `created_at`) VALUES
-(1, 2, 'test 1', 'Network', '2023-07-25 21:53:37'),
-(2, 3, 'test 2', 'Network', '2023-07-25 22:35:57'),
-(3, 14, 'test awal keterangan', 'Aplikasi', '2023-07-25 23:16:40'),
-(4, 10, 'test', 'Aplikasi', '2023-07-26 15:04:27');
+INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `type`, `status`, `created_at`) VALUES
+(1, 2, 'test 1', 'Network', 'In Progress', '2023-07-25 21:53:37'),
+(2, 3, 'test 2', 'Network', 'In Progress', '2023-07-25 22:35:57'),
+(3, 14, 'test awal keterangan', 'Aplikasi', 'In Progress', '2023-07-25 23:16:40'),
+(4, 10, 'test', 'Aplikasi', 'In Progress', '2023-07-26 15:04:27'),
+(6, 12, 'test baru', 'Aplikasi', 'Completed', '2023-07-28 23:30:21');
 
 -- --------------------------------------------------------
 
@@ -78,7 +80,7 @@ INSERT INTO `program_kerja` (`id`, `name`, `value`, `type`, `keterangan`, `statu
 (9, 'CCTV Tarahan', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:49', NULL),
 (10, 'CCTV View Poin PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:53', NULL),
 (11, 'CCTV Hauling PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:57', NULL),
-(12, 'CCTV Disposal PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:48:03', NULL),
+(12, 'CCTV Disposal PITE', 100, 'Aplikasi', 'test baru', 'Completed', '2023-07-24 17:48:03', '2023-07-28 23:29:00'),
 (13, 'Command Center', 100, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 22:07:20', '2023-07-14 22:07:24'),
 (14, 'GPS Tracking (Map Operation)', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-13 08:04:11', '2023-07-14 22:04:24'),
 (37, 'test edit', 0, 'Network', 'test 2', 'Not Started', '2023-07-26 18:24:00', '2023-07-26 18:25:00');
@@ -169,7 +171,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `program_kerja`

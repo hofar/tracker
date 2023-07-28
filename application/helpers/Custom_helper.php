@@ -4,15 +4,16 @@ if (!function_exists('badge_type')) {
     function badge_type($type)
     {
         $bg = "";
+        $status = data_status();
 
         switch ($type) {
-            case 'In Progress':
+            case $status[0]:
                 $bg = "text-bg-warning";
                 break;
-            case 'Completed':
+            case $status[1]:
                 $bg = "text-bg-success";
                 break;
-            case 'Not Started':
+            case $status[2]:
                 $bg = "text-bg-danger";
                 break;
         }
@@ -89,5 +90,19 @@ if (!function_exists('custom_function')) {
         // Sekarang Anda dapat menggunakan instance CI untuk akses ke fitur dan library CodeIgniter
         $CI->load->library('session');
         $CI->session->set_userdata('key', 'value');
+    }
+}
+
+if (!function_exists('data_type')) {
+    function data_type()
+    {
+        return array("Aplikasi", "Network");
+    }
+}
+
+if (!function_exists('data_status')) {
+    function data_status()
+    {
+        return array("In Progress", "Completed", "Not Started");
     }
 }

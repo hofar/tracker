@@ -23,6 +23,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Sasaran Program</th>
                         <th scope="col">Type</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Keterangan Progress</th>
                         <th scope="col">Tanggal &amp; Waktu</th>
                         <th scope="col"></th>
@@ -85,7 +86,7 @@
         $('input, textarea, select').change(function() {
             trigger_change($(this));
         });
-        $('[name="status"]').change(function() {
+        $('[name="type"]').change(function() {
             get_program_kerja();
         });
 
@@ -127,6 +128,7 @@
         save_method = 'add';
         $('#form')[0].reset(); // reset form on modals
         $('input, select, textarea').removeClass('is-valid'); // clear error class
+        $('input, select, textarea').removeClass('is-invalid'); // clear error class
         $('.help-block').empty(); // clear error string
         $('#modal_form').modal('show'); // show bootstrap modal
         $('.modal-title').text('Tambah keterangan'); // Set Title to Bootstrap modal title
@@ -136,6 +138,7 @@
         save_method = 'update';
         $('#form')[0].reset(); // reset form on modals
         $('input, select, textarea').removeClass('is-valid'); // clear error class
+        $('input, select, textarea').removeClass('is-invalid'); // clear error class
         $('.help-block').empty(); // clear error string
 
         //Ajax Load data from ajax
@@ -145,8 +148,8 @@
             dataType: "JSON",
             success: function(data) {
                 $('[name="id"]').val(data.id);
+                $('[name="type"]').val(data.type);
                 $('[name="status"]').val(data.status);
-                // $('[name="id_program_kerja"]').val(data.id_program_kerja);
                 get_program_kerja(data.id_program_kerja);
                 $('[name="keterangan"]').val(data.keterangan);
                 $('[name="created_at"]').val(data.created_at);
@@ -262,7 +265,7 @@
 
     function get_program_kerja(programKerjaID) {
         const prokerElem = $('[name="id_program_kerja"]');
-        const typeElem = $('[name="status"]');
+        const typeElem = $('[name="type"]');
 
         prokerElem.html(""); // reset
 
@@ -313,18 +316,48 @@
                 <form action="#" id="form" class="form-horizontal">
                     <input type="hidden" value="" name="id" />
                     <div class="form-body">
+                        <!--
+                            <div class="mb-3">
+                                <label class="form-label" for="status">Type</label>
+                                <select name="status" id="status" class="form-control form-control-user" autofocus>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Network">Network</option>
+                                    <option value="Aplikasi">Aplikasi</option>
+                                </select>
+                            </div>
+                        -->
                         <div class="mb-3">
-                            <label class="form-label" for="status">Type</label>
-                            <select name="status" id="status" class="form-control form-control-user" autofocus>
+                            <label class="form-label" for="type">Type</label>
+                            <select name="type" id="type" class="form-control form-control-user" autofocus>
                                 <option value="">-- Pilih --</option>
-                                <option value="Network">Network</option>
-                                <option value="Aplikasi">Aplikasi</option>
+                                <?php
+                                $list = data_type();
+                                foreach ($list as $key => $value) {
+                                ?>
+                                    <option value="<?= $value ?>"><?= $value ?></option>
+                                <?php
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="id_program_kerja">Sasaran Program</label>
                             <select name="id_program_kerja" id="id_program_kerja" class="form-control form-control-user" autofocus>
                                 <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="status">Status</label>
+                            <select name="status" id="status" class="form-control form-control-user" autofocus>
+                                <option value="">-- Pilih --</option>
+                                <?php
+                                $list = data_status();
+                                foreach ($list as $key => $value) {
+                                ?>
+                                    <option value="<?= $value ?>"><?= $value ?></option>
+                                <?php
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="mb-3">

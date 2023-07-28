@@ -36,17 +36,18 @@ class Keterangan extends CI_Controller
         $list = $this->HistoryKeterangan_model->get_datatables();
         $data = array();
         $no = filter_input(INPUT_POST, 'start');
-        foreach ($list as $keterangan) {
+        foreach ($list as $item) {
             $no++;
             $row = array();
 
-            $row[] = '<input type="checkbox" class="data-check" value="' . $keterangan->id . '">';
+            $row[] = '<input type="checkbox" class="data-check" value="' . $item->id . '">';
             $row[] = $no;
-            $row[] = $keterangan->sasaran_program;
-            $row[] = $keterangan->status;
-            $row[] = $keterangan->keterangan;
-            $row[] = custom_date($keterangan->created_at);
-            $row[] = action_button($keterangan->id, 'ubah_data', 'hapus_data');
+            $row[] = $item->sasaran_program;
+            $row[] = $item->type;
+            $row[] = badge_type($item->status);
+            $row[] = $item->keterangan;
+            $row[] = custom_date($item->created_at);
+            $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;
         }
@@ -73,12 +74,29 @@ class Keterangan extends CI_Controller
         $this->_validate();
 
         $data = array(
+            'type' => $this->input->post('type'),
             'status' => $this->input->post('status'),
             'id_program_kerja' => $this->input->post('id_program_kerja'),
             'keterangan' => $this->input->post('keterangan')
         );
 
         $insert = $this->HistoryKeterangan_model->save($data);
+
+        // update status in program_kerja table
+
+        $status = data_status();
+
+        $data = array(
+            'status' => $this->input->post('status')
+        );
+
+        switch ($this->input->post('status')) {
+            case $status[1]:
+                $data['value'] = 100;
+                break;
+        }
+
+        $this->ProgramKerja_model->update(array('id' => $this->input->post('id_program_kerja')), $data);
 
         echo json_encode(array("status" => true));
     }
@@ -88,6 +106,7 @@ class Keterangan extends CI_Controller
         $this->_validate();
 
         $data = array(
+            'type' => $this->input->post('type'),
             'status' => $this->input->post('status'),
             'id_program_kerja' => $this->input->post('id_program_kerja'),
             'keterangan' => $this->input->post('keterangan')
@@ -122,6 +141,12 @@ class Keterangan extends CI_Controller
         if ($this->input->post('id_program_kerja') == '') {
             $data['inputerror'][] = 'id_program_kerja';
             $data['error_string'][] = 'Sasaran Program tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('type') == '') {
+            $data['inputerror'][] = 'status';
+            $data['error_string'][] = 'Status tidak boleh kosong';
             $data['status'] = false;
         }
 

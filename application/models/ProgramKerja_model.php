@@ -6,8 +6,8 @@ class ProgramKerja_model extends CI_Model
 
     private $table = 'program_kerja';
 
-    public $column_order = array(null, null, 'name', 'value', 'type', 'status', 'start_date', 'end_date', null); //set column field database for datatable orderable
-    public $column_search = array('name', 'value', 'type', 'status', 'start_date', 'end_date'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    public $column_order = array(null, null, 'name', 'value', 'type', 'status', 'start_date', 'end_date', 'keterangan', null); //set column field database for datatable orderable
+    public $column_search = array('name', 'value', 'type', 'status', 'start_date', 'end_date', 'keterangan'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     public $order = array('name' => 'asc'); // default order
 
     private function _get_datatables_query()

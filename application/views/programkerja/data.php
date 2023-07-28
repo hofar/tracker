@@ -38,7 +38,7 @@
                         <th scope="col">Status</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
-                        <!-- <th scope="col">Keterangan</th> -->
+                        <th scope="col">Keterangan</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -362,8 +362,14 @@
                             <div class="col-sm">
                                 <select name="type" id="type" class="form-select" autofocus>
                                     <option value="">-- Pilih --</option>
-                                    <option value="Network">Network</option>
-                                    <option value="Aplikasi">Aplikasi</option>
+                                    <?php
+                                    $list = data_type();
+                                    foreach ($list as $key => $value) {
+                                    ?>
+                                        <option value="<?= $value ?>"><?= $value ?></option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                                 <span class="help-block"></span>
                             </div>
@@ -373,9 +379,14 @@
                             <div class="col-sm">
                                 <select name="status" id="status" class="form-select" autofocus>
                                     <option value="">-- Pilih --</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Not Started">Not Started</option>
+                                    <?php
+                                    $list = data_status();
+                                    foreach ($list as $key => $value) {
+                                    ?>
+                                        <option value="<?= $value ?>"><?= $value ?></option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                                 <span class="help-block"></span>
                             </div>
@@ -394,7 +405,6 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
-                        <!--
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
                             <div class="col-sm">
@@ -402,7 +412,6 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
-                        -->
                     </div>
                 </form>
             </div>

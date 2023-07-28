@@ -123,7 +123,7 @@ class ProgramKerja extends CI_Controller
 
             // $group_keterangan .= '<button type="button" class="btn btn-sm btn-outline-secondary btn-add-keterangan" data-id="' . $item->id . '" data-status="' . $item->status . '"><i class="bi bi-plus-circle"></i> Tambah Keterangan</button>';
 
-            // $row[] = $group_keterangan;
+            $row[] = custom_div($item->keterangan);
             $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;
@@ -161,7 +161,7 @@ class ProgramKerja extends CI_Controller
             'status' => $this->input->post('status'),
             'start_date' => $this->input->post('start_date'),
             'end_date' => $this->input->post('end_date'),
-            // 'keterangan' => $this->input->post('keterangan'),
+            'keterangan' => $this->input->post('keterangan'),
         );
 
         $insert = $this->ProgramKerja_model->save($data);
@@ -182,7 +182,7 @@ class ProgramKerja extends CI_Controller
             'status' => $this->input->post('status'),
             'start_date' => $this->input->post('start_date'),
             'end_date' => $this->input->post('end_date'),
-            // 'keterangan' => $this->input->post('keterangan'),
+            'keterangan' => $this->input->post('keterangan'),
         );
 
         $this->ProgramKerja_model->update(array('id' => $this->input->post('id')), $data);
@@ -253,11 +253,11 @@ class ProgramKerja extends CI_Controller
             $data['status'] = false;
         }
 
-        // if ($this->input->post('keterangan') == '') {
-        //     $data['inputerror'][] = 'keterangan';
-        //     $data['error_string'][] = 'Keterangan tidak boleh kosong';
-        //     $data['status'] = false;
-        // }
+        if ($this->input->post('keterangan') == '') {
+            $data['inputerror'][] = 'keterangan';
+            $data['error_string'][] = 'Keterangan tidak boleh kosong';
+            $data['status'] = false;
+        }
 
         if ($data['status'] === false) {
             echo json_encode($data);
