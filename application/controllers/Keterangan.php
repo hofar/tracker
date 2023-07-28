@@ -145,7 +145,7 @@ class Keterangan extends CI_Controller
         }
 
         if ($this->input->post('type') == '') {
-            $data['inputerror'][] = 'status';
+            $data['inputerror'][] = 'type';
             $data['error_string'][] = 'Status tidak boleh kosong';
             $data['status'] = false;
         }

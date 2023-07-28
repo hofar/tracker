@@ -275,6 +275,11 @@
                 url = "<?php echo site_url('ProgramKerja/getDataAplikasi') ?>";
             }
 
+            const defaultOption = $('<option></option>');
+            defaultOption.val('');
+            defaultOption.text('-- Pilih --');
+            prokerElem.append(defaultOption);
+
             //Ajax Load data from ajax
             $.ajax({
                 url: url,
