@@ -80,7 +80,7 @@ class Keterangan extends CI_Controller
             'keterangan' => $this->input->post('keterangan')
         );
 
-        $insert = $this->HistoryKeterangan_model->save($data);
+        $insert_id = $this->HistoryKeterangan_model->save($data);
 
         // update status in program_kerja table
 
@@ -93,6 +93,40 @@ class Keterangan extends CI_Controller
         switch ($this->input->post('status')) {
             case $status[1]:
                 $data['value'] = 100;
+                break;
+        }
+
+        $this->ProgramKerja_model->update(array('id' => $this->input->post('id_program_kerja')), $data);
+
+        echo json_encode(array("status" => true));
+    }
+
+    public function ajax_add_keterangan()
+    {
+        $this->_validate_v2();
+
+        $data = array(
+            'id_program_kerja' => $this->input->post('id_program_kerja'),
+            'status' => $this->input->post('status'),
+            'keterangan' => $this->input->post('keterangan')
+        );
+
+        $insert_id = $this->HistoryKeterangan_model->save($data);
+
+        // update status in program_kerja table
+
+        $status = data_status();
+
+        $data = array(
+            'value' => $this->input->post('value'),
+            'status' => $this->input->post('status'),
+            'end_date' => null,
+        );
+
+        switch ($this->input->post('status')) {
+            case $status[1]:
+                $data['value'] = 100;
+                $data['end_date'] = date('Y-m-d H:i:s');
                 break;
         }
 
@@ -165,6 +199,43 @@ class Keterangan extends CI_Controller
         if ($this->input->post('created_at') == '') {
             $data['inputerror'][] = 'created_at';
             $data['error_string'][] = 'Tanggal &amp; Waktu tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($data['status'] === false) {
+            echo json_encode($data);
+            exit();
+        }
+    }
+
+    private function _validate_v2()
+    {
+        $data = array();
+        $data['error_string'] = array();
+        $data['inputerror'] = array();
+        $data['status'] = true;
+
+        if ($this->input->post('id_program_kerja') == '') {
+            $data['inputerror'][] = 'id_program_kerja';
+            $data['error_string'][] = 'Sasaran Program tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('value') == '') {
+            $data['inputerror'][] = 'value';
+            $data['error_string'][] = 'Value tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('status') == '') {
+            $data['inputerror'][] = 'status';
+            $data['error_string'][] = 'Status tidak boleh kosong';
+            $data['status'] = false;
+        }
+
+        if ($this->input->post('keterangan') == '') {
+            $data['inputerror'][] = 'keterangan';
+            $data['error_string'][] = 'Keterangan tidak boleh kosong';
             $data['status'] = false;
         }
 

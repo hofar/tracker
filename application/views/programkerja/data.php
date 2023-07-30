@@ -38,7 +38,7 @@
                         <th scope="col">Status</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
-                        <th scope="col">Keterangan</th>
+                        <!-- <th scope="col">Keterangan</th> -->
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -156,6 +156,9 @@
         $("#btnSave").click(function() {
             save();
         });
+        $("#btnSaveKeterangan").click(function() {
+            saveKeterangan();
+        });
         $("#import_excel").click(function() {
             import_excel();
         });
@@ -178,15 +181,31 @@
         function tambah_data() {
             save_method = 'add';
             $('#form')[0].reset(); // reset form on modals
+            $('#formTambahKeterangan')[0].reset(); // reset form on modals
             $('input, select, textarea').removeClass('is-valid is-invalid'); // clear error class
             $('.help-block').empty(); // clear error string
             $('#modalCrudData').modal('show'); // show bootstrap modal
             $('.modal-title').text('Tambah Data'); // Set Title to Bootstrap modal title
+
+            // Dapatkan waktu saat ini dalam format tipe datetime-local (YYYY-MM-DDTHH:mm)
+            let currentDate = new Date();
+            let currentYear = currentDate.getFullYear();
+            let currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+            let currentDay = String(currentDate.getDate()).padStart(2, '0');
+            let currentHours = String(currentDate.getHours()).padStart(2, '0');
+            let currentMinutes = String(currentDate.getMinutes()).padStart(2, '0');
+
+            // Format nilai datetime-local
+            let formattedDateTime = `${currentYear}-${currentMonth}-${currentDay}T${currentHours}:${currentMinutes}`;
+
+            // Set nilai pada elemen input menggunakan jQuery
+            $('#start_date').val(formattedDateTime);
         }
 
         function ubah_data(id) {
             save_method = 'update';
             $('#form')[0].reset(); // reset form on modals
+            $('#formTambahKeterangan')[0].reset(); // reset form on modals
             $('input, select, textarea').removeClass('is-valid is-invalid'); // clear error class
             $('.help-block').empty(); // clear error string
 
@@ -262,6 +281,41 @@
             });
         }
 
+        function saveKeterangan() {
+            let url = "<?php echo site_url('Keterangan/ajax_add_keterangan') ?>";
+
+            // ajax adding data to database
+            let formData = new FormData($('#formTambahKeterangan')[0]);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function(data) {
+                    if (data.status) //if success close modal and reload ajax table
+                    {
+                        $('#modalKeteranganData').modal('hide');
+                        reload_table();
+                    } else {
+                        for (let i = 0; i < data.inputerror.length; i++) {
+                            let currentElem = $('#formTambahKeterangan [name="' + data.inputerror[i] + '"]');
+                            currentElem.nextAll('.invalid-feedback').remove();
+                            if (currentElem.nextAll('.invalid-feedback').length <= 0) {
+                                currentElem.addClass('is-invalid').after('<div class="invalid-feedback">' + data.error_string[i] + '</div>');
+                            }
+                        }
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').attr('disabled', false); //set button enable
+                }
+            });
+        }
+
         function hapus_data(id) {
             if (confirm('Are you sure delete this data?')) {
                 // ajax delete data to database
@@ -314,52 +368,255 @@
 
         function import_excel() {
             $('#form')[0].reset(); // reset form on modals
+            $('#formTambahKeterangan')[0].reset(); // reset form on modals
             $('#importExcelModal').modal('show');
         }
 
-        function validateInput() {
+        function add_keterangan(data) {
+            $('#form')[0].reset(); // reset form on modals
+            $('#formTambahKeterangan')[0].reset(); // reset form on modals
+            $('#modalKeteranganData .form-control').removeClass('has-error'); // clear error class
+            $('#modalKeteranganData .help-block').empty(); // clear error string
+
+            $('#formTambahKeterangan #value_addKet').attr("data-value", data.value);
+            $('#formTambahKeterangan #status_addKet').attr("data-status", data.status);
+
+            $('#formTambahKeterangan #id_addKet').val(data.id);
+            $('#formTambahKeterangan #value_addKet').val(data.value);
+            $('#formTambahKeterangan #status_addKet').val(data.status);
+            $('#formTambahKeterangan #keterangan_addKet').val("");
+
+            $('#modalKeteranganData').modal('show'); // show bootstrap modal
+            $('#modalKeteranganData .modal-title').text('Tambah Keterangan Data'); // Set Title to Bootstrap modal title
+        }
+
+        // Fungsi untuk mengatur nilai berdasarkan pilihan status
+        function setValueBasedOnStatus() {
             let inputElement = $('#value');
-            let value = parseInt(inputElement.val()); // Mengonversi input ke tipe data integer
+            let statusSelect = $('#status');
+            let value = parseInt(inputElement.val());
 
-            // Memastikan nilai tidak di bawah 0 atau di atas 100
-            value = Math.min(Math.max(value, 0), 100);
+            // Dapatkan waktu saat ini dalam format tipe datetime-local (YYYY-MM-DDTHH:mm)
+            let currentDate = new Date();
+            let currentYear = currentDate.getFullYear();
+            let currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+            let currentDay = String(currentDate.getDate()).padStart(2, '0');
+            let currentHours = String(currentDate.getHours()).padStart(2, '0');
+            let currentMinutes = String(currentDate.getMinutes()).padStart(2, '0');
 
-            // Update nilai input
+            // Format nilai datetime-local
+            let formattedDateTime = `${currentYear}-${currentMonth}-${currentDay}T${currentHours}:${currentMinutes}`;
+
+            // Mengatur nilai berdasarkan pilihan status
+            let selectedStatus = statusSelect.val();
+            if (selectedStatus === "<?= data_status()[1] ?>") {
+                value = 100;
+
+                // Set nilai pada elemen input menggunakan jQuery
+                $('#end_date').val(formattedDateTime);
+            } else if (selectedStatus === "<?= data_status()[2] ?>") {
+                value = 0;
+                $('#start_date').val("");
+                $('#end_date').val("");
+            } else if (selectedStatus === "<?= data_status()[0] ?>") {
+                if (value === "" || value === 0 || value === 100 || isNaN(value)) {
+                    value = 50;
+                }
+                // Set nilai pada elemen input menggunakan jQuery
+                $('#start_date').val(formattedDateTime);
+                $('#end_date').val("");
+            }
+
+            // Mengupdate nilai input berdasarkan pilihan status
             inputElement.val(value);
+        }
 
-            // Cek apakah nilai input adalah 100
+        // Fungsi untuk mengatur pilihan status berdasarkan nilai
+        function setStatusBasedOnValue() {
+            let inputElement = $('#value');
+            let statusSelect = $('#status');
+            let value = parseInt(inputElement.val());
+
+            // Mengatur opsi "Completed" berdasarkan nilai
+            let completedOption = statusSelect.find('option[value="<?= data_status()[1] ?>"]');
             if (value === 100) {
-                // Jika nilai adalah 100, pilih opsi "Completed" secara otomatis
-                let statusSelect = $('#status');
-                let CompletedOption = statusSelect.find('option[value="Completed"]');
-                if (CompletedOption.length) {
-                    CompletedOption.prop('selected', true);
+                if (completedOption.length) {
+                    completedOption.prop('selected', true);
                 }
             } else {
-                // Jika nilai bukan 100, pastikan opsi "Completed" tidak dipilih
-                let statusSelect = $('#status');
-                let CompletedOption = statusSelect.find('option[value="Completed"]');
-                if (CompletedOption.length && CompletedOption.prop('selected')) {
+                if (completedOption.length && completedOption.prop('selected')) {
                     statusSelect.val(''); // Mengosongkan pilihan status
                 }
             }
         }
 
-        function add_keterangan(data) {
-            $('#formTambahKeterangan')[0].reset(); // reset form on modals
-            $('.form-control').removeClass('has-error'); // clear error class
-            $('.help-block').empty(); // clear error string
+        // Fungsi utama untuk validasi dan interaksi berdasarkan nilai input dan pilihan status
+        function validateInput() {
+            let inputElement = $('#value');
+            let statusSelect = $('#status');
+            let value = inputElement.val().trim(); // Mengambil nilai input dan menghapus spasi awal/akhir
 
-            $('[name="name"]').val(data.id);
-            $('[name="status_keterangan"]').val(data.status);
-            $('[name="keterangan"]').val("");
+            // Jika nilai #value kosong, kosongkan juga #status
+            if (value === '') {
+                statusSelect.val('');
+            } else {
+                // Jika nilai #value bukan kosong, lanjutkan dengan validasi lainnya
+                value = parseInt(value); // Mengonversi input ke tipe data integer
 
-            $('#modalKeteranganData').modal('show'); // show bootstrap modal
-            $('.modal-title').text('Tambah Keterangan Data'); // Set Title to Bootstrap modal title
+                // Jika nilai #value berisi 0, set #status menjadi "Not Started"
+                if (value === 0) {
+                    statusSelect.val('<?= data_status()[2] ?>');
+                } else if (value === 100) {
+                    statusSelect.val('<?= data_status()[1] ?>');
+                } else {
+                    // Jika nilai #value di antara 0 dan 100 (tapi bukan 0 dan 100),
+                    // set #status menjadi "In Progress" atau "<?= data_status()[0] ?>"
+                    statusSelect.val('<?= data_status()[0] ?>');
+                }
+            }
+
+            // Memastikan nilai tidak di bawah 0 atau di atas 100
+            value = Math.min(Math.max(value, 0), 100);
+
+            // Mendapatkan nilai sebelumnya dari #status
+            let prevStatus = statusSelect.data('prevStatus');
+
+            // Mengatur pilihan status berdasarkan nilai
+            setStatusBasedOnValue();
+
+            // Jika nilai #value berisi 0 atau 100 dan #status = "<?= data_status()[0] ?>", kosongkan #value
+            let selectedStatus = statusSelect.val();
+            if ((value === 0 || value === 100) && selectedStatus === "<?= data_status()[0] ?>") {
+                inputElement.val('');
+            } else {
+                // Update nilai input
+                inputElement.val(value);
+            }
+
+            // Menyimpan nilai status sebelumnya untuk digunakan pada iterasi selanjutnya
+            statusSelect.data('prevStatus', selectedStatus);
+
+            // Jika status berubah, panggil fungsi setValueBasedOnStatus
+            if (selectedStatus !== prevStatus) {
+                setValueBasedOnStatus();
+            }
         }
 
-        // Tambahkan event listener untuk input
-        $('#value').on('keyup change', validateInput);
+        // Fungsi untuk mengatur nilai berdasarkan pilihan status
+        function setValueBasedOnStatusAddKet() {
+            let inputElement = $('#value_addKet');
+            let statusSelect = $('#status_addKet');
+            let value = parseInt(inputElement.val());
+            let dataValue = parseInt(inputElement.attr('data-value'));
+            let dataStatus = statusSelect.attr('data-status');
+
+            // Mengatur nilai berdasarkan pilihan status
+            let selectedStatus = statusSelect.val();
+            if (selectedStatus === "<?= data_status()[1] ?>") {
+                value = 100;
+            } else if (selectedStatus === "<?= data_status()[2] ?>") {
+                value = 0;
+            } else if (selectedStatus === "<?= data_status()[0] ?>") {
+                value = 50;
+                if ((value !== "" || value !== 0 || value !== 100) && dataStatus !== "<?= data_status()[1] ?>") {
+                    value = dataValue;
+                }
+            }
+
+            // Mengupdate nilai input berdasarkan pilihan status
+            inputElement.val(value);
+        }
+
+        // Fungsi untuk mengatur pilihan status berdasarkan nilai
+        function setStatusBasedOnValueAddKet() {
+            let inputElement = $('#value_addKet');
+            let statusSelect = $('#status_addKet');
+            let value = parseInt(inputElement.val());
+
+            // Mengatur opsi "Completed" berdasarkan nilai
+            let completedOption = statusSelect.find('option[value="<?= data_status()[1] ?>"]');
+            if (value === 100) {
+                if (completedOption.length) {
+                    completedOption.prop('selected', true);
+                }
+            } else {
+                if (completedOption.length && completedOption.prop('selected')) {
+                    statusSelect.val(''); // Mengosongkan pilihan status
+                }
+            }
+        }
+
+        // Fungsi utama untuk validasi dan interaksi berdasarkan nilai input dan pilihan status
+        function validateInputAddKet() {
+            let inputElement = $('#value_addKet');
+            let statusSelect = $('#status_addKet');
+            let value = inputElement.val().trim(); // Mengambil nilai input dan menghapus spasi awal/akhir
+
+            // Jika nilai #value kosong, kosongkan juga #status
+            if (value === '') {
+                statusSelect.val('');
+            } else {
+                // Jika nilai #value bukan kosong, lanjutkan dengan validasi lainnya
+                value = parseInt(value); // Mengonversi input ke tipe data integer
+
+                // Jika nilai #value berisi 0, set #status menjadi "Not Started"
+                if (value === 0) {
+                    statusSelect.val('<?= data_status()[2] ?>');
+                } else if (value === 100) {
+                    statusSelect.val('<?= data_status()[1] ?>');
+                } else {
+                    // Jika nilai #value di antara 0 dan 100 (tapi bukan 0 dan 100),
+                    // set #status menjadi "In Progress" atau "<?= data_status()[0] ?>"
+                    statusSelect.val('<?= data_status()[0] ?>');
+                }
+            }
+
+            // Memastikan nilai tidak di bawah 0 atau di atas 100
+            value = Math.min(Math.max(value, 0), 100);
+
+            // Mendapatkan nilai sebelumnya dari #status
+            let prevStatus = statusSelect.data('prevStatus');
+
+            // Mengatur pilihan status berdasarkan nilai
+            setStatusBasedOnValueAddKet();
+
+            // Jika nilai #value berisi 0 atau 100 dan #status = "<?= data_status()[0] ?>", kosongkan #value
+            let selectedStatus = statusSelect.val();
+            if ((value === 0 || value === 100) && selectedStatus === "<?= data_status()[0] ?>") {
+                inputElement.val('');
+            } else {
+                // Update nilai input
+                inputElement.val(value);
+            }
+
+            // Menyimpan nilai status sebelumnya untuk digunakan pada iterasi selanjutnya
+            statusSelect.data('prevStatus', selectedStatus);
+
+            // Jika status berubah, panggil fungsi setValueBasedOnStatus
+            if (selectedStatus !== prevStatus) {
+                setValueBasedOnStatusAddKet();
+            }
+        }
+
+        // Event listener untuk memantau perubahan pada elemen #value
+        $('#value').on('input change', function() {
+            validateInput();
+        });
+
+        // Event listener untuk memantau perubahan pada elemen #status
+        $('#status').on('input change', function() {
+            setValueBasedOnStatus();
+        });
+
+        // Event listener untuk memantau perubahan pada elemen #value
+        $('#value_addKet').on('input change', function() {
+            validateInputAddKet();
+        });
+
+        // Event listener untuk memantau perubahan pada elemen #status
+        $('#status_addKet').on('input change', function() {
+            setValueBasedOnStatusAddKet();
+        });
     });
 </script>
 
@@ -466,25 +723,42 @@
             </div>
             <div class="modal-body form">
                 <form id="formTambahKeterangan">
-                    <input type="hidden" value="" name="id" />
+                    <input type="hidden" value="" id="id_addKet" name="id_program_kerja" />
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="status_keterangan">Status Keterangan</label>
+                        <label class="col-sm-3 col-form-label" for="value_addKet">Value</label>
                         <div class="col-sm">
-                            <input id="status_keterangan" name="status_keterangan" placeholder="Status Keterangan" class="form-control" type="text" readonly autofocus>
+                            <input id="value_addKet" name="value" placeholder="Value" class="form-control" type="number" max="100" min="0" autofocus>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="keterangan">Keterangan</label>
+                        <label class="col-sm-3 col-form-label" for="status_addKet">Status</label>
                         <div class="col-sm">
-                            <textarea name="keterangan" id="keterangan" rows="4" class="form-control" placeholder="Isi keterangan baru" autofocus></textarea>
+                            <select name="status" id="status_addKet" class="form-select" autofocus>
+                                <option value="">-- Pilih --</option>
+                                <?php
+                                $list = data_status();
+                                foreach ($list as $key => $value) {
+                                ?>
+                                    <option value="<?= $value ?>"><?= $value ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="keterangan_addKet">Keterangan</label>
+                        <div class="col-sm">
+                            <textarea name="keterangan" id="keterangan_addKet" rows="4" class="form-control" placeholder="Isi keterangan baru" autofocus></textarea>
                             <span class="help-block"></span>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave">Simpan</button>
+                <button type="button" class="btn btn-primary" id="btnSaveKeterangan">Simpan Keterangan</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div><!-- /.modal-content -->

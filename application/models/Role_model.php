@@ -8,7 +8,7 @@ class Role_model extends CI_Model
     public $table = 'user_role';
     public $column_order = array(null, null, 'name', 'is_super', null); //set column field database for datatable orderable
     public $column_search = array('name', 'is_super'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    public $order = array('name' => 'asc'); // default order
+    public $order = array('id' => 'desc'); // default order
 
     public function __construct()
     {

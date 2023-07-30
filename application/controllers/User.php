@@ -90,7 +90,7 @@ class User extends CI_Controller
             'create_at' => date('Y-m-d H:i:s')
         );
 
-        $insert = $this->User_model->save($data);
+        $insert_id = $this->User_model->save($data);
 
         echo json_encode(array("status" => true));
     }

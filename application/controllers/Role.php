@@ -87,7 +87,7 @@ class Role extends CI_Controller
             'is_super' => $akses_super,
         );
 
-        $insert = $this->Role_model->save($data);
+        $insert_id = $this->Role_model->save($data);
 
         echo json_encode(array("status" => true));
     }

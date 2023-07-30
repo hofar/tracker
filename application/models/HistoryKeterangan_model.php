@@ -17,7 +17,7 @@ class HistoryKeterangan_model extends CI_Model
 
         $this->column_order = array(null, $this->table_proker . '.name', $this->table . '.type', $this->table . '.status', $this->table . '.keterangan', $this->table . '.created_at'); //set column field database for datatable orderable
         $this->column_search = array($this->table_proker . '.name', $this->table . '.type', $this->table . '.status', $this->table . '.keterangan', $this->table . '.created_at');  //set column field database for datatable searchable just firstname , lastname , address are searchable
-        $this->order = array('sasaran_program' => 'asc'); // default order
+        $this->order = array('id' => 'desc'); // default order
     }
 
     private function _get_datatables_query()

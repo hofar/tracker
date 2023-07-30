@@ -59,6 +59,21 @@ if (!function_exists('action_button')) {
     }
 }
 
+if (!function_exists('action_button_v2')) {
+    function action_button_v2($item, $array)
+    {
+        // data-status="' . $item->status . '"
+
+        $group_button = '<div class="btn-group" role="group" aria-label="Group action">'
+            . '<a title="Keterangan" data-id="' . $item->id . '" data-value="' . $item->value . '" data-status="' . $item->status . '" class="btn btn-sm btn-outline-primary btn-add-keterangan"><i class="bi bi-plus-circle"></i> Tambah Keterangan</a>'
+            . '<a title="Edit" data-id="' . $item->id . '" class="btn btn-sm btn-outline-secondary btn-edit">Edit <i class="bi bi-pencil-square"></i></i></a>'
+            . '<a title="Hapus" data-id="' . $item->id . '" class="btn btn-sm btn-outline-danger btn-hapus">Hapus <i class="bi bi-trash"></i></a>'
+            . '</div>';
+
+        return $group_button;
+    }
+}
+
 if (!function_exists('custom_date')) {
     function custom_date($date)
     {

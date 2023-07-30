@@ -123,8 +123,8 @@ class ProgramKerja extends CI_Controller
 
             // $group_keterangan .= '<button type="button" class="btn btn-sm btn-outline-secondary btn-add-keterangan" data-id="' . $item->id . '" data-status="' . $item->status . '"><i class="bi bi-plus-circle"></i> Tambah Keterangan</button>';
 
-            $row[] = custom_div($item->keterangan);
-            $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
+            // $row[] = custom_div($item->keterangan);
+            $row[] = action_button_v2($item, ['keterangan', 'ubah_data', 'hapus_data']);
 
             $data[] = $row;
         }
@@ -159,12 +159,37 @@ class ProgramKerja extends CI_Controller
             'value' => $this->input->post('value'),
             'type' => $this->input->post('type'),
             'status' => $this->input->post('status'),
-            'start_date' => $this->input->post('start_date'),
-            'end_date' => $this->input->post('end_date'),
             'keterangan' => $this->input->post('keterangan'),
         );
 
-        $insert = $this->ProgramKerja_model->save($data);
+        $status = data_status();
+
+        switch ($this->input->post('status')) {
+            case $status[0]: // In Progress
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = null;
+                break;
+            case $status[1]: // Completed
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+                break;
+            case $status[2]: // Not Started
+                $data['start_date'] = null;
+                $data['end_date'] = null;
+                break;
+        }
+
+        $insert_id = $this->ProgramKerja_model->save($data);
+
+        // save keterangan
+
+        $data = array(
+            'id_program_kerja' => $insert_id,
+            'status' => $this->input->post('status'),
+            'keterangan' => $this->input->post('keterangan')
+        );
+
+        $insert_id = $this->HistoryKeterangan_model->save($data);
 
         echo json_encode(array("status" => true));
     }
@@ -241,17 +266,17 @@ class ProgramKerja extends CI_Controller
             $data['status'] = false;
         }
 
-        if ($this->input->post('start_date') == '') {
-            $data['inputerror'][] = 'start_date';
-            $data['error_string'][] = 'Start Date tidak boleh kosong';
-            $data['status'] = false;
-        }
+        // if ($this->input->post('start_date') == '') {
+        //     $data['inputerror'][] = 'start_date';
+        //     $data['error_string'][] = 'Start Date tidak boleh kosong';
+        //     $data['status'] = false;
+        // }
 
-        if ($this->input->post('end_date') == '') {
-            $data['inputerror'][] = 'end_date';
-            $data['error_string'][] = 'End Date tidak boleh kosong';
-            $data['status'] = false;
-        }
+        // if ($this->input->post('end_date') == '') {
+        //     $data['inputerror'][] = 'end_date';
+        //     $data['error_string'][] = 'End Date tidak boleh kosong';
+        //     $data['status'] = false;
+        // }
 
         if ($this->input->post('keterangan') == '') {
             $data['inputerror'][] = 'keterangan';
