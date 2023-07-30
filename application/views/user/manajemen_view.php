@@ -290,12 +290,6 @@
 
     function get_role(roleId) {
         const roleElem = $('[name="role_select"]');
-        roleElem.html(""); // reset
-
-        const defaultOption = $('<option></option>');
-        defaultOption.val('');
-        defaultOption.text('-- Silakan Pilih --');
-        roleElem.append(defaultOption);
 
         $.ajax({
             url: "<?= site_url('role/get_role') ?>",
@@ -307,6 +301,13 @@
             },
             success: function(data, textStatus, jqXHR) {
                 if (data.status) {
+                    roleElem.html(""); // reset
+
+                    const defaultOption = $('<option></option>');
+                    defaultOption.val('');
+                    defaultOption.text('-- Silakan Pilih --');
+                    roleElem.append(defaultOption);
+
                     let opt = data.opt;
                     opt.forEach((item) => {
                         const option = $('<option></option>');
