@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2023 at 06:33 PM
+-- Generation Time: Jul 30, 2023 at 08:42 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.2.4
 
@@ -45,7 +45,17 @@ INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `type`
 (2, 3, 'test 2', 'Network', 'In Progress', '2023-07-25 22:35:57'),
 (3, 14, 'test awal keterangan', 'Aplikasi', 'In Progress', '2023-07-25 23:16:40'),
 (4, 10, 'test', 'Aplikasi', 'In Progress', '2023-07-26 15:04:27'),
-(6, 12, 'test baru', 'Aplikasi', 'Completed', '2023-07-28 23:30:21');
+(6, 12, 'test baru', 'Aplikasi', 'Completed', '2023-07-28 23:30:21'),
+(7, 11, 'test 76', 'Network', 'In Progress', '2023-07-30 22:40:35'),
+(8, 11, 'test 96', 'Network', 'In Progress', '2023-07-30 22:41:31'),
+(9, 11, 'test 100', 'Network', 'Completed', '2023-07-30 22:42:27'),
+(10, 11, 'test 100 end_date', 'Network', 'Completed', '2023-07-30 22:46:14'),
+(11, 11, 'test 99', 'Network', 'In Progress', '2023-07-30 23:23:33'),
+(12, 40, 'test edit 2', 'Network', 'In Progress', '2023-07-30 23:54:47'),
+(13, 41, 'test not start', 'Network', 'Not Started', '2023-07-30 23:55:26'),
+(14, 40, 'tambah data', 'Network', 'In Progress', '2023-07-30 23:56:00'),
+(19, 47, 'Contoh Keterangan', 'Network', 'In Progress', '2023-07-31 01:38:43'),
+(20, 48, 'Contoh Keterangan', 'Network', 'Completed', '2023-07-31 01:38:43');
 
 -- --------------------------------------------------------
 
@@ -79,11 +89,15 @@ INSERT INTO `program_kerja` (`id`, `name`, `value`, `type`, `keterangan`, `statu
 (8, 'CCTV PKO PIT E', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:35', NULL),
 (9, 'CCTV Tarahan', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:49', NULL),
 (10, 'CCTV View Poin PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:53', NULL),
-(11, 'CCTV Hauling PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:57', NULL),
+(11, 'CCTV Hauling PITE', 99, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:57', NULL),
 (12, 'CCTV Disposal PITE', 100, 'Aplikasi', 'test baru', 'Completed', '2023-07-24 17:48:03', '2023-07-28 23:29:00'),
 (13, 'Command Center', 100, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 22:07:20', '2023-07-14 22:07:24'),
 (14, 'GPS Tracking (Map Operation)', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-13 08:04:11', '2023-07-14 22:04:24'),
-(37, 'test edit', 0, 'Network', 'test 2', 'Not Started', '2023-07-26 18:24:00', '2023-07-26 18:25:00');
+(37, 'test edit', 0, 'Network', 'test 2', 'Not Started', '2023-07-26 18:24:00', '2023-07-26 18:25:00'),
+(40, 'test edit 2', 80, 'Aplikasi', 'test edit 2', 'In Progress', '2023-07-30 23:54:00', NULL),
+(41, 'test not start', 0, 'Network', 'test not start', 'Not Started', NULL, NULL),
+(47, 'test 1', 50, 'Network', 'Contoh Keterangan', 'In Progress', '2023-07-13 08:04:11', NULL),
+(48, 'test 2', 75, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 08:04:11', '2023-07-14 08:04:11');
 
 -- --------------------------------------------------------
 
@@ -171,13 +185,13 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `program_kerja`
 --
 ALTER TABLE `program_kerja`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `user_role`
@@ -193,7 +207,7 @@ ALTER TABLE `user_role`
 -- Constraints for table `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
-  ADD CONSTRAINT `history_keterangan` FOREIGN KEY (`id_program_kerja`) REFERENCES `program_kerja` (`id`);
+  ADD CONSTRAINT `history_keterangan` FOREIGN KEY (`id_program_kerja`) REFERENCES `program_kerja` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

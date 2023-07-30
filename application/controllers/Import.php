@@ -64,26 +64,65 @@ class Import extends CI_Controller
                     // Ambil nilai dari setiap kolom dan lakukan pemrosesan sesuai kebutuhan
                     $items = [];
 
-                    $items["name"] = $col[0];
-                    $items["value"] = $col[1];
-                    $items["type"] = $col[2];
-                    $items["status"] = $col[3];
-                    $items["start_date"] = $col[4];
-                    $items["end_date"] = $col[5];
-                    $items["keterangan"] = $col[6];
+                    $input_name = $col[0];
+                    $input_value = $col[1];
+                    $input_type = $col[2];
+                    $input_status = $col[3];
+                    $input_start_date = $col[4];
+                    $input_end_date = $col[5];
+                    $input_keterangan = $col[6];
+
+                    $items = array(
+                        "name" => $input_name,
+                        "value" => $input_value,
+                        "type" => $input_type,
+                        "status" => $input_status,
+                        // "start_date" => $input_start_date,
+                        // "end_date" => $input_end_date,
+                        "keterangan" => $input_keterangan,
+                    );
                     // ...
 
-                    $data_dump["data"][] = $items;
+                    // $data_dump["data"][] = $items;
                     // Lakukan penyimpanan data ke database sesuai kebutuhan
                     // Contoh: menggunakan model CodeIgniter
+
+                    $status = data_status();
+
+                    switch ($input_status) {
+                        case $status[0]: // In Progress
+                            $items['start_date'] = $input_start_date;
+                            $items['end_date'] = null;
+                            break;
+                        case $status[1]: // Completed
+                            $items['start_date'] = $input_start_date;
+                            $items['end_date'] = $input_end_date;
+                            break;
+                        case $status[2]: // Not Started
+                            $items['start_date'] = null;
+                            $items['end_date'] = null;
+                            break;
+                    }
+
+                    $insert_id = $this->ProgramKerja_model->save($items);
+
+                    // save keterangan
+
+                    $items = array(
+                        'id_program_kerja' => $insert_id,
+                        'status' => $input_status,
+                        'keterangan' => $input_keterangan
+                    );
+
+                    $insert_id = $this->HistoryKeterangan_model->save($items);
                 }
 
-                $this->ProgramKerja_model->insert_batch($data_dump["data"]);
+                // $this->ProgramKerja_model->insert_batch($data_dump["data"]);
             }
         }
 
         $this->session->set_flashdata('status', $data_dump["status"]);
 
-        redirect(site_url('programkerja/data'));
+        redirect(site_url('ProgramKerja/data'));
     }
 }
