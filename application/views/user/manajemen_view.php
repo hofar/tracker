@@ -167,7 +167,6 @@
         $('#form')[0].reset(); // reset form on modals
         $('input, select, textarea').removeClass('is-valid is-invalid'); // clear error class
         $('.help-block').empty(); // clear error string
-        get_role();
 
         //Ajax Load data from ajax
         $.ajax({
@@ -178,7 +177,8 @@
                 $('[name="id"]').val(data.id);
                 $('[name="name"]').val(data.nama);
                 $('[name="user_id"]').val(data.user_id);
-                $('[name="role_select"]').val(data.role_id);
+                // $('[name="role_select"]').val();
+                get_role(data.role_id);
                 $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
                 $('.modal-title').text('Ubah User'); // Set title to Bootstrap modal title
             },
@@ -288,7 +288,15 @@
         }
     }
 
-    function get_role() {
+    function get_role(roleId) {
+        const roleElem = $('[name="role_select"]');
+        roleElem.html(""); // reset
+
+        const defaultOption = $('<option></option>');
+        defaultOption.val('');
+        defaultOption.text('-- Silakan Pilih --');
+        roleElem.append(defaultOption);
+
         $.ajax({
             url: "<?= site_url('role/get_role') ?>",
             type: 'POST',
@@ -298,16 +306,22 @@
                 $('[name="role_select"]').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
             },
             success: function(data, textStatus, jqXHR) {
-                let opt = '<option value="">-- Silakan Pilih --</option>';
                 if (data.status) {
-                    $.each(data.opt, function(i, v) {
-                        opt += '<option value="' + v.id + '">' + v.name + '</option>';
+                    let opt = data.opt;
+                    opt.forEach((item) => {
+                        const option = $('<option></option>');
+                        option.val(item.id); // Anda bisa menggunakan properti lain sebagai value jika diperlukan
+                        option.text(item.name);
+                        roleElem.append(option);
                     });
                 }
-                $('[name="role_select"]').html(opt);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert(textStatus);
+            }
+        }).done(function(data) {
+            if (typeof roleId !== 'undefined' || roleId !== null) {
+                roleElem.val(roleId);
             }
         });
     }
