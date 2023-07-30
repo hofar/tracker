@@ -41,7 +41,17 @@
 
 <script>
     anychart.onDocumentReady(function() {
-        let theme = "<?= $this->input->get("theme") ?>";
+        const getStoredTheme = () => localStorage.getItem("theme")
+        const setStoredTheme = theme => localStorage.setItem("theme", theme)
+        const getPreferredTheme = () => {
+            const storedTheme = getStoredTheme()
+            if (storedTheme) {
+                return storedTheme
+            }
+
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+        }
+        let theme = getPreferredTheme() || "<?= $this->input->get("theme") ?>";
         let title = "Tersedianya Infrastruktur Jaringan dan Komunikasi Serta Kelengkapan Office Automation";
         const pieChartNetwork = document.getElementById("pieChartNetwork");
         const lineChartNetwork = document.getElementById("lineChartNetwork");

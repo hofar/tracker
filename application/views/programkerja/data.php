@@ -3,8 +3,8 @@
 </script>
 
 <!-- DataTable -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/v/bs5/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/datatables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/datatables.min.js"></script>
 
 <div class="card mb-3">
     <div class="card-body">
@@ -39,7 +39,7 @@
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
                         <th scope="col">Keterangan</th>
-                        <th scope="col"></th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,14 +53,41 @@
 </div>
 
 <script type="text/javascript">
-    var save_method; //for save method string
-    var table;
-    var base_url = '<?= base_url(); ?>';
+    let save_method; //for save method string
+    let table;
+    let base_url = '<?= base_url(); ?>';
+    const languageOptions = {
+        "search": "Cari:",
+        "buttons": {
+            "colvis": 'Ubah kolom',
+            "excel": 'Ekspor Excel',
+        },
+        "lengthMenu": "Menampilkan _MENU_ rekaman per halaman",
+        "zeroRecords": "Tidak ditemukan data - maaf",
+        "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+        "infoEmpty": "Tidak ada data tersedia",
+        "infoFiltered": "(disaring dari total _MAX_ rekaman)",
+        "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            "next": "Selanjutnya",
+            "previous": "Sebelumnya"
+        }
+    };
 
     $(document).ready(function() {
 
         //datatables
         table = $('#table').DataTable({
+            "dom": "Blfrtip",
+            "buttons": [{
+                "extend": 'colvis',
+                "columns": ':not(.noVis)',
+                "className": 'btn-outline-info',
+                "init": function(api, node, config) {
+                    $(node).removeClass('btn-secondary')
+                }
+            }],
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "order": [], //Initial no order.
@@ -74,6 +101,7 @@
             "columnDefs": [{
                 "targets": [0], //first column
                 "orderable": false, //set not orderable
+                "className": 'noVis'
             }, {
                 "targets": [1],
                 "orderable": false,
@@ -81,6 +109,11 @@
                 "targets": [-1], //last column
                 "orderable": false, //set not orderable
             }],
+            "lengthMenu": [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, "All"]
+            ],
+            "language": languageOptions
         });
 
         // Mendengarkan event draw.dt untuk mendeteksi ketika DataTables selesai di-render
@@ -187,7 +220,7 @@
         function save() {
             $('#btnSave').text('Menyimpan ...'); //change button text
             $('#btnSave').attr('disabled', true); //set button disable
-            var url;
+            let url;
 
             if (save_method === 'add') {
                 url = "<?php echo site_url('ProgramKerja/ajax_add') ?>";
@@ -196,7 +229,7 @@
             }
 
             // ajax adding data to database
-            var formData = new FormData($('#form')[0]);
+            let formData = new FormData($('#form')[0]);
             $.ajax({
                 url: url,
                 type: "POST",
@@ -210,8 +243,8 @@
                         $('#modalCrudData').modal('hide');
                         reload_table();
                     } else {
-                        for (var i = 0; i < data.inputerror.length; i++) {
-                            var currentElem = $('[name="' + data.inputerror[i] + '"]');
+                        for (let i = 0; i < data.inputerror.length; i++) {
+                            let currentElem = $('[name="' + data.inputerror[i] + '"]');
                             currentElem.nextAll('.invalid-feedback').remove();
                             if (currentElem.nextAll('.invalid-feedback').length <= 0) {
                                 currentElem.addClass('is-invalid').after('<div class="invalid-feedback">' + data.error_string[i] + '</div>');
@@ -249,7 +282,7 @@
         }
 
         function bulk_delete() {
-            var list_id = [];
+            let list_id = [];
             $(".data-check:checked").each(function() {
                 list_id.push(this.value);
             });
@@ -285,8 +318,8 @@
         }
 
         function validateInput() {
-            var inputElement = $('#value');
-            var value = parseInt(inputElement.val()); // Mengonversi input ke tipe data integer
+            let inputElement = $('#value');
+            let value = parseInt(inputElement.val()); // Mengonversi input ke tipe data integer
 
             // Memastikan nilai tidak di bawah 0 atau di atas 100
             value = Math.min(Math.max(value, 0), 100);
@@ -297,15 +330,15 @@
             // Cek apakah nilai input adalah 100
             if (value === 100) {
                 // Jika nilai adalah 100, pilih opsi "Completed" secara otomatis
-                var statusSelect = $('#status');
-                var CompletedOption = statusSelect.find('option[value="Completed"]');
+                let statusSelect = $('#status');
+                let CompletedOption = statusSelect.find('option[value="Completed"]');
                 if (CompletedOption.length) {
                     CompletedOption.prop('selected', true);
                 }
             } else {
                 // Jika nilai bukan 100, pastikan opsi "Completed" tidak dipilih
-                var statusSelect = $('#status');
-                var CompletedOption = statusSelect.find('option[value="Completed"]');
+                let statusSelect = $('#status');
+                let CompletedOption = statusSelect.find('option[value="Completed"]');
                 if (CompletedOption.length && CompletedOption.prop('selected')) {
                     statusSelect.val(''); // Mengosongkan pilihan status
                 }

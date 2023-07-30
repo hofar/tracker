@@ -4,7 +4,8 @@ $theme = !is_null($theme) ? $theme : "light";
 ?>
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="<?= $theme ?>">
+<!-- <html lang="en" data-bs-theme="<!?= $theme ?>"> -->
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -75,7 +76,7 @@ $theme = !is_null($theme) ? $theme : "light";
                 }
             }
 
-            // setTheme(getPreferredTheme())
+            setTheme(getPreferredTheme())
 
             const showActiveTheme = (theme, focus = false) => {
                 const themeSwitcher = document.querySelector("#bd-theme")

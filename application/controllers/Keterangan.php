@@ -40,14 +40,14 @@ class Keterangan extends CI_Controller
             $no++;
             $row = array();
 
-            $row[] = '<input type="checkbox" class="data-check" value="' . $item->id . '">';
+            // $row[] = '<input type="checkbox" class="data-check" value="' . $item->id . '">';
             $row[] = $no;
             $row[] = $item->sasaran_program;
             $row[] = $item->type;
             $row[] = badge_type($item->status);
             $row[] = $item->keterangan;
             $row[] = custom_date($item->created_at);
-            $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
+            // $row[] = action_button($item->id, 'ubah_data', 'hapus_data');
 
             $data[] = $row;
         }

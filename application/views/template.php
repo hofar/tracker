@@ -103,7 +103,7 @@ $menuHtml .= '</ul>';
 ?>
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="<?= $theme ?>">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -151,6 +151,11 @@ $menuHtml .= '</ul>';
         [readonly] {
             cursor: not-allowed;
         }
+
+        /* datatable */
+        .dt-buttons.btn-group.flex-wrap {
+            margin-bottom: 16px;
+        }
     </style>
 </head>
 
@@ -188,7 +193,6 @@ $menuHtml .= '</ul>';
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script src=""></script>
 
     <script>
         (() => {
@@ -218,7 +222,7 @@ $menuHtml .= '</ul>';
                 }
             }
 
-            // setTheme(getPreferredTheme())
+            setTheme(getPreferredTheme())
 
             const showActiveTheme = (theme, focus = false) => {
                 const themeSwitcher = document.querySelector("#bd-theme")
