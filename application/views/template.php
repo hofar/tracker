@@ -43,7 +43,7 @@ $menuItems = array(
         "access" => is_super()
     ),
     array(
-        "title" => "Kelola Keterangan",
+        "title" => "History Keterangan",
         "url" => "keterangan/manajemen",
         "icon" => '<i class="bi bi-card-list"></i>',
         "access" => is_super()
