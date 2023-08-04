@@ -68,11 +68,14 @@ class ProgramKerja extends CI_Controller
         is_logged_in();
 
         $array = array();
+        $user_list = $this->User_model->get_all()->result();
 
         $data = array(
             "title" => "Tracker Graph",
             "metadesc" => "Sistem Informasi Grafik Jaringan dan Aplikasi",
-            "content" => $this->load->view("programkerja/data", "", TRUE)
+            "content" => $this->load->view("programkerja/data", array(
+                "user_list" => $user_list,
+            ), TRUE)
         );
 
         $this->parser->parse("template", $data);
@@ -88,6 +91,7 @@ class ProgramKerja extends CI_Controller
             $row = array();
             $row[] = checkbox($item->id);
             $row[] = $no;
+            $row[] = $item->nama_user;
             $row[] = $item->name;
             $row[] = number_format($item->value, 0, '', '');
             $row[] = $item->type;
@@ -155,6 +159,7 @@ class ProgramKerja extends CI_Controller
         $this->_validate();
 
         $data = array(
+            'id_user' => $this->input->post('id_user'),
             'name' => $this->input->post('name'),
             'value' => $this->input->post('value'),
             'type' => $this->input->post('type'),
@@ -201,14 +206,32 @@ class ProgramKerja extends CI_Controller
         $this->_validate();
 
         $data = array(
+            'id_user' => $this->input->post('id_user'),
             'name' => $this->input->post('name'),
             'value' => $this->input->post('value'),
             'type' => $this->input->post('type'),
             'status' => $this->input->post('status'),
-            'start_date' => $this->input->post('start_date'),
-            'end_date' => $this->input->post('end_date'),
+            // 'start_date' => $this->input->post('start_date'),
+            // 'end_date' => $this->input->post('end_date'),
             'keterangan' => $this->input->post('keterangan'),
         );
+
+        $status = data_status();
+
+        switch ($this->input->post('status')) {
+            case $status[0]: // In Progress
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = null;
+                break;
+            case $status[1]: // Completed
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+                break;
+            case $status[2]: // Not Started
+                $data['start_date'] = null;
+                $data['end_date'] = null;
+                break;
+        }
 
         $this->ProgramKerja_model->update(array('id' => $this->input->post('id')), $data);
         echo json_encode(array("status" => true));
@@ -241,6 +264,12 @@ class ProgramKerja extends CI_Controller
         $data['error_string'] = array();
         $data['inputerror'] = array();
         $data['status'] = true;
+
+        if ($this->input->post('id_user') == '') {
+            $data['inputerror'][] = 'id_user';
+            $data['error_string'][] = 'User ID tidak boleh kosong';
+            $data['status'] = false;
+        }
 
         if ($this->input->post('name') == '') {
             $data['inputerror'][] = 'name';
@@ -314,5 +343,13 @@ class ProgramKerja extends CI_Controller
             // Tangani jika file format Excel tidak ditemukan
             echo "File format Excel tidak tersedia.";
         }
+    }
+
+    public function get_csrf_token()
+    {
+        is_logged_in();
+
+        $csrfToken = $this->security->get_csrf_hash();
+        echo json_encode(['csrfToken' => $csrfToken]);
     }
 }

@@ -85,6 +85,13 @@ class User_model extends CI_Model
         return $query->row();
     }
 
+    public function get_all()
+    {
+        $this->db->query("SET sql_mode = '' ");
+        $this->db->from($this->table);
+        return $this->db->get();
+    }
+
     public function get_by_user_id($id)
     {
         $this->db->query("SET sql_mode = '' ");

@@ -8,10 +8,10 @@
 
 <div class="card mb-3">
     <div class="card-body">
-        <button type="button" class="btn btn-outline-success" id="tambah_data"><i class="bi bi-plus-circle"></i> Tambah</button>
-        <button type="button" class="btn btn-outline-secondary" id="reload_table"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
-        <button type="button" class="btn btn-outline-danger" id="bulk_delete"><i class="bi bi-trash"></i> Hapus Semua</button>
-        <button type="button" class="btn btn-outline-info" id="import_excel"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
+        <button type="button" class="btn btn-outline-success" id="tambah_data" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Tambah"><i class="bi bi-plus-circle"></i> Tambah</button>
+        <button type="button" class="btn btn-outline-secondary" id="reload_table" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Segarkan"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
+        <button type="button" class="btn btn-outline-danger" id="bulk_delete" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Hapus Semua"><i class="bi bi-trash"></i> Hapus Semua</button>
+        <button type="button" class="btn btn-outline-info" id="import_excel" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Import Excel"><i class="bi bi-file-earmark-excel"></i> Import Excel</button>
 
         <hr />
 
@@ -32,6 +32,7 @@
                     <tr>
                         <th scope="col"><input type="checkbox" id="check-all"></th>
                         <th scope="col">No.</th>
+                        <th scope="col">User</th>
                         <th scope="col">Sasaran Program Kerja</th>
                         <th scope="col">Persentase (%)</th>
                         <th scope="col">Type</th>
@@ -44,7 +45,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="9" class="text-center">Loading...</td>
+                        <td colspan="10" class="text-center">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -75,8 +76,10 @@
         }
     };
 
-    $(document).ready(function() {
+    let csrfName = '<?= $this->security->get_csrf_token_name(); ?>'; // default
+    let csrfToken = '<?= $this->security->get_csrf_hash(); ?>'; // default
 
+    $(document).ready(function() {
         //datatables
         table = $('#table').DataTable({
             "dom": "Blfrtip",
@@ -95,7 +98,11 @@
             // Load data for the table's content from an Ajax source
             "ajax": {
                 "url": "<?= site_url('ProgramKerja/ajax_list') ?>",
-                "type": "POST"
+                "type": "POST",
+                "data": function(d) {
+                    // Tambahkan CSRF token ke dalam data permintaan
+                    d[csrfName] = csrfToken;
+                }
             },
             //Set column definition initialisation properties.
             "columnDefs": [{
@@ -131,6 +138,12 @@
             $('.btn-hapus').on('click', (event) => {
                 let data = $(event.currentTarget).data();
                 hapus_data(data.id);
+            });
+
+            // Temukan elemen dengan data-bs-toggle="tooltip" menggunakan jQuery
+            $('[data-bs-toggle="tooltip"]').each(function() {
+                // Inisialisasi tooltip menggunakan Bootstrap
+                $(this).tooltip();
             });
         });
 
@@ -213,9 +226,13 @@
             $.ajax({
                 url: "<?php echo site_url('ProgramKerja/ajax_edit') ?>/" + id,
                 type: "GET",
+                data: {
+                    [csrfName]: csrfToken,
+                },
                 dataType: "JSON",
                 success: function(data) {
                     $('[name="id"]').val(data.id);
+                    $('[name="id_user"]').val(data.id_user);
                     $('[name="name"]').val(data.name);
                     $('[name="value"]').val(data.value);
                     $('[name="type"]').val(data.type);
@@ -249,6 +266,7 @@
 
             // ajax adding data to database
             let formData = new FormData($('#form')[0]);
+            formData.append(csrfName, csrfToken); // Menambahkan CSRF token ke dalam data permintaan
             $.ajax({
                 url: url,
                 type: "POST",
@@ -275,7 +293,7 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error adding / update data');
-                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').text('Simpan'); //change button text
                     $('#btnSave').attr('disabled', false); //set button enable
                 }
             });
@@ -286,6 +304,7 @@
 
             // ajax adding data to database
             let formData = new FormData($('#formTambahKeterangan')[0]);
+            formData.append(csrfName, csrfToken); // Menambahkan CSRF token ke dalam data permintaan
             $.ajax({
                 url: url,
                 type: "POST",
@@ -310,7 +329,7 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error adding / update data');
-                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').text('Simpan'); //change button text
                     $('#btnSave').attr('disabled', false); //set button enable
                 }
             });
@@ -322,6 +341,9 @@
                 $.ajax({
                     url: "<?php echo site_url('ProgramKerja/ajax_delete') ?>/" + id,
                     type: "POST",
+                    data: {
+                        [csrfName]: csrfToken,
+                    },
                     dataType: "JSON",
                     success: function(data) {
                         //if success reload ajax table
@@ -345,6 +367,7 @@
                     $.ajax({
                         type: "POST",
                         data: {
+                            [csrfName]: csrfToken,
                             id: list_id
                         },
                         url: "<?php echo site_url('ProgramKerja/ajax_bulk_delete') ?>",
@@ -598,6 +621,20 @@
             }
         }
 
+        function get_csrf_token() {
+            $.ajax({
+                url: '<?= site_url('ProgramKerja/get_csrf_token') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    csrfToken = data.csrfToken;
+                },
+                error: function() {
+                    console.warn('You not have accsess to get CSRF');
+                }
+            });
+        }
+
         // Event listener untuk memantau perubahan pada elemen #value
         $('#value').on('input change', function() {
             validateInput();
@@ -617,6 +654,14 @@
         $('#status_addKet').on('input change', function() {
             setValueBasedOnStatusAddKet();
         });
+
+        // Event listener untuk modalCrudData
+        $('#modalCrudData').on('show.bs.modal', function(event) {
+        });
+
+        // Event listener untuk modalKeteranganData
+        $('#modalKeteranganData').on('show.bs.modal', function(event) {
+        });
     });
 </script>
 
@@ -633,6 +678,23 @@
                 <form id="form" class="form-horizontal">
                     <input type="hidden" value="" name="id" />
                     <div class="form-body">
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label" for="id_user">User</label>
+                            <div class="col-sm">
+                                <select name="id_user" id="id_user" class="form-select" autofocus>
+                                    <option value="">-- Pilih --</option>
+                                    <?php
+                                    $list = $user_list;
+                                    foreach ($list as $key => $value) {
+                                    ?>
+                                        <option value="<?= $value->id ?>"><?= $value->nama ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label" for="name">Name</label>
                             <div class="col-sm">
@@ -770,6 +832,7 @@
     <div class="modal-dialog">
         <!-- import_form.php -->
         <form method="post" action="<?= base_url('import/do_import'); ?>" enctype="multipart/form-data">
+            <?= '<input type="hidden" name="' . $this->security->get_csrf_token_name() . '" value="' . $this->security->get_csrf_hash() . '" />'; ?>
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="importExcelModalLabel">Import Excel</h1>

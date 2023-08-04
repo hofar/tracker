@@ -5,15 +5,30 @@ class ProgramKerja_model extends CI_Model
 {
 
     private $table = 'program_kerja';
+    private $table_user = 'user';
 
-    public $column_order = array(null, null, 'name', 'value', 'type', 'status', 'start_date', 'end_date', null); //set column field database for datatable orderable
-    public $column_search = array('name', 'value', 'type', 'status', 'start_date', 'end_date'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    public $order = array('id' => 'desc'); // default order
+    public $column_order; //set column field database for datatable orderable
+    public $column_search; //set column field database for datatable searchable just firstname , lastname , address are searchable
+    public $order; // default order
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
+
+        $this->column_order = array(null, null, $this->table_user . '.nama', $this->table . 'name', $this->table . 'value', $this->table . 'type', $this->table . 'status', $this->table . 'start_date', $this->table . 'end_date', null);
+        $this->column_search = array('name', $this->table_user . '.nama', $this->table . 'value', $this->table . 'type', $this->table . 'status', $this->table . 'start_date', $this->table . 'end_date');
+        $this->order = array('id' => 'desc'); // default order
+    }
 
     private function _get_datatables_query()
     {
-
+        $this->db->select(array(
+            $this->table . '.*',
+            $this->table_user . '.nama AS nama_user'
+        ));
         $this->db->from($this->table);
+        $this->db->join($this->table_user, $this->table_user . '.id = ' . $this->table . '.id_user');
 
         $i = 0;
 

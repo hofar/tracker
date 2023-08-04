@@ -65,9 +65,9 @@ if (!function_exists('action_button_v2')) {
         // data-status="' . $item->status . '"
 
         $group_button = '<div class="btn-group" role="group" aria-label="Group action">'
-            . '<a title="Keterangan" data-id="' . $item->id . '" data-value="' . $item->value . '" data-status="' . $item->status . '" class="btn btn-sm btn-outline-primary btn-add-keterangan"><i class="bi bi-plus-circle"></i> Tambah Keterangan</a>'
-            . '<a title="Edit" data-id="' . $item->id . '" class="btn btn-sm btn-outline-secondary btn-edit">Edit <i class="bi bi-pencil-square"></i></i></a>'
-            . '<a title="Hapus" data-id="' . $item->id . '" class="btn btn-sm btn-outline-danger btn-hapus">Hapus <i class="bi bi-trash"></i></a>'
+            . '<a title="Keterangan" data-id="' . $item->id . '" data-value="' . $item->value . '" data-status="' . $item->status . '" class="btn btn-sm btn-outline-primary btn-add-keterangan" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Tambah Keterangan"><i class="bi bi-journal-plus"></i></a>'
+            . '<a title="Edit" data-id="' . $item->id . '" class="btn btn-sm btn-outline-secondary btn-edit" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit Data"><i class="bi bi-pencil-square"></i></i></a>'
+            . '<a title="Hapus" data-id="' . $item->id . '" class="btn btn-sm btn-outline-danger btn-hapus" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Hapus Data"><i class="bi bi-trash"></i></a>'
             . '</div>';
 
         return $group_button;
@@ -105,6 +105,34 @@ if (!function_exists('custom_function')) {
         // Sekarang Anda dapat menggunakan instance CI untuk akses ke fitur dan library CodeIgniter
         $CI->load->library('session');
         $CI->session->set_userdata('key', 'value');
+    }
+}
+
+if (!function_exists('get_user_agent')) {
+    function get_user_agent()
+    {
+        $CI = get_instance();
+        $CI->load->library('user_agent');
+
+        // Mendapatkan browser yang digunakan oleh user
+        // $browser = $CI->agent->browser();
+
+        // Mendapatkan versi dari browser yang digunakan oleh user
+        // $browser_version = $CI->agent->version();
+
+        // Mendapatkan sistem operasi (platform) yang digunakan oleh user
+        // $platform = $CI->agent->platform();
+
+        // Mendapatkan referer (halaman sebelumnya) dari user
+        // $referer = $CI->agent->referrer();
+
+        // Mendapatkan bahasa yang digunakan oleh user
+        // $language = $CI->agent->languages();
+
+        // Mendapatkan User Agent string lengkap
+        // $user_agent_string = $CI->agent->agent_string();
+
+        return $CI->agent;
     }
 }
 

@@ -42,8 +42,6 @@ class Auth extends CI_Controller
         $this->db->where("u.user_id", $user_id);
         $r_user = $this->db->get();
         $user = $r_user->row_array();
-        // var_dump($user);
-        // die();
         // jika usernya ada
         if ($user) {
             // jika usernya aktif
@@ -54,8 +52,10 @@ class Auth extends CI_Controller
                         "user_id" => $user["user_id"],
                         "user_nama" => $user["nama"],
                         "is_super" => $user["is_super"],
+                        // "user_agent" => get_user_agent()
                     );
                     $this->session->set_userdata($data);
+
                     redirect("dashboard");
                 } else {
                     $this->session->set_flashdata("message", `<div class="alert alert-danger" role="alert">Wrong password!</div>`);
@@ -125,8 +125,10 @@ class Auth extends CI_Controller
         );
 
         $this->session->unset_userdata($array_item);
+        $this->session->sess_destroy(); // Menghapus semua data sesi
 
         $this->session->set_flashdata("message", `<div class="alert alert-success" role="alert">You have been logged out!</div>`);
+
         redirect("auth");
     }
 }

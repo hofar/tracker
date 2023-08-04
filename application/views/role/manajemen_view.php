@@ -78,7 +78,11 @@
             // Load data for the table's content from an Ajax source
             "ajax": {
                 "url": "<?= site_url('role/ajax_list') ?>",
-                "type": "POST"
+                "type": "POST",
+                "data": function(d) {
+                    // Tambahkan CSRF token ke dalam data permintaan
+                    d['<?= $this->security->get_csrf_token_name(); ?>'] = '<?= $this->security->get_csrf_hash(); ?>';
+                }
             },
             //Set column definition initialisation properties.
             "columnDefs": [{
@@ -176,6 +180,9 @@
         $.ajax({
             url: "<?php echo site_url('role/ajax_edit') ?>/" + id,
             type: "GET",
+            data: {
+                ['<?= $this->security->get_csrf_token_name(); ?>']: '<?= $this->security->get_csrf_hash(); ?>',
+            },
             dataType: "JSON",
             success: function(data) {
                 $('[name="id"]').val(data.id);
@@ -211,6 +218,7 @@
 
         // ajax adding data to database
         let formData = new FormData($('#form')[0]);
+        formData.append('<?= $this->security->get_csrf_token_name(); ?>', '<?= $this->security->get_csrf_hash(); ?>'); // Menambahkan CSRF token ke dalam data permintaan
         $.ajax({
             url: url,
             type: "POST",

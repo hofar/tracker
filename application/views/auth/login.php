@@ -16,6 +16,7 @@
                                 </div>
                                 <?= $this->session->flashdata('message') ?>
                                 <form class="user" method="post" action="<?= site_url('auth') ?>">
+                                    <?= '<input type="hidden" name="' . $this->security->get_csrf_token_name() . '" value="' . $this->security->get_csrf_hash() . '" />'; ?>
                                     <div class="mb-3">
                                         <label class="form-label" for="user_id">User ID</label>
                                         <input type="text" class="form-control form-control-user" id="user_id" name="user_id" placeholder="Enter User ID..." value="<?= set_value('user_id') ?>" autofocus />

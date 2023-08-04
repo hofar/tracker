@@ -67,6 +67,7 @@ class CI_Controller
 	 * @var	CI_Loader
 	 */
 
+	public $agent;
 	public $load;
 	public $output;
 	public $config;

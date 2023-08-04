@@ -11,6 +11,7 @@
                                     <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                                 </div>
                                 <form class="user" method="post" action="<?= site_url('auth/registration') ?>">
+                                    <?= '<input type="hidden" name="' . $this->security->get_csrf_token_name() . '" value="' . $this->security->get_csrf_hash() . '" />'; ?>
                                     <div class="mb-3">
                                         <label class="form-label" for="name">Full Name</label>
                                         <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="Full Name" value="<?= set_value('name') ?>" autofocus />

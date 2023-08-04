@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 30, 2023 at 08:42 PM
+-- Generation Time: Aug 04, 2023 at 04:00 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `tracker`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ci_sessions`
+--
+
+CREATE TABLE `ci_sessions` (
+  `id` varchar(128) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `data` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ci_sessions`
+--
+
+INSERT INTO `ci_sessions` (`id`, `ip_address`, `user_agent`, `timestamp`, `data`) VALUES
+('25d039nmcc8oq00p6a6clhb35gic46tu', '::1', '', 1691157227, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639313135373232373b);
 
 -- --------------------------------------------------------
 
@@ -53,9 +74,7 @@ INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `type`
 (11, 11, 'test 99', 'Network', 'In Progress', '2023-07-30 23:23:33'),
 (12, 40, 'test edit 2', 'Network', 'In Progress', '2023-07-30 23:54:47'),
 (13, 41, 'test not start', 'Network', 'Not Started', '2023-07-30 23:55:26'),
-(14, 40, 'tambah data', 'Network', 'In Progress', '2023-07-30 23:56:00'),
-(19, 47, 'Contoh Keterangan', 'Network', 'In Progress', '2023-07-31 01:38:43'),
-(20, 48, 'Contoh Keterangan', 'Network', 'Completed', '2023-07-31 01:38:43');
+(14, 40, 'tambah data', 'Network', 'In Progress', '2023-07-30 23:56:00');
 
 -- --------------------------------------------------------
 
@@ -65,6 +84,7 @@ INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `type`
 
 CREATE TABLE `program_kerja` (
   `id` int(11) NOT NULL,
+  `id_user` int(5) NOT NULL,
   `name` varchar(250) NOT NULL,
   `value` int(5) NOT NULL,
   `type` enum('Network','Aplikasi') NOT NULL,
@@ -78,26 +98,24 @@ CREATE TABLE `program_kerja` (
 -- Dumping data for table `program_kerja`
 --
 
-INSERT INTO `program_kerja` (`id`, `name`, `value`, `type`, `keterangan`, `status`, `start_date`, `end_date`) VALUES
-(1, 'Pemenuhan Kebutuhan PC, NB & Printer', 71, 'Network', NULL, 'In Progress', '2023-07-24 17:48:09', NULL),
-(2, 'Penyediaan Penguat Sinyal GSM', 100, 'Network', NULL, 'Completed', '2023-07-24 17:47:14', '2023-07-24 17:47:45'),
-(3, 'Upgrade Radio Analog ke Digital', 57, 'Network', NULL, 'In Progress', '2023-07-24 17:48:20', NULL),
-(4, 'Backup Power Supply', 100, 'Network', NULL, 'Completed', '2023-07-24 17:47:24', '2023-07-24 17:47:42'),
-(5, 'Relokasi Tower dari HO ke PIT E', 57, 'Network', NULL, 'In Progress', '2023-07-24 17:48:23', NULL),
-(6, 'Upgrade Bandwidth Internet', 100, 'Network', NULL, 'Completed', '2023-07-24 17:47:29', '2023-07-24 17:47:39'),
-(7, 'Migrasi email @satriabahana.co.id to Cloud', 71, 'Network', NULL, 'In Progress', '2023-07-24 17:48:13', NULL),
-(8, 'CCTV PKO PIT E', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:35', NULL),
-(9, 'CCTV Tarahan', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:49', NULL),
-(10, 'CCTV View Poin PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:53', NULL),
-(11, 'CCTV Hauling PITE', 99, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:57', NULL),
-(12, 'CCTV Disposal PITE', 100, 'Aplikasi', 'test baru', 'Completed', '2023-07-24 17:48:03', '2023-07-28 23:29:00'),
-(13, 'Command Center', 100, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 22:07:20', '2023-07-14 22:07:24'),
-(14, 'GPS Tracking (Map Operation)', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-13 08:04:11', '2023-07-14 22:04:24'),
-(37, 'test edit', 0, 'Network', 'test 2', 'Not Started', '2023-07-26 18:24:00', '2023-07-26 18:25:00'),
-(40, 'test edit 2', 80, 'Aplikasi', 'test edit 2', 'In Progress', '2023-07-30 23:54:00', NULL),
-(41, 'test not start', 0, 'Network', 'test not start', 'Not Started', NULL, NULL),
-(47, 'test 1', 50, 'Network', 'Contoh Keterangan', 'In Progress', '2023-07-13 08:04:11', NULL),
-(48, 'test 2', 75, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 08:04:11', '2023-07-14 08:04:11');
+INSERT INTO `program_kerja` (`id`, `id_user`, `name`, `value`, `type`, `keterangan`, `status`, `start_date`, `end_date`) VALUES
+(1, 2, 'Pemenuhan Kebutuhan PC, NB & Printer', 71, 'Network', NULL, 'In Progress', '2023-07-24 17:48:09', NULL),
+(2, 2, 'Penyediaan Penguat Sinyal GSM', 100, 'Network', NULL, 'Completed', '2023-07-24 17:47:14', '2023-07-24 17:47:45'),
+(3, 2, 'Upgrade Radio Analog ke Digital', 57, 'Network', NULL, 'In Progress', '2023-07-24 17:48:20', NULL),
+(4, 2, 'Backup Power Supply', 100, 'Network', NULL, 'Completed', '2023-07-24 17:47:24', '2023-07-24 17:47:42'),
+(5, 2, 'Relokasi Tower dari HO ke PIT E', 57, 'Network', NULL, 'In Progress', '2023-07-24 17:48:23', NULL),
+(6, 2, 'Upgrade Bandwidth Internet', 100, 'Network', NULL, 'Completed', '2023-07-24 17:47:29', '2023-07-24 17:47:39'),
+(7, 2, 'Migrasi email @satriabahana.co.id to Cloud', 71, 'Network', NULL, 'In Progress', '2023-07-24 17:48:13', NULL),
+(8, 2, 'CCTV PKO PIT E', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:35', NULL),
+(9, 2, 'CCTV Tarahan', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:49', NULL),
+(10, 2, 'CCTV View Poin PITE', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:53', NULL),
+(11, 2, 'CCTV Hauling PITE', 99, 'Aplikasi', NULL, 'In Progress', '2023-07-24 17:47:57', NULL),
+(12, 2, 'CCTV Disposal PITE', 100, 'Aplikasi', 'test baru', 'Completed', '2023-07-24 17:48:03', '2023-07-28 23:29:00'),
+(13, 2, 'Command Center', 100, 'Aplikasi', 'Contoh Keterangan', 'Completed', '2023-07-14 22:07:20', '2023-07-14 22:07:24'),
+(14, 2, 'GPS Tracking (Map Operation)', 86, 'Aplikasi', NULL, 'In Progress', '2023-07-13 08:04:11', '2023-07-14 22:04:24'),
+(37, 2, 'test edit', 0, 'Network', 'test 2', 'Not Started', '2023-07-26 18:24:00', '2023-07-26 18:25:00'),
+(40, 2, 'test edit 2', 80, 'Aplikasi', 'test edit 2', 'In Progress', '2023-07-30 23:54:00', NULL),
+(41, 3, 'test not start', 0, 'Network', 'test not start', 'Not Started', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,12 +125,12 @@ INSERT INTO `program_kerja` (`id`, `name`, `value`, `type`, `keterangan`, `statu
 
 CREATE TABLE `user` (
   `id` int(5) NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `user_id` varchar(128) NOT NULL,
-  `gambar` varchar(128) NOT NULL,
-  `password` varchar(256) NOT NULL,
-  `is_active` int(1) NOT NULL,
   `role_id` int(1) NOT NULL,
+  `user_id` varchar(128) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `gambar` varchar(128) NOT NULL,
+  `is_active` int(1) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -120,11 +138,11 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `nama`, `user_id`, `gambar`, `password`, `is_active`, `role_id`, `create_at`) VALUES
-(0, 'test 2', 'test ', 'default.jpg', '$2y$10$9zxLYrxW3AYIEDhS.ayh8.iLsz9WFp3rze8vfxcyyzr.Oc2IbNXJu', 1, 2, '2023-07-22 07:53:13'),
-(1, 'Hofar Ismail', 'hofar', 'default.jpg', '$2y$10$npd2rQYWQg2GLRXLD/BzkuSGJKOWiVmtGTS0.ynbo9XPfLwoU5rwy', 1, 1, '2019-08-30 22:20:18'),
-(2, 'Admin', 'admin', 'default.jpg', '$2y$10$ZPUdSONgksImO0.PI.A7.eM0dZU5kR.sjOytNJArMlNO9XMsk6e7i', 1, 1, '2019-08-31 16:55:43'),
-(3, 'User', 'user', 'default.jpg', '$2y$10$HuPSqF5hvJSdle8eromvmuB22wZKsDi6t2Zsf41B7jOSS5OpJj1we', 1, 2, '2019-08-31 16:55:56');
+INSERT INTO `user` (`id`, `role_id`, `user_id`, `password`, `nama`, `gambar`, `is_active`, `create_at`) VALUES
+(0, 2, 'test ', '$2y$10$9zxLYrxW3AYIEDhS.ayh8.iLsz9WFp3rze8vfxcyyzr.Oc2IbNXJu', 'test 2', 'default.jpg', 1, '2023-07-22 07:53:13'),
+(1, 1, 'hofar', '$2y$10$npd2rQYWQg2GLRXLD/BzkuSGJKOWiVmtGTS0.ynbo9XPfLwoU5rwy', 'Hofar Ismail', 'default.jpg', 1, '2019-08-30 22:20:18'),
+(2, 1, 'admin', '$2y$10$ZPUdSONgksImO0.PI.A7.eM0dZU5kR.sjOytNJArMlNO9XMsk6e7i', 'Admin', 'default.jpg', 1, '2019-08-31 16:55:43'),
+(3, 2, 'user', '$2y$10$HuPSqF5hvJSdle8eromvmuB22wZKsDi6t2Zsf41B7jOSS5OpJj1we', 'User', 'default.jpg', 1, '2019-08-31 16:55:56');
 
 -- --------------------------------------------------------
 
@@ -153,6 +171,13 @@ INSERT INTO `user_role` (`id`, `name`, `is_super`) VALUES
 --
 
 --
+-- Indexes for table `ci_sessions`
+--
+ALTER TABLE `ci_sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ci_sessions_timestamp` (`timestamp`);
+
+--
 -- Indexes for table `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
@@ -163,13 +188,16 @@ ALTER TABLE `history_keterangan`
 -- Indexes for table `program_kerja`
 --
 ALTER TABLE `program_kerja`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `constraint_user_id` (`id_user`);
 
 --
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD KEY `contraint_role` (`role_id`);
 
 --
 -- Indexes for table `user_role`
@@ -185,13 +213,13 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `program_kerja`
 --
 ALTER TABLE `program_kerja`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `user_role`
@@ -208,6 +236,18 @@ ALTER TABLE `user_role`
 --
 ALTER TABLE `history_keterangan`
   ADD CONSTRAINT `history_keterangan` FOREIGN KEY (`id_program_kerja`) REFERENCES `program_kerja` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `program_kerja`
+--
+ALTER TABLE `program_kerja`
+  ADD CONSTRAINT `constraint_user_id` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `contraint_role` FOREIGN KEY (`role_id`) REFERENCES `user_role` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
