@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2023 at 04:00 PM
+-- Generation Time: Aug 08, 2023 at 08:51 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.2.4
 
@@ -40,7 +40,7 @@ CREATE TABLE `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`id`, `ip_address`, `user_agent`, `timestamp`, `data`) VALUES
-('25d039nmcc8oq00p6a6clhb35gic46tu', '::1', '', 1691157227, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639313135373232373b);
+('f98ppfjmfujcnb405v5rt1epnpans0fd', '::1', '', 1691476991, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639313437363736373b757365725f69647c733a353a2261646d696e223b757365725f6e616d617c733a353a2241646d696e223b69735f73757065727c733a313a2231223b);
 
 -- --------------------------------------------------------
 
@@ -120,6 +120,28 @@ INSERT INTO `program_kerja` (`id`, `id_user`, `name`, `value`, `type`, `keterang
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `qr_code`
+--
+
+CREATE TABLE `qr_code` (
+  `id` int(11) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `flag` int(1) NOT NULL DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `qr_code`
+--
+
+INSERT INTO `qr_code` (`id`, `token`, `flag`, `created_at`) VALUES
+(1, 'RjnRXm8vwAGzPVa9eOgj8GyfYAvEgRlyzoPy2g5ceHJmjBjl5K', 0, '2023-08-07 20:47:13'),
+(2, 'rghJa960h5wgGD4RuVRJX6OydFTMcLIzD1vaaybweNgXn3wAx5', 0, '2023-08-07 20:47:24'),
+(3, 'Enb2F68TRlKYehSFIVhEuKSW8QJE1LeeypxsEMwRkKvNSnN3Wh', 0, '2023-08-07 20:47:24');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -192,6 +214,12 @@ ALTER TABLE `program_kerja`
   ADD KEY `constraint_user_id` (`id_user`);
 
 --
+-- Indexes for table `qr_code`
+--
+ALTER TABLE `qr_code`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -220,6 +248,12 @@ ALTER TABLE `history_keterangan`
 --
 ALTER TABLE `program_kerja`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- AUTO_INCREMENT for table `qr_code`
+--
+ALTER TABLE `qr_code`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_role`
