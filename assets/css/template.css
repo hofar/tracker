@@ -1,0 +1,39 @@
+#content {
+    margin-top: 100px;
+    margin-bottom: 400px;
+}
+
+.navbar {
+    background-color: #6610f2;
+}
+
+li.nav-item {
+    position: relative;
+}
+
+a.nav-link.active:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    border-bottom: 2px solid white;
+    border-radius: .5px;
+    top: 5px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.anychart-credits {
+    display: none !important;
+}
+
+[disabled],
+[readonly] {
+    cursor: not-allowed;
+}
+
+/* datatable */
+.dt-buttons.btn-group.flex-wrap {
+    margin-bottom: 16px;
+}

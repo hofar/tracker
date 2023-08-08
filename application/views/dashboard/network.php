@@ -10,7 +10,7 @@
     }
 </style>
 
-<div class="row row-cols-1 row-cols-lg-2 g-4">
+<div class="row row-cols-1 row-cols-xl-2 g-4">
     <div class="col">
         <div class="card h-100">
             <!-- <img src="..." class="card-img-top" alt="..."> -->

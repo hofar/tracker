@@ -138,6 +138,7 @@ class CI_Loader
 	public $Role_model;
 	public $User_model;
 	public $HistoryKeterangan_model;
+	public $Qrcode_model;
 
 	/**
 	 * List of class name mappings
