@@ -17,3 +17,10 @@ application/logs/*
 !application/logs/.htaccess
 /vendor/
 /upload/
+/node_modules/
+package.json
+package-lock.json
+webpack.config.js
+/assets/js
+
+# application/config/database.php

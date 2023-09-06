@@ -347,9 +347,13 @@ class ProgramKerja extends CI_Controller
 
     public function get_csrf_token()
     {
-        is_logged_in();
+        // is_logged_in();
 
+        $csrfName = $this->security->get_csrf_token_name();
         $csrfToken = $this->security->get_csrf_hash();
-        echo json_encode(['csrfToken' => $csrfToken]);
+        echo json_encode([
+            'csrfName' => $csrfName,
+            'csrfToken' => $csrfToken
+        ]);
     }
 }

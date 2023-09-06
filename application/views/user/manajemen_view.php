@@ -8,9 +8,9 @@
 
 <div class="card border-primary mb-3">
     <div class="card-body">
-        <button type="button" class="btn btn-outline-success" id="tambah_data"><i class="bi bi-plus-circle"></i> Tambah</button>
-        <button type="button" class="btn btn-outline-secondary" id="reload_table"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
-        <button type="button" class="btn btn-outline-danger" id="bulk_delete"><i class="bi bi-trash"></i> Hapus Semua</button>
+        <button type="button" class="btn btn-outline-success me-1 mb-2" id="tambah_data"><i class="bi bi-plus-circle"></i> Tambah</button>
+        <button type="button" class="btn btn-outline-secondary me-1 mb-2" id="reload_table"><i class="bi bi-arrow-repeat"></i> Segarkan</button>
+        <button type="button" class="btn btn-outline-danger me-1 mb-2" id="bulk_delete"><i class="bi bi-trash"></i> Hapus Semua</button>
 
         <hr />
 

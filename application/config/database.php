@@ -76,10 +76,10 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'tracker',
-	'dbdriver' => 'mysqli',
+    'username' => 'root', // hofaris1_all
+    'password' => '123', // Vu4quis+-!
+    'database' => 'tracker', // hofaris1_app-kasir
+    'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
