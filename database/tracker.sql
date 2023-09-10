@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 08, 2023 at 08:51 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1:3306
+-- Waktu pembuatan: 10 Sep 2023 pada 19.20
+-- Versi server: 8.0.31
+-- Versi PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,41 +24,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_sessions`
+-- Struktur dari tabel `ci_sessions`
 --
 
-CREATE TABLE `ci_sessions` (
+DROP TABLE IF EXISTS `ci_sessions`;
+CREATE TABLE IF NOT EXISTS `ci_sessions` (
   `id` varchar(128) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
   `user_agent` varchar(255) NOT NULL,
-  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `data` blob NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `timestamp` int UNSIGNED NOT NULL DEFAULT '0',
+  `data` blob NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ci_sessions_timestamp` (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `ci_sessions`
+-- Dumping data untuk tabel `ci_sessions`
 --
 
 INSERT INTO `ci_sessions` (`id`, `ip_address`, `user_agent`, `timestamp`, `data`) VALUES
-('f98ppfjmfujcnb405v5rt1epnpans0fd', '::1', '', 1691476991, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639313437363736373b757365725f69647c733a353a2261646d696e223b757365725f6e616d617c733a353a2241646d696e223b69735f73757065727c733a313a2231223b);
+('3pjofamn74uvbh6n5fqjl5ghrnkrhjj7', '::1', '', 1693744900, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639333734343930303b),
+('4uh5hhbj5pq9cpvpbdqk26l5fufsgti5', '::1', '', 1693742743, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639333734323734333b),
+('8iht6ap7dr8r7rkanq4bmd18iir8gkeo', '::1', '', 1693744484, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639333734343438343b),
+('qat6mvlflr696flli9g1bjgie80g7v1g', '::1', '', 1693745169, 0x5f5f63695f6c6173745f726567656e65726174657c693a313639333734343930303b757365725f69647c733a353a2261646d696e223b757365725f6e616d617c733a353a2241646d696e223b69735f73757065727c733a313a2231223b);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `history_keterangan`
+-- Struktur dari tabel `history_keterangan`
 --
 
-CREATE TABLE `history_keterangan` (
-  `id` int(11) NOT NULL,
-  `id_program_kerja` int(11) NOT NULL,
+DROP TABLE IF EXISTS `history_keterangan`;
+CREATE TABLE IF NOT EXISTS `history_keterangan` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_program_kerja` int NOT NULL,
   `keterangan` text NOT NULL,
   `type` enum('Network','Aplikasi') NOT NULL,
   `status` enum('Completed','In Progress','Not Started') NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `history_keterangan` (`id_program_kerja`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `history_keterangan`
+-- Dumping data untuk tabel `history_keterangan`
 --
 
 INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `type`, `status`, `created_at`) VALUES
@@ -79,23 +88,60 @@ INSERT INTO `history_keterangan` (`id`, `id_program_kerja`, `keterangan`, `type`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `program_kerja`
+-- Struktur dari tabel `pegawai`
 --
 
-CREATE TABLE `program_kerja` (
-  `id` int(11) NOT NULL,
-  `id_user` int(5) NOT NULL,
+DROP TABLE IF EXISTS `pegawai`;
+CREATE TABLE IF NOT EXISTS `pegawai` (
+  `employee_id` bigint NOT NULL,
+  `surname` varchar(50) NOT NULL,
+  `jenis_kelamin` enum('L','P') NOT NULL,
+  `emp_status_desc` enum('Active Employees') NOT NULL,
+  `lokasi_kerja` enum('TMO','HO') NOT NULL,
+  `divisi` enum('ASET','FAMIS') NOT NULL,
+  `department` enum('Aset&Perencanaan','SM Penunjang Prod','Akuntansi & Pajak') NOT NULL,
+  `kode_posisi` varchar(15) NOT NULL,
+  `description_jabatan` varchar(25) NOT NULL,
+  `grade` enum('A','B','C','D','E') NOT NULL,
+  `level_` enum('SUPERVISOR','STAFF B') NOT NULL,
+  `status_pegawai` enum('PEGAWAI TETAP','KONTRAK') NOT NULL,
+  `personal_email` varchar(50) NOT NULL,
+  `no_hp` varchar(15) NOT NULL,
+  `status` enum('KAWIN','BELUM KAWIN') NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `pegawai`
+--
+
+INSERT INTO `pegawai` (`employee_id`, `surname`, `jenis_kelamin`, `emp_status_desc`, `lokasi_kerja`, `divisi`, `department`, `kode_posisi`, `description_jabatan`, `grade`, `level_`, `status_pegawai`, `personal_email`, `no_hp`, `status`) VALUES
+(10160136, 'ABDIANSYAH AKBAR', 'L', 'Active Employees', 'TMO', 'ASET', 'Aset&Perencanaan', '321110022A', 'SUPV B. UTAMA & KOMP EXCH', 'D', 'SUPERVISOR', 'PEGAWAI TETAP', '', '1298412', 'KAWIN'),
+(10160114, 'ABDUR RACHMAN', 'L', 'Active Employees', 'TMO', 'ASET', 'SM Penunjang Prod', '420110022A', 'SUPERVISOR RENTAL', 'D', 'SUPERVISOR', 'PEGAWAI TETAP', '', '241241', 'BELUM KAWIN'),
+(10200001, 'ADELIA RAHMAWATI', 'P', 'Active Employees', 'HO', 'FAMIS', 'Akuntansi & Pajak', '212AAAA21A', 'AKUNTING JR OFFICER', 'B', 'STAFF B', 'KONTRAK', '', '', 'KAWIN');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `program_kerja`
+--
+
+DROP TABLE IF EXISTS `program_kerja`;
+CREATE TABLE IF NOT EXISTS `program_kerja` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_user` int NOT NULL,
   `name` varchar(250) NOT NULL,
-  `value` int(5) NOT NULL,
+  `value` int NOT NULL,
   `type` enum('Network','Aplikasi') NOT NULL,
   `keterangan` varchar(250) DEFAULT NULL,
   `status` enum('Completed','In Progress','Not Started') NOT NULL,
   `start_date` datetime DEFAULT NULL,
-  `end_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `end_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `constraint_user_id` (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `program_kerja`
+-- Dumping data untuk tabel `program_kerja`
 --
 
 INSERT INTO `program_kerja` (`id`, `id_user`, `name`, `value`, `type`, `keterangan`, `status`, `start_date`, `end_date`) VALUES
@@ -120,44 +166,26 @@ INSERT INTO `program_kerja` (`id`, `id_user`, `name`, `value`, `type`, `keterang
 -- --------------------------------------------------------
 
 --
--- Table structure for table `qr_code`
+-- Struktur dari tabel `user`
 --
 
-CREATE TABLE `qr_code` (
-  `id` int(11) NOT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  `flag` int(1) NOT NULL DEFAULT 0,
-  `created_at` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `qr_code`
---
-
-INSERT INTO `qr_code` (`id`, `token`, `flag`, `created_at`) VALUES
-(1, 'RjnRXm8vwAGzPVa9eOgj8GyfYAvEgRlyzoPy2g5ceHJmjBjl5K', 0, '2023-08-07 20:47:13'),
-(2, 'rghJa960h5wgGD4RuVRJX6OydFTMcLIzD1vaaybweNgXn3wAx5', 0, '2023-08-07 20:47:24'),
-(3, 'Enb2F68TRlKYehSFIVhEuKSW8QJE1LeeypxsEMwRkKvNSnN3Wh', 0, '2023-08-07 20:47:24');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `id` int(5) NOT NULL,
-  `role_id` int(1) NOT NULL,
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int NOT NULL,
+  `role_id` int NOT NULL,
   `user_id` varchar(128) NOT NULL,
   `password` varchar(256) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `gambar` varchar(128) NOT NULL,
-  `is_active` int(1) NOT NULL,
-  `create_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `is_active` int NOT NULL,
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  KEY `contraint_role` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`id`, `role_id`, `user_id`, `password`, `nama`, `gambar`, `is_active`, `create_at`) VALUES
@@ -169,17 +197,19 @@ INSERT INTO `user` (`id`, `role_id`, `user_id`, `password`, `nama`, `gambar`, `i
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_role`
+-- Struktur dari tabel `user_role`
 --
 
-CREATE TABLE `user_role` (
-  `id` int(5) NOT NULL,
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE IF NOT EXISTS `user_role` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
-  `is_super` int(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `is_super` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_role`
+-- Dumping data untuk tabel `user_role`
 --
 
 INSERT INTO `user_role` (`id`, `name`, `is_super`) VALUES
@@ -189,96 +219,23 @@ INSERT INTO `user_role` (`id`, `name`, `is_super`) VALUES
 (13, 'test sdfsdf', 0);
 
 --
--- Indexes for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Indexes for table `ci_sessions`
---
-ALTER TABLE `ci_sessions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ci_sessions_timestamp` (`timestamp`);
-
---
--- Indexes for table `history_keterangan`
---
-ALTER TABLE `history_keterangan`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `history_keterangan` (`id_program_kerja`);
-
---
--- Indexes for table `program_kerja`
---
-ALTER TABLE `program_kerja`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `constraint_user_id` (`id_user`);
-
---
--- Indexes for table `qr_code`
---
-ALTER TABLE `qr_code`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`),
-  ADD KEY `contraint_role` (`role_id`);
-
---
--- Indexes for table `user_role`
---
-ALTER TABLE `user_role`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `history_keterangan`
---
-ALTER TABLE `history_keterangan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- AUTO_INCREMENT for table `program_kerja`
---
-ALTER TABLE `program_kerja`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
---
--- AUTO_INCREMENT for table `qr_code`
---
-ALTER TABLE `qr_code`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `user_role`
---
-ALTER TABLE `user_role`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `history_keterangan`
+-- Ketidakleluasaan untuk tabel `history_keterangan`
 --
 ALTER TABLE `history_keterangan`
   ADD CONSTRAINT `history_keterangan` FOREIGN KEY (`id_program_kerja`) REFERENCES `program_kerja` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `program_kerja`
+-- Ketidakleluasaan untuk tabel `program_kerja`
 --
 ALTER TABLE `program_kerja`
   ADD CONSTRAINT `constraint_user_id` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `user`
+-- Ketidakleluasaan untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `contraint_role` FOREIGN KEY (`role_id`) REFERENCES `user_role` (`id`);
