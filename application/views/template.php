@@ -161,6 +161,7 @@ foreach ($sideBarItemsB as $sideBarItem) {
     <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon.ico">
 
     <link rel="stylesheet" href="<?= base_url('assets/css/template.css') . $timeHelp ?>">
+    <script src="<?= base_url('assets/dist/template.bundle.js') . $timeHelp ?>"></script>
 </head>
 
 <body>
@@ -263,8 +264,6 @@ foreach ($sideBarItemsB as $sideBarItem) {
             </div>
         </nav>
     </footer>
-
-    <script src="<?= base_url('assets/dist/template.bundle.js') . $timeHelp ?>"></script>
 </body>
 
 </html>
