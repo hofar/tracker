@@ -164,7 +164,7 @@ foreach ($sideBarItemsB as $sideBarItem) {
     <script src="<?= base_url('assets/dist/template.bundle.js') . $timeHelp ?>"></script>
 </head>
 
-<body>
+<body class="body">
     <div class="d-none">
         <input type="hidden" name="base_url" id="base_url" value="<?= base_url() ?>" />
         <input type="hidden" name="csrfName" id="csrfName" value="<?= $this->security->get_csrf_token_name(); ?>" />
