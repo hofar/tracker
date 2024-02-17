@@ -1,0 +1,18 @@
+---
+- include:
+    - public_html/tracker/**
+- exclude:
+    - public_html/tracker/application/config/database.php
+    - public_html/tracker/application/logs/**
+    - public_html/tracker/system/cache/**
+    - public_html/tracker/vendor/**
+    - public_html/tracker/upload/**
+- include:
+    - public_html/tracker/application/logs/index.html
+    - public_html/tracker/application/logs/.htaccess
+    - public_html/tracker/system/cache/index.html
+    - public_html/tracker/system/cache/.htaccess
+    - public_html/tracker/vendor/index.html
+    - public_html/tracker/vendor/.htaccess
+    - public_html/tracker/upload/index.html
+    - public_html/tracker/upload/.htaccess
