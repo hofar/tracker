@@ -1,18 +1,11 @@
 ---
-- include:
-    - public_html/tracker/**
-- exclude:
-    - public_html/tracker/application/config/database.php
-    - public_html/tracker/application/logs/**
-    - public_html/tracker/system/cache/**
-    - public_html/tracker/vendor/**
-    - public_html/tracker/upload/**
-- include:
-    - public_html/tracker/application/logs/index.html
-    - public_html/tracker/application/logs/.htaccess
-    - public_html/tracker/system/cache/index.html
-    - public_html/tracker/system/cache/.htaccess
-    - public_html/tracker/vendor/index.html
-    - public_html/tracker/vendor/.htaccess
-    - public_html/tracker/upload/index.html
-    - public_html/tracker/upload/.htaccess
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home1/hofaris1/public_html/tracker/
+    - /bin/cp -r * $DEPLOYPATH
+    - /bin/cp -r .[^.]* $DEPLOYPATH  # Copy hidden files (starting with dot)
+    - /bin/cp -r .*/ $DEPLOYPATH     # Copy hidden directories
+    - /bin/cp -r public_html/tracker/application/logs/.htaccess $DEPLOYPATH/application/logs/
+    - /bin/cp -r public_html/tracker/system/cache/.htaccess $DEPLOYPATH/system/cache/
+    - /bin/cp -r public_html/tracker/vendor/.htaccess $DEPLOYPATH/vendor/
+    - /bin/cp -r public_html/tracker/upload/.htaccess $DEPLOYPATH/upload/
