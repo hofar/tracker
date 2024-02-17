@@ -14,7 +14,11 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Login Page</h1>
                                 </div>
-                                <?= $this->session->flashdata('message') ?>
+                                <?php if ($this->session->flashdata('message')) { ?>
+                                    <div class="alert alert-info" role="alert">
+                                        <?php echo $this->session->flashdata('message'); ?>
+                                    </div>
+                                <?php } ?>
                                 <form class="user" method="post" action="<?= site_url('auth') ?>">
                                     <?= '<input type="hidden" name="' . $this->security->get_csrf_token_name() . '" value="' . $this->security->get_csrf_hash() . '" />'; ?>
                                     <div class="mb-3">
