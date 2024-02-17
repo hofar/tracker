@@ -15,7 +15,7 @@
                                     <h1 class="h4 text-gray-900 mb-4">Login Page</h1>
                                 </div>
                                 <?php if ($this->session->flashdata('message')) { ?>
-                                    <div class="alert alert-info" role="alert">
+                                    <div class="alert <?= $this->session->flashdata('message_type') ?>alert-info" role="alert">
                                         <?php echo $this->session->flashdata('message'); ?>
                                     </div>
                                 <?php } ?>

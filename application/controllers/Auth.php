@@ -59,15 +59,18 @@ class Auth extends CI_Controller
                     redirect("dashboard");
                 } else {
                     // $this->session->set_flashdata("message", `<div class="alert alert-danger" role="alert">Wrong password!</div>`);
-                    $this->session->set_flashdata("message", `Wrong password!`);
+                    $this->session->set_flashdata("message_type", "alert-danger");
+                    $this->session->set_flashdata("message", "Wrong password!");
                 }
             } else {
                 // $this->session->set_flashdata("message", `<div class="alert alert-danger" role="alert">This user has not been activated!</div>`);
-                $this->session->set_flashdata("message", `This user has not been activated!`);
+                $this->session->set_flashdata("message_type", "alert-danger");
+                $this->session->set_flashdata("message", "This user has not been activated!");
             }
         } else {
             // $this->session->set_flashdata("message", `<div class="alert alert-danger" role="alert">User is not registered!</div>`);
-            $this->session->set_flashdata("message", `User is not registered!`);
+            $this->session->set_flashdata("message_type", "alert-danger");
+            $this->session->set_flashdata("message", "User is not registered!");
         }
 
         redirect("auth");
@@ -113,7 +116,8 @@ class Auth extends CI_Controller
             $this->db->query("SET sql_mode = '' ");
             $this->db->insert("user", $data);
             // $this->session->set_flashdata("message", `<div class="alert alert-success" role="alert">Congratulation, your account has been created. Please Login</div>`);
-            $this->session->set_flashdata("message", `Congratulation, your account has been created. Please Login`);
+            $this->session->set_flashdata("message_type", "alert-success");
+            $this->session->set_flashdata("message", "Congratulation, your account has been created. Please Login");
             redirect("auth");
         }
     }
@@ -131,7 +135,8 @@ class Auth extends CI_Controller
         $this->session->sess_destroy(); // Menghapus semua data sesi
 
         // $this->session->set_flashdata("message", `<div class="alert alert-success" role="alert">You have been logged out!</div>`);
-        $this->session->set_flashdata("message", 'You have been logged out!');
+        $this->session->set_flashdata("message_type", "alert-success");
+        $this->session->set_flashdata("message", "You have been logged out!");
 
         redirect("auth");
     }
